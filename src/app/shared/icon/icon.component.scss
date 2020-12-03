@@ -1,0 +1,30 @@
+.icon-sm {
+  height: 20px;
+  width: 20px;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.icon-lg,
+.icon-md {
+  height: 32px;
+  line-height: 32px;
+  width: 32px;
+}
+
+.icon-lg {
+  font-size: 24px;
+}
+
+.icon-lg,
+.icon-md,
+.icon-sm {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: bottom;
+
+  border: none;
+  outline: none;
+  background: transparent;
+}

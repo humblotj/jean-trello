@@ -1,0 +1,36 @@
+<div class="list-content">
+  <div class="list-header" fxLayout fxLayoutAlign="start center">
+    <h2>{{listName}}</h2>
+    <div fxFlex>
+      <textarea #listNameRef spellcheck="false" [ngModel]="listName" (ngModelChange)="onChangeListName($event)"
+        (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
+        cdkAutosizeMinRows="1"></textarea>
+    </div>
+    <button app-button class="extras-menu">
+      <span app-icon class="extras-menu-icon">
+      </span>
+    </button>
+  </div>
+  <div class="list-cards">
+    <app-card *ngFor="let card of cards" [title]="card"></app-card>
+    <app-card-create *ngIf="cardCreateIndex === index" [cardCreateTitle]="cardCreateTitle"
+      (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event)"
+      (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
+  </div>
+  <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
+    <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
+      (click)="cardCreateIndexChange.emit(index)">
+      <span app-icon class=" icon-add">
+      </span>
+      <span>
+        Add {{cards?.length ? 'another':'a'}} card
+      </span>
+    </button>
+    <button app-button class="card-templates-btn">
+      <span>
+        <mat-icon svgIcon="template" [inline]="true">
+        </mat-icon>
+      </span>
+    </button>
+  </div>
+</div>

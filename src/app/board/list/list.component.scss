@@ -1,0 +1,121 @@
+:host {
+  display: inline-block;
+  flex-shrink: 0;
+
+  width: 272px;
+  height: 100%;
+
+  margin: 0 4px;
+
+  white-space: nowrap;
+
+  &:first-child {
+    margin-left: 8px;
+  }
+
+  &:last-child {
+    margin-right: 8px;
+  }
+}
+
+.list-content {
+  padding: 8px;
+  border-radius: 3px;
+
+  background-color: #ebecf0;
+
+  .list-header {
+    margin-bottom: 4px;
+
+    h2 {
+      display: none;
+    }
+
+    > div {
+      padding: 4px 8px 0;
+      border-radius: 3px;
+      background: transparent;
+
+      // IE not supported
+      &:focus-within {
+        background-color: #fff;
+        box-shadow: inset 0 0 0 2px #0079bf;
+
+        cursor: text;
+      }
+
+      textarea {
+        width: 100%;
+
+        margin-bottom: -1px;
+
+        background: transparent;
+        box-shadow: none;
+
+        font-weight: 600;
+
+        overflow-wrap: break-word;
+        cursor: pointer;
+
+        &:focus {
+          cursor: text;
+        }
+      }
+    }
+
+    .extras-menu {
+      height: 32px;
+      width: 32px;
+      line-height: 1;
+
+      .extras-menu-icon {
+        position: relative;
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: -1px;
+
+        &:before {
+          position: absolute;
+          top: -5px;
+          left: 0;
+          right: 0;
+          content: "...";
+        }
+      }
+    }
+  }
+
+  .card-composer {
+    padding-top: 2px;
+
+    .add-card {
+      text-align: left;
+
+      .icon-add {
+        position: relative;
+        font-size: 23px;
+        font-weight: 300;
+
+        &:before {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: -1px;
+          content: "+";
+        }
+      }
+    }
+
+    .card-templates-btn {
+      width: 32px;
+      line-height: 1;
+
+      span {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        vertical-align: middle;
+      }
+    }
+  }
+}

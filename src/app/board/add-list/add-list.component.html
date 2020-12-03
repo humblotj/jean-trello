@@ -1,0 +1,16 @@
+<form [ngStyle]="{'height':isActive ? 'auto' : '0'}">
+  <input #listNameRef [(ngModel)]="listName" class="list-name-input" type="text" name="name"
+    placeholder="Enter list title..." autocomplete="off" autofocus maxlength="512">
+  <div class="list-add-controls">
+    <button app-button color="green" class="save-edit" (click)="onAddList($event)">Add List</button>
+    <button app-button-cancel (click)="onCancel($event)"></button>
+  </div>
+</form>
+
+<span class="placeholder" [ngStyle]="{'display': !isActive ? 'block' : 'none'}">
+  <span app-icon class="icon-add">
+  </span>
+  <span>
+    Add {{lists?.length ? 'another':'a'}} list
+  </span>
+</span>

@@ -1,0 +1,50 @@
+:host {
+  display: block;
+}
+
+.list-card {
+  position: relative;
+
+  max-width: 300px;
+  min-height: 32px;
+
+  margin-bottom: 8px;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+
+  background-color: #fff;
+
+  cursor: pointer;
+
+  .card-details {
+    padding: 6px 8px 2px;
+    overflow: hidden;
+
+    textarea {
+      margin-bottom: 4px;
+      max-height: 162px;
+      min-height: 54px;
+      overflow-y: auto;
+    }
+  }
+}
+
+.overflow-menu {
+  height: 32px;
+  width: 32px;
+  line-height: 1;
+
+  .overflow-menu-icon {
+    position: relative;
+    font-size: 24px;
+    font-weight: 600;
+
+    &:before {
+      position: absolute;
+      top: -7px;
+      left: 0;
+      right: 0;
+      content: "...";
+    }
+  }
+}

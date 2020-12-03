@@ -1,0 +1,30 @@
+.btn-cancel {
+  position: relative;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 18px;
+    width: 2px;
+    background-color: #42526e;
+    content: " ";
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    &:before,
+    &:after {
+      background-color: #172b4d;
+    }
+  }
+}
