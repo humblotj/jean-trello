@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "dist/jean-trello",
     "ignore": [
       "firebase.json",
       "**/.*",
