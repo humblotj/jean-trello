@@ -30,7 +30,7 @@
         Add {{cards?.length ? 'another':'a'}} card
       </span>
     </button>
-    <button app-button class="card-templates-btn">
+    <button app-button class="card-templates-btn" appTooltip="Create from template...">
       <span>
         <mat-icon svgIcon="template" [inline]="true">
         </mat-icon>
@@ -68,11 +68,11 @@
     <hr>
     <ul class="dropdown-list">
       <li><a href="#">Move All Cards in the list</a></li>
-      <li><a href="#" (click)="onArchiveAllCards()">Archive All Cards in the list</a></li>
+      <li><a href="#" (click)="onArchiveAllCards(); listActionsRef.hide()">Archive All Cards in the list</a></li>
     </ul>
     <hr>
     <ul class="dropdown-list">
-      <li><a href="#" (click)="onArchiveList()">Archive the list</a></li>
+      <li><a href="#" (click)="onArchiveList(); listActionsRef.hide()">Archive the list</a></li>
     </ul>
   </div>
 </app-dropdown>

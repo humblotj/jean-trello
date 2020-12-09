@@ -10,12 +10,16 @@ import { ButtonComponent } from './button/button.component';
 import { ButtonCancelComponent } from './button-cancel/button-cancel.component';
 import { IconComponent } from './icon/icon.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
+import { TooltipComponent } from './tooltip/tooltip.component';
+import { TooltipDirective } from './tooltip/tooltip.directive';
 
 @NgModule({
   declarations: [ButtonComponent,
     ButtonCancelComponent,
     IconComponent,
     DropdownComponent,
+    TooltipComponent,
+    TooltipDirective,
   ],
   imports: [
     CommonModule,
@@ -32,7 +36,8 @@ import { DropdownComponent } from './dropdown/dropdown.component';
     ButtonComponent,
     ButtonCancelComponent,
     IconComponent,
-    DropdownComponent
+    DropdownComponent,
+    TooltipDirective
   ]
 })
 export class SharedModule { }
