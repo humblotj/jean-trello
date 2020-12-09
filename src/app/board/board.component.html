@@ -1,6 +1,7 @@
 <div fxLayout fxLayoutAlign="start start">
   <app-list *ngFor="let list of lists; let i = index" [index]="i" [listName]="list"
-    [(cardCreateTitle)]="cardCreateTitle" [(cardCreateIndex)]="cardCreateIndex">
+    [(cardCreatePosition)]="cardCreatePosition" [(cardCreateTitle)]="cardCreateTitle"
+    [(cardCreateIndex)]="cardCreateIndex" (archiveList)="onArchiveList($event)">
   </app-list>
   <app-add-list [lists]="lists" (addList)="onAddList($event)"></app-add-list>
 </div>

@@ -49,5 +49,8 @@ export class AppModule {
     iconRegistry.addSvgIcon('information',
       domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/information-outline.svg')
     );
+    iconRegistry.addSvgIcon('watch',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/eye-outline.svg')
+    );
   }
 }

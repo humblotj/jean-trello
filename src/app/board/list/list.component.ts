@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-list',
@@ -8,15 +9,20 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChil
 })
 export class ListComponent implements OnInit {
   @ViewChild('listNameRef') listNameRef: ElementRef | undefined;
-  @Input() index: number | undefined;
+  @Input() index!: number;
   @Input() listName = '';
+  @Input() cardCreatePosition: 'top' | 'bottom' = 'bottom';
   @Input() cardCreateTitle = '';
   @Input() cardCreateIndex: number | null = null;
 
+  @Output() cardCreatePositionChange = new EventEmitter<'top' | 'bottom'>();
   @Output() cardCreateTitleChange = new EventEmitter<string>();
   @Output() cardCreateIndexChange = new EventEmitter<number | null>();
 
+  @Output() archiveList = new EventEmitter<number>();
+
   cards: string[] = [];
+  subscribed = false;
 
   constructor() { }
 
@@ -38,5 +44,22 @@ export class ListComponent implements OnInit {
 
   onAddCard(title: string): void {
     this.cards = [...this.cards, title];
+  }
+
+  showListActions(listActionsRef: DropdownComponent): void {
+    listActionsRef.show();
+  }
+
+  onArchiveAllCards(): void {
+    this.cards = [];
+  }
+
+  onArchiveList(): void {
+    this.archiveList.emit(this.index);
+  }
+
+  onToggleSubscribed(): void {
+    this.subscribed = !this.subscribed;
+
   }
 }

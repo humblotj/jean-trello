@@ -1,5 +1,9 @@
 :host {
   display: block;
+
+  &:not(:last-child) {
+    padding-bottom: 8px;
+  }
 }
 
 .list-card {

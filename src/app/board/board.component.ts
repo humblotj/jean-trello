@@ -9,6 +9,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 export class BoardComponent implements OnInit {
   lists = ['To Do'];
 
+  cardCreatePosition: 'top' | 'bottom' = 'bottom';
   cardCreateTitle = '';
   cardCreateIndex: number | null = null;
 
@@ -19,6 +20,10 @@ export class BoardComponent implements OnInit {
 
   onAddList(listName: string): void {
     this.lists = [...this.lists, listName];
+  }
+
+  onArchiveList(index: number): void {
+    this.lists = [...this.lists.slice(0, index), ...this.lists.slice(index + 1)];
   }
 
 }

@@ -10,7 +10,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ElementR
 export class ButtonComponent implements OnInit {
   @Input() color: 'primary' | 'secondary' | 'green' = 'secondary';
 
-  constructor(private el: ElementRef) {
+  constructor(public el: ElementRef) {
     el.nativeElement.classList.add('btn');
   }
 

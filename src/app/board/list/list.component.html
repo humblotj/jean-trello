@@ -1,25 +1,29 @@
 <div class="list-content">
-  <div class="list-header" fxLayout fxLayoutAlign="start center">
+  <div class="list-header" fxLayoutAlign="start center">
     <h2>{{listName}}</h2>
-    <div fxFlex>
+    <div class="list-header-title" fxFlex>
       <textarea #listNameRef spellcheck="false" [ngModel]="listName" (ngModelChange)="onChangeListName($event)"
         (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
         cdkAutosizeMinRows="1"></textarea>
     </div>
-    <button app-button class="extras-menu">
-      <span app-icon class="extras-menu-icon">
+    <div class="list-header-extras" fxLayout>
+      <span *ngIf="subscribed" app-icon class="watch-icon">
+        <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
       </span>
-    </button>
+      <button #dropreference app-button class="extras-menu" (click)="showListActions(listActionsRef)">
+        <span app-icon class="extras-menu-icon">
+        </span>
+      </button>
+    </div>
   </div>
   <div class="list-cards">
+    <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit: 'top'}"></ng-container>
     <app-card *ngFor="let card of cards" [title]="card"></app-card>
-    <app-card-create *ngIf="cardCreateIndex === index" [cardCreateTitle]="cardCreateTitle"
-      (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event)"
-      (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
+    <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit:'bottom'}"></ng-container>
   </div>
   <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
     <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
-      (click)="cardCreateIndexChange.emit(index)">
+      (click)="cardCreatePositionChange.emit('bottom'); cardCreateIndexChange.emit(index)">
       <span app-icon class=" icon-add">
       </span>
       <span>
@@ -34,3 +38,41 @@
     </button>
   </div>
 </div>
+
+<ng-template #cardCreate let-i>
+  <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition===i" [cardCreateTitle]="cardCreateTitle"
+    (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event)"
+    (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
+</ng-template>
+
+<app-dropdown #listActionsRef [reference]="dropreference.el" #dropdownComp>
+  <div class="dropdown-header">
+    <span>List Actions</span>
+    <button app-button-cancel (click)="listActionsRef.hide()"></button>
+  </div>
+  <div class="dropdown-content">
+    <ul class="dropdown-list">
+      <li><a href="#"
+          (click)="cardCreatePositionChange.emit('top'); cardCreateIndexChange.emit(index); listActionsRef.hide()">Add
+          Card...</a>
+      </li>
+      <li><a href="#">Copy List...</a></li>
+      <li><a href="#">Move List...</a></li>
+      <li><a href="#" (click)="onToggleSubscribed()">Watch <span app-icon class="subscribed"
+            *ngIf="subscribed"></span></a></li>
+    </ul>
+    <hr>
+    <ul class="dropdown-list">
+      <li><a href="#">Sort by...</a></li>
+    </ul>
+    <hr>
+    <ul class="dropdown-list">
+      <li><a href="#">Move All Cards in the list</a></li>
+      <li><a href="#" (click)="onArchiveAllCards()">Archive All Cards in the list</a></li>
+    </ul>
+    <hr>
+    <ul class="dropdown-list">
+      <li><a href="#" (click)="onArchiveList()">Archive the list</a></li>
+    </ul>
+  </div>
+</app-dropdown>
