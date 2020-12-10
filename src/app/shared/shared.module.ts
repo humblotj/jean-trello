@@ -12,6 +12,8 @@ import { IconComponent } from './icon/icon.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { TooltipDirective } from './tooltip/tooltip.directive';
+import { OverlayComponent } from './overlay/overlay.component';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [ButtonComponent,
@@ -20,24 +22,27 @@ import { TooltipDirective } from './tooltip/tooltip.directive';
     DropdownComponent,
     TooltipComponent,
     TooltipDirective,
+    OverlayComponent,
   ],
   imports: [
     CommonModule,
     MatIconModule,
     FlexLayoutModule,
-    OverlayModule
+    OverlayModule,
+    TextFieldModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    TextFieldModule,
     MatIconModule,
     ButtonComponent,
     ButtonCancelComponent,
     IconComponent,
     DropdownComponent,
-    TooltipDirective
+    TooltipDirective,
   ]
 })
 export class SharedModule { }

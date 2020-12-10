@@ -10,19 +10,16 @@ export class TooltipDirective implements OnInit {
   @Input('appTooltip') text = '';
   private overlayRef!: OverlayRef;
 
-  constructor(private overlay: Overlay,
-    private overlayPositionBuilder: OverlayPositionBuilder,
-    private el: ElementRef) { }
+  constructor(private overlay: Overlay, private el: ElementRef) { }
 
   ngOnInit(): void {
-    const positionStrategy = this.overlayPositionBuilder
+    const positionStrategy = this.overlay.position()
       .flexibleConnectedTo(this.el)
       .withPositions([{
         originX: 'center',
         originY: 'bottom',
         overlayX: 'center',
         overlayY: 'top',
-        // offsetY: -8,
       }]);
 
     this.overlayRef = this.overlay.create({ positionStrategy });

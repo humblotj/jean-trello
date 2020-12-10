@@ -1,4 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { DialogService } from '../shared/overlay/dialog.service';
+import { CardEditDialogComponent } from './card-edit-dialog/card-edit-dialog.component';
 
 @Component({
   selector: 'app-board',
@@ -13,9 +15,10 @@ export class BoardComponent implements OnInit {
   cardCreateTitle = '';
   cardCreateIndex: number | null = null;
 
-  constructor() { }
+  constructor(private d: DialogService) { }
 
   ngOnInit(): void {
+    this.d.open(CardEditDialogComponent)
   }
 
   onAddList(listName: string): void {

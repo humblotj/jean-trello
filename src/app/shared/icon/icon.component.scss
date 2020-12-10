@@ -23,8 +23,13 @@
   font-weight: 400;
   text-align: center;
   vertical-align: bottom;
+  color: #42526e;
 
   border: none;
   outline: none;
   background: transparent;
+
+  &.secondary {
+    color: #fff;
+  }
 }

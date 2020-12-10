@@ -1,6 +1,6 @@
 import {
   Component, ChangeDetectionStrategy, Input,
-  ViewChild, HostListener, ViewContainerRef, TemplateRef, ViewEncapsulation, ElementRef
+  ViewChild, ViewContainerRef, TemplateRef, ViewEncapsulation, ElementRef, OnInit
 } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -12,8 +12,9 @@ import { TemplatePortal } from '@angular/cdk/portal';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class DropdownComponent {
+export class DropdownComponent implements OnInit {
   @Input() reference!: ElementRef;
+  @Input() backgroundColor: 'primary' | 'secondary' = 'primary';
 
   @ViewChild('dropdown') contentTemplate!: TemplateRef<any>;
 
@@ -21,13 +22,16 @@ export class DropdownComponent {
 
   showing = false;
 
-  constructor(private overlay: Overlay, private viewcontainerRef: ViewContainerRef) {
+  constructor(private overlay: Overlay, private viewcontainerRef: ViewContainerRef, private el: ElementRef) {
+  }
+
+  ngOnInit(): void {
+    this.el.nativeElement.classList.add(this.backgroundColor);
   }
 
   show(): void {
     this.overlayRef = this.overlay.create(this.getOverlayConfig());
     this.overlayRef.attach(new TemplatePortal(this.contentTemplate, this.viewcontainerRef));
-    this.syncWidth();
     this.overlayRef.backdropClick().subscribe(() => this.hide());
     this.showing = true;
   }
@@ -35,11 +39,6 @@ export class DropdownComponent {
   hide(): void {
     this.overlayRef?.detach();
     this.showing = false;
-  }
-
-  @HostListener('window:resize')
-  onWinResize(): void {
-    this.syncWidth();
   }
 
   private getOverlayConfig(): OverlayConfig {
@@ -67,14 +66,4 @@ export class DropdownComponent {
       backdropClass: 'cdk-overlay-transparent-backdrop'
     });
   }
-
-  private syncWidth(): void {
-    // if (!this.overlayRef) {
-    //   return;
-    // }
-
-    // const refRect = this.reference.getBoundingClientRect();
-    // this.overlayRef.updateSize({ width: refRect.width });
-  }
-
 }

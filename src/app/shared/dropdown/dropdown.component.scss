@@ -6,6 +6,10 @@
     0 0 0 1px rgba(9, 30, 66, 0.08);
   overflow: hidden;
 
+  &.secondary {
+    background: #ebecf0;
+  }
+
   hr {
     margin: 8px 0;
   }
