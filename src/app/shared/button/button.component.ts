@@ -8,7 +8,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ElementR
   encapsulation: ViewEncapsulation.None,
 })
 export class ButtonComponent implements OnInit {
-  @Input() color: 'primary' | 'secondary' | 'green' = 'secondary';
+  @Input() color: 'primary' | 'secondary' | 'green' | 'dialog' = 'secondary';
 
   constructor(public el: ElementRef) {
     el.nativeElement.classList.add('btn');

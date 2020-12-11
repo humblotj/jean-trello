@@ -8,6 +8,7 @@
         </mat-icon>
       </span>
       <div class="card-title" fxFlex>
+        <h2></h2>
         <textarea #cardTitleRef spellcheck="false" [ngModel]="cardTitle" (ngModelChange)="onChangeCardTitle($event)"
           (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
           cdkAutosizeMinRows="1"></textarea>
@@ -21,7 +22,89 @@
     </div>
   </div>
   <div fxLayoutAlign class="card-detail-content">
-    <div class="card-detail-main-content"></div>
-    <div class="card-detail-sidebar"></div>
+    <div class="card-detail-main-content" fxLayout="column">
+      <div class="window-module card-detail-desc">
+        <div class="module-title" fxLayoutAlign="start center">
+          <span app-icon>
+            <mat-icon svgIcon="description" [inline]="true">
+            </mat-icon>
+          </span>
+          <h3>
+            Description
+          </h3>
+        </div>
+        <div class="description-content">
+          <a href="#">
+            Add a more detailed description...
+          </a>
+        </div>
+      </div>
+      <div class="window-module card-detail-activity">
+        <div class="module-title" fxLayoutAlign="space-between center">
+          <span app-icon>
+            <mat-icon svgIcon="activity" [inline]="true">
+            </mat-icon>
+          </span>
+          <h3>
+            Activity
+          </h3>
+          <div>
+            <button app-button color="dialog" appTooltip="Not Yet Implemented">
+              Show Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-detail-sidebar">
+      <div class="window-module">
+        <h3>Add To Card</h3>
+        <div fxLayout="column">
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Members
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Labels
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Checklist
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Due Date
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Attachement
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Cover
+          </button>
+        </div>
+      </div>
+      <div class="window-module">
+        <h3>Actions</h3>
+        <div fxLayout="column">
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Move
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Copy
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Make Template
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Watch
+          </button>
+          <hr>
+          <button app-button color="dialog" class="archive-btn" appTooltip="Not Yet Implemented">
+            Archive
+          </button>
+          <button app-button color="dialog" appTooltip="Not Yet Implemented">
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
