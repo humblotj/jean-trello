@@ -37,11 +37,11 @@ export class AddListComponent implements OnInit {
 
     if (this.listName) {
       this.addList.emit(this.listName);
-      this.onCancel();
       this.listName = '';
-    } else {
-      this.listNameRef?.nativeElement.focus();
     }
+    this.listNameRef?.nativeElement.focus();
+    setTimeout(() =>
+      this.el?.nativeElement.scrollIntoView(), 0);
   }
 
   onCancel(e?: Event): void {

@@ -19,6 +19,7 @@
 }
 
 .list-content {
+  max-height: 100%;
   padding: 8px;
   border-radius: 3px;
 
@@ -94,6 +95,13 @@
         }
       }
     }
+  }
+
+  .list-cards {
+    margin: 0 -4px;
+    padding: 0 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .card-composer {

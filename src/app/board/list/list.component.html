@@ -1,4 +1,4 @@
-<div class="list-content">
+<div class="list-content" fxLayout="column">
   <div class="list-header" fxLayoutAlign="start center">
     <h2>{{listName}}</h2>
     <div class="list-header-title" fxFlex>
@@ -16,7 +16,7 @@
       </button>
     </div>
   </div>
-  <div class="list-cards">
+  <div class="list-cards fancy-scrollbar" fxLayout="column">
     <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit: 'top'}"></ng-container>
     <app-card *ngFor="let card of cards" [title]="card"></app-card>
     <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit:'bottom'}"></ng-container>

@@ -1,5 +1,5 @@
 :host {
-  display: block;
+  display: inline-block;
   flex-shrink: 0;
   width: 272px;
   min-height: 32px;
@@ -30,7 +30,17 @@
   }
 
   &:last-child {
+    position: relative;
     margin-right: 8px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -8px;
+      width: 8px;
+      height: 100%;
+    }
   }
 }
 

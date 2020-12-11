@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, ViewChild, ElementRef, Input, AfterViewInit } from '@angular/core';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, ViewChild, ElementRef, Input, AfterViewInit, NgZone } from '@angular/core';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-card-create',
@@ -8,13 +10,14 @@ import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, ViewC
 })
 export class CardCreateComponent implements OnInit, AfterViewInit {
   @ViewChild('titleRef') titleRef: ElementRef | undefined;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize | undefined;
   @Input() cardCreateTitle = '';
 
   @Output() cardCreateTitleChange = new EventEmitter<string>();
   @Output() cardCreateIndexChange = new EventEmitter<number | null>();
   @Output() addCard = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(private el: ElementRef, private ngZone: NgZone) { }
 
   ngOnInit(): void {
   }
@@ -29,10 +32,18 @@ export class CardCreateComponent implements OnInit, AfterViewInit {
       this.cardCreateTitleChange.emit('');
     }
     this.titleRef?.nativeElement.focus();
+    this.triggerResize();
+    setTimeout(() =>
+      this.el?.nativeElement.scrollIntoView(), 0);
   }
 
   onCancel(): void {
     this.cardCreateTitleChange.emit('');
     this.cardCreateIndexChange.emit(null);
+  }
+
+  triggerResize(): void {
+    this.ngZone.onStable.pipe(take(1))
+      .subscribe(() => this.autosize?.resizeToFitContent(true));
   }
 }

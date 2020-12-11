@@ -3,8 +3,8 @@
   position: relative;
 
   max-width: 300px;
-  min-height: 32px;
-
+  // min-height: 32px;
+  padding-bottom: 8px;
   margin-bottom: 8px;
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
@@ -14,8 +14,16 @@
   cursor: pointer;
 
   &:hover {
+    background-color: #f4f5f7;
+    border-bottom-color: rgba(9, 30, 66, 0.25);
+
     .icon-edit {
       visibility: visible;
+
+      &:hover {
+        background-color: #ebecf0;
+        opacity: 1;
+      }
     }
   }
 }
@@ -30,6 +38,9 @@
   height: 28px;
   width: 28px;
   line-height: 1;
+
+  background-color: #f4f5f7;
+  opacity: 0.8;
 
   z-index: 1;
 
@@ -47,6 +58,9 @@
   overflow: hidden;
 
   span {
+    display: block;
     margin-bottom: 4px;
+    word-wrap: break-word;
+    white-space: normal;
   }
 }

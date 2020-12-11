@@ -106,3 +106,18 @@ hr {
 p {
   margin: 0 0 8px;
 }
+
+.fancy-scrollbar::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.fancy-scrollbar::-webkit-scrollbar-track {
+  border-radius: 4px;
+  background: rgba(9, 30, 66, 0.08);
+}
+
+.fancy-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(9, 30, 66, 0.13);
+  border-radius: 4px;
+}

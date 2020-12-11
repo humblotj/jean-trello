@@ -1,13 +1,32 @@
 :host {
-  display: block;
   height: calc(100% - 40px);
 
   > div {
-    height: 100%;
-
+    margin-bottom: 8px;
     padding: 8px 0;
 
     overflow-x: auto;
     overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+      height: 12px;
+      width: 12px;
+    }
+
+    &::-webkit-scrollbar-button {
+      display: block;
+      height: 4px;
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track-piece {
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background: hsla(0, 0%, 100%, 0.4);
+    }
   }
 }

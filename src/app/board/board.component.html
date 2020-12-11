@@ -1,4 +1,4 @@
-<div fxLayout fxLayoutAlign="start start">
+<div fxLayout fxLayoutAlign="start start" fxFlex>
   <app-list *ngFor="let list of lists; let i = index" [index]="i" [listName]="list"
     [(cardCreatePosition)]="cardCreatePosition" [(cardCreateTitle)]="cardCreateTitle"
     [(cardCreateIndex)]="cardCreateIndex" (archiveList)="onArchiveList($event)">
