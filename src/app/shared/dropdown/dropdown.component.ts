@@ -1,6 +1,6 @@
 import {
   Component, ChangeDetectionStrategy, Input,
-  ViewChild, ViewContainerRef, TemplateRef, ViewEncapsulation, ElementRef, OnInit
+  ViewChild, ViewContainerRef, TemplateRef, ViewEncapsulation, ElementRef, OnInit, HostListener
 } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -13,12 +13,16 @@ import { TemplatePortal } from '@angular/cdk/portal';
   encapsulation: ViewEncapsulation.None
 })
 export class DropdownComponent implements OnInit {
+  @ViewChild('dropdownRef') dropdownRef: ElementRef | undefined;
+
   @Input() reference!: ElementRef;
   @Input() backgroundColor: 'primary' | 'secondary' = 'primary';
 
   @ViewChild('dropdown') contentTemplate!: TemplateRef<any>;
 
   private overlayRef: OverlayRef | undefined;
+
+  clickoutHandler: ((event: MouseEvent) => void) | null = null;
 
   showing = false;
 
@@ -32,13 +36,17 @@ export class DropdownComponent implements OnInit {
   show(): void {
     this.overlayRef = this.overlay.create(this.getOverlayConfig());
     this.overlayRef.attach(new TemplatePortal(this.contentTemplate, this.viewcontainerRef));
-    this.overlayRef.backdropClick().subscribe(() => this.hide());
+
+    this.clickoutHandler = this.closeDialogFromClickout;
     this.showing = true;
   }
 
   hide(): void {
     this.overlayRef?.detach();
+
+    this.clickoutHandler = null;
     this.showing = false;
+
   }
 
   private getOverlayConfig(): OverlayConfig {
@@ -62,8 +70,26 @@ export class DropdownComponent implements OnInit {
     return new OverlayConfig({
       positionStrategy,
       scrollStrategy,
-      hasBackdrop: true,
+      hasBackdrop: false,
       backdropClass: 'cdk-overlay-transparent-backdrop'
     });
+  }
+
+  closeDialogFromClickout(event: MouseEvent): void {
+    const dialogContainerEl = this.dropdownRef?.nativeElement;
+    if (dialogContainerEl) {
+      const rect = dialogContainerEl.getBoundingClientRect();
+      if (event.clientX <= rect.left || event.clientX >= rect.right ||
+        event.clientY <= rect.top || event.clientY >= rect.bottom) {
+        this.hide();
+      }
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: MouseEvent): void {
+    if (this.clickoutHandler) {
+      this.clickoutHandler(event);
+    }
   }
 }
