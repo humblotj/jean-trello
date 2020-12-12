@@ -61,47 +61,85 @@
       <div class="window-module">
         <h3>Add To Card</h3>
         <div fxLayout="column">
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Members
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="members" [inline]="true"></mat-icon>
+            </span>
+            <span>Members</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Labels
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="labels" [inline]="true"></mat-icon>
+            </span>
+            <span>Labels</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Checklist
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="checklist" [inline]="true"></mat-icon>
+            </span>
+            <span>Checklist</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Due Date
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="clock" [inline]="true"></mat-icon>
+            </span>
+            <span>Due Date</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Attachement
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="attachment" [inline]="true"></mat-icon>
+            </span>
+            <span>Attachment</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Cover
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="cover" [inline]="true"></mat-icon>
+            </span>
+            <span>Cover</span>
           </button>
         </div>
       </div>
       <div class="window-module">
         <h3>Actions</h3>
         <div fxLayout="column">
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Move
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="arrow-right" [inline]="true"></mat-icon>
+            </span>
+            <span>Move</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Copy
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="copy" [inline]="true"></mat-icon>
+            </span>
+            <span>Copy</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Make Template
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="template" [inline]="true"></mat-icon>
+            </span>
+            <span>Make Template</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Watch
+          <button app-button color="dialog" fxLayoutAlign="start center" (click)="toggleWatch()">
+            <span app-icon>
+              <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
+            </span>
+            <span>Watch</span>
+            <span *ngIf="subscribed" class="subscribed-on">on</span>
           </button>
           <hr>
-          <button app-button color="dialog" class="archive-btn" appTooltip="Not Yet Implemented">
-            Archive
+          <button app-button color="dialog" fxLayoutAlign="start center" class="archive-btn"
+            appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="archive" [inline]="true"></mat-icon>
+            </span>
+            <span>Archive</span>
           </button>
-          <button app-button color="dialog" appTooltip="Not Yet Implemented">
-            Share
+          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+            <span app-icon>
+              <mat-icon svgIcon="share" [inline]="true"></mat-icon>
+            </span>
+            <span>Share</span>
           </button>
         </div>
       </div>

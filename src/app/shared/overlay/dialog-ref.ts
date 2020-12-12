@@ -11,27 +11,23 @@ export interface OverlayCloseEvent<R> {
 
 // R = Response Data Type, T = Data passed to Modal Type
 export class DialogRef<R = any, T = any> {
-  afterClosed$ = new Subject<OverlayCloseEvent<R | undefined>>();
+  afterClosed$ = new Subject<R | undefined>();
 
   constructor(
     public overlay: OverlayRef,
     public content: Type<any>,
     public data?: T
   ) {
-    overlay.backdropClick().subscribe(() => this._close('backdropClick'));
+    // overlay.backdropClick().subscribe(() => this._close());
   }
 
   close(data?: R): void {
-    this._close('close', data);
+    this._close(data);
   }
 
-  private _close(type: 'backdropClick' | 'close', data?: R | undefined): void {
+  private _close(data?: R | undefined): void {
     this.overlay.dispose();
-    this.afterClosed$.next({
-      type,
-      data
-    });
-
+    this.afterClosed$.next(data);
     this.afterClosed$.complete();
   }
 }

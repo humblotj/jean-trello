@@ -28,6 +28,10 @@ import { HeaderModule } from './header/header.module';
 })
 export class AppModule {
   constructor(iconRegistry: MatIconRegistry, domSanitizer: DomSanitizer) {
+    this.registerIcon(iconRegistry, domSanitizer);
+  }
+
+  private registerIcon(iconRegistry: MatIconRegistry, domSanitizer: DomSanitizer): void {
     iconRegistry.addSvgIcon('template',
       domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/newspaper-variant.svg')
     );
@@ -57,6 +61,36 @@ export class AppModule {
     );
     iconRegistry.addSvgIcon('activity',
       domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/format-list-bulleted.svg')
+    );
+    iconRegistry.addSvgIcon('members',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/account-outline.svg')
+    );
+    iconRegistry.addSvgIcon('labels',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/label-outline.svg')
+    );
+    iconRegistry.addSvgIcon('checklist',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/check-box-outline.svg')
+    );
+    iconRegistry.addSvgIcon('clock',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/clock-time-four-outline.svg')
+    );
+    iconRegistry.addSvgIcon('attachment',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/attachment.svg')
+    );
+    iconRegistry.addSvgIcon('cover',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/dock-bottom.svg')
+    );
+    iconRegistry.addSvgIcon('arrow-right',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/arrow-right.svg')
+    );
+    iconRegistry.addSvgIcon('copy',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/content-copy.svg')
+    );
+    iconRegistry.addSvgIcon('archive',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/archive-outline.svg')
+    );
+    iconRegistry.addSvgIcon('share',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/share-variant-outline.svg')
     );
   }
 }

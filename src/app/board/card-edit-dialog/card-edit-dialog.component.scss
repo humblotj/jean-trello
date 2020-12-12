@@ -106,7 +106,7 @@
   .card-detail-content {
     .card-detail-main-content {
       position: relative;
-      width: 552px;
+      width: 576px;
       min-height: 24px;
       padding: 0 8px 8px 16px;
       overflow-x: hidden;
@@ -146,7 +146,7 @@
     }
 
     .card-detail-sidebar {
-      width: 168px;
+      width: 192px;
       padding: 0 16px 8px 8px;
       overflow: hidden;
       z-index: 10;
@@ -164,12 +164,47 @@
       }
 
       button {
+        position: relative;
         margin-top: 8px;
         padding: 6px 12px;
         text-align: left;
 
         &.archive-btn {
           margin-top: 0;
+        }
+
+        span:first-child {
+          height: 16px;
+          width: 16px;
+          margin: 0 8px 0 -4px;
+        }
+
+        .subscribed-on {
+          position: absolute;
+          display: inline-block;
+          right: 4px;
+          top: 4px;
+          height: 24px;
+          width: 28px;
+          background-color: #61bd4f;
+          border-radius: 3px;
+          font-size: 0;
+
+          &:after {
+            position: absolute;
+            top: 6px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 4px;
+            height: 9px;
+            border: solid #fff;
+            border-width: 0 1px 1px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+            content: "";
+          }
         }
       }
 

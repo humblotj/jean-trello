@@ -34,11 +34,13 @@ export class DropdownComponent implements OnInit {
   }
 
   show(): void {
-    this.overlayRef = this.overlay.create(this.getOverlayConfig());
-    this.overlayRef.attach(new TemplatePortal(this.contentTemplate, this.viewcontainerRef));
+    if (!this.showing) {
+      this.overlayRef = this.overlay.create(this.getOverlayConfig());
+      this.overlayRef.attach(new TemplatePortal(this.contentTemplate, this.viewcontainerRef));
 
-    this.clickoutHandler = this.closeDialogFromClickout;
-    this.showing = true;
+      this.clickoutHandler = this.closeDialogFromClickout;
+      this.showing = true;
+    }
   }
 
   hide(): void {

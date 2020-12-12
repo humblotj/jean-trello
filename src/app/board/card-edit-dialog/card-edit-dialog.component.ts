@@ -10,10 +10,12 @@ import { DialogRef } from 'src/app/shared/overlay/dialog-ref';
 export class CardEditDialogComponent implements OnInit {
   @ViewChild('cardTitleRef') cardTitleRef: ElementRef | undefined;
 
-  cardTitle = 'Card Title';
-  subscribed = true;
+  cardTitle: string;
+  subscribed = false;
 
-  constructor(private dialogRef: DialogRef) { }
+  constructor(private dialogRef: DialogRef) {
+    this.cardTitle = dialogRef?.data?.title || '';
+  }
 
   ngOnInit(): void {
   }
@@ -32,7 +34,10 @@ export class CardEditDialogComponent implements OnInit {
   }
 
   close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.cardTitle);
   }
 
+  toggleWatch(): void {
+    this.subscribed = !this.subscribed;
+  }
 }

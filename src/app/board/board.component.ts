@@ -18,7 +18,7 @@ export class BoardComponent implements OnInit {
   constructor(private d: DialogService) { }
 
   ngOnInit(): void {
-    // this.d.open(CardEditDialogComponent)
+    // this.d.open(CardEditDialogComponent);
   }
 
   onAddList(listName: string): void {

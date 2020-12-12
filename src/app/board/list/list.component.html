@@ -23,7 +23,7 @@
   </div>
   <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
     <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
-      (click)="cardCreatePositionChange.emit('bottom'); cardCreateIndexChange.emit(index)">
+      (click)="cardTemplatesRef?.hide(); cardCreatePositionChange.emit('bottom'); cardCreateIndexChange.emit(index)">
       <span app-icon class=" icon-add">
       </span>
       <span>
