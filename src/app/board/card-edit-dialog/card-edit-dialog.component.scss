@@ -173,6 +173,12 @@
           margin-top: 0;
         }
 
+        &:active {
+          span:first-child {
+            color: #0079bf;
+          }
+        }
+
         span:first-child {
           height: 16px;
           width: 16px;
