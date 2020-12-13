@@ -18,7 +18,7 @@
   </div>
   <div class="list-cards fancy-scrollbar" fxLayout="column">
     <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit: 'top'}"></ng-container>
-    <app-card *ngFor="let card of cards" [title]="card"></app-card>
+    <app-card *ngFor="let card of cards; trackBy: trackByFn" [title]="card"></app-card>
     <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit:'bottom'}"></ng-container>
   </div>
   <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
@@ -70,7 +70,7 @@
       <li><a href="#">Copy List...</a></li>
       <li><a href="#">Move List...</a></li>
       <li><a href="#" (click)="onToggleSubscribed()">Watch
-          <!-- <span app-icon class="subscribed" *ngIf="list?.subscribed"></span> -->
+          <span app-icon class="subscribed" *ngIf="list?.subscribed"></span>
         </a></li>
     </ul>
     <hr>

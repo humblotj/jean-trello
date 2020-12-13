@@ -62,4 +62,8 @@ export class ListComponent implements OnInit {
   onToggleSubscribed(): void {
     this.store.dispatch(ToggleSubscribeList({ index: this.index }));
   }
+
+  trackByFn(index: number, item: string): number {
+    return index;
+  }
 }

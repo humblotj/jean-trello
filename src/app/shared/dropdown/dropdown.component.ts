@@ -1,6 +1,6 @@
 import {
   Component, ChangeDetectionStrategy, Input,
-  ViewChild, ViewContainerRef, TemplateRef, ViewEncapsulation, ElementRef, OnInit, HostListener
+  ViewChild, ViewContainerRef, TemplateRef, ViewEncapsulation, ElementRef, OnInit, HostListener, OnDestroy
 } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -12,7 +12,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class DropdownComponent implements OnInit {
+export class DropdownComponent implements OnInit, OnDestroy {
   @ViewChild('dropdownRef') dropdownRef: ElementRef | undefined;
 
   @Input() reference!: ElementRef;
@@ -20,7 +20,7 @@ export class DropdownComponent implements OnInit {
 
   @ViewChild('dropdown') contentTemplate!: TemplateRef<any>;
 
-  private overlayRef: OverlayRef | undefined;
+  private overlayRef!: OverlayRef;
 
   clickoutHandler: ((event: MouseEvent) => void) | null = null;
 
@@ -33,10 +33,15 @@ export class DropdownComponent implements OnInit {
     this.el.nativeElement.classList.add(this.backgroundColor);
   }
 
+  ngOnDestroy(): void {
+    console.log(this.reference);
+    this.overlayRef?.dispose();
+  }
+
   show(): void {
     if (!this.showing) {
-      this.overlayRef = this.overlay.create(this.getOverlayConfig());
-      this.overlayRef.attach(new TemplatePortal(this.contentTemplate, this.viewcontainerRef));
+      const overlayRef = this.createOverLay();
+      overlayRef.attach(new TemplatePortal(this.contentTemplate, this.viewcontainerRef));
 
       this.clickoutHandler = this.closeDialogFromClickout;
       this.showing = true;
@@ -51,7 +56,10 @@ export class DropdownComponent implements OnInit {
 
   }
 
-  private getOverlayConfig(): OverlayConfig {
+  private createOverLay(): OverlayRef {
+    if (this.overlayRef) {
+      return this.overlayRef;
+    }
     const positionStrategy = this.overlay.position()
       .flexibleConnectedTo(this.reference)
       .withPush(true)
@@ -69,12 +77,15 @@ export class DropdownComponent implements OnInit {
 
     const scrollStrategy = this.overlay.scrollStrategies.reposition();
 
-    return new OverlayConfig({
+    const overlayConfig = new OverlayConfig({
       positionStrategy,
       scrollStrategy,
       hasBackdrop: false,
       backdropClass: 'cdk-overlay-transparent-backdrop'
     });
+
+    this.overlayRef = this.overlay.create(overlayConfig);
+    return this.overlayRef;
   }
 
   closeDialogFromClickout(event: MouseEvent): void {

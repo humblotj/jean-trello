@@ -27,4 +27,8 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     // this.d.open(CardEditDialogComponent);
   }
+
+  trackByFn(index: number, item: List): number {
+    return index;
+  }
 }

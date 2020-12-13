@@ -26,6 +26,7 @@ export class DialogRef<R = any, T = any> {
   }
 
   private _close(data?: R | undefined): void {
+    this.overlay.detach();
     this.overlay.dispose();
     this.afterClosed$.next(data);
     this.afterClosed$.complete();
