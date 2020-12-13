@@ -1,13 +1,13 @@
 <div class="list-content" fxLayout="column">
   <div class="list-header" fxLayoutAlign="start center">
-    <h2>{{listName}}</h2>
+    <h2>{{list?.name}}</h2>
     <div class="list-header-title" fxFlex>
-      <textarea #listNameRef spellcheck="false" [ngModel]="listName" (ngModelChange)="onChangeListName($event)"
+      <textarea #listNameRef spellcheck="false" [ngModel]="list?.name" (ngModelChange)="onChangeListName($event)"
         (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
         cdkAutosizeMinRows="1"></textarea>
     </div>
     <div class="list-header-extras" fxLayout>
-      <span *ngIf="subscribed" app-icon class="watch-icon">
+      <span *ngIf="list?.subscribed" app-icon class="watch-icon">
         <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
       </span>
       <button #extrasMenuRef app-button class="extras-menu" (click)="showListActions(listActionsRef)">
@@ -69,8 +69,9 @@
       </li>
       <li><a href="#">Copy List...</a></li>
       <li><a href="#">Move List...</a></li>
-      <li><a href="#" (click)="onToggleSubscribed()">Watch <span app-icon class="subscribed"
-            *ngIf="subscribed"></span></a></li>
+      <li><a href="#" (click)="onToggleSubscribed()">Watch
+          <!-- <span app-icon class="subscribed" *ngIf="list?.subscribed"></span> -->
+        </a></li>
     </ul>
     <hr>
     <ul class="dropdown-list">

@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy, Input, ElementRef,
   HostListener, ViewChild, Output, EventEmitter
 } from '@angular/core';
+import { List } from 'src/app/model/list.model';
 
 @Component({
   selector: 'app-add-list',
@@ -12,7 +13,7 @@ import {
 })
 export class AddListComponent implements OnInit {
   @ViewChild('listNameRef') listNameRef: ElementRef | undefined;
-  @Input() lists: string[] = [];
+  @Input() lists?: List[];
   @Output() addList = new EventEmitter<string>();
 
   isActive = false;

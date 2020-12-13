@@ -14,6 +14,7 @@ import { TooltipComponent } from './tooltip/tooltip.component';
 import { TooltipDirective } from './tooltip/tooltip.directive';
 import { OverlayComponent } from './overlay/overlay.component';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { ReactiveComponentModule } from '@ngrx/component';
 
 @NgModule({
   declarations: [ButtonComponent,
@@ -29,7 +30,8 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     MatIconModule,
     FlexLayoutModule,
     OverlayModule,
-    TextFieldModule
+    TextFieldModule,
+    ReactiveComponentModule
   ],
   exports: [
     CommonModule,
@@ -37,6 +39,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     ReactiveFormsModule,
     FlexLayoutModule,
     TextFieldModule,
+    ReactiveComponentModule,
     MatIconModule,
     ButtonComponent,
     ButtonCancelComponent,

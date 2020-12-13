@@ -54,7 +54,7 @@ export class DropdownComponent implements OnInit {
   private getOverlayConfig(): OverlayConfig {
     const positionStrategy = this.overlay.position()
       .flexibleConnectedTo(this.reference)
-      .withPush(false)
+      .withPush(true)
       .withPositions([{
         originX: 'start',
         originY: 'bottom',

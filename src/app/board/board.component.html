@@ -1,7 +1,9 @@
-<div fxLayout fxLayoutAlign="start start" fxFlex>
-  <app-list *ngFor="let list of lists; let i = index" [index]="i" [listName]="list"
-    [(cardCreatePosition)]="cardCreatePosition" [(cardCreateTitle)]="cardCreateTitle"
-    [(cardCreateIndex)]="cardCreateIndex" (archiveList)="onArchiveList($event)">
-  </app-list>
-  <app-add-list [lists]="lists" (addList)="onAddList($event)"></app-add-list>
-</div>
+<ng-container *ngrxLet="lists$ as lists">
+  <div fxLayout fxLayoutAlign="start start" fxFlex>
+    <app-list *ngFor="let list of lists; let i = index" [index]="i" [list]="list"
+      [(cardCreatePosition)]="cardCreatePosition" [(cardCreateTitle)]="cardCreateTitle"
+      [(cardCreateIndex)]="cardCreateIndex">
+    </app-list>
+    <app-add-list [lists]="lists"></app-add-list>
+  </div>
+</ng-container>

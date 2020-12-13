@@ -1,6 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { List } from '../model/list.model';
 import { DialogService } from '../shared/overlay/dialog.service';
+import { AppState } from '../store/app.reducer';
 import { CardEditDialogComponent } from './card-edit-dialog/card-edit-dialog.component';
+import { selectLists } from './store/board.reducer';
 
 @Component({
   selector: 'app-board',
@@ -9,24 +14,17 @@ import { CardEditDialogComponent } from './card-edit-dialog/card-edit-dialog.com
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardComponent implements OnInit {
-  lists = ['To Do'];
+  lists$: Observable<List[]>;
 
   cardCreatePosition: 'top' | 'bottom' = 'bottom';
   cardCreateTitle = '';
   cardCreateIndex: number | null = null;
 
-  constructor(private d: DialogService) { }
+  constructor(store: Store<AppState>, private d: DialogService) {
+    this.lists$ = store.select(selectLists);
+  }
 
   ngOnInit(): void {
     // this.d.open(CardEditDialogComponent);
   }
-
-  onAddList(listName: string): void {
-    this.lists = [...this.lists, listName];
-  }
-
-  onArchiveList(index: number): void {
-    this.lists = [...this.lists.slice(0, index), ...this.lists.slice(index + 1)];
-  }
-
 }

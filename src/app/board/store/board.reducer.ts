@@ -8,7 +8,7 @@ export interface State {
 }
 
 const initialState: State = {
-  lists: [new List('To Do', false)]
+  lists: [new List('To Do', false, []), new List('Doing', false, []), new List('Done', false, [])]
 };
 
 export const selectBoard = (state: AppState) => state.board;
@@ -21,5 +21,20 @@ export const selectLists = createSelector(
 export const boardReducer = createReducer(
   initialState,
   on(BoardActions.SetLists,
-    (state, { lists }) => ({ ...state, lists }))
+    (state, { lists }) => ({ ...state, lists })),
+  on(BoardActions.AddList,
+    (state, { list }) => ({ ...state, lists: [...state.lists, list] })),
+  on(BoardActions.ArchiveList,
+    (state, { index }) => ({ ...state, lists: [...state.lists.slice(0, index), ...state.lists.slice(index + 1)] })),
+  on(BoardActions.RenameList,
+    (state, { index, name }) => ({
+      ...state,
+      lists: [...state.lists.slice(0, index), { ...state.lists[index], name }, ...state.lists.slice(index + 1)]
+    })),
+  on(BoardActions.ToggleSubscribeList,
+    (state, { index }) => ({
+      ...state,
+      lists: [...state.lists.slice(0, index),
+      { ...state.lists[index], subscribed: !state.lists[index].subscribed }, ...state.lists.slice(index + 1)]
+    }))
 );

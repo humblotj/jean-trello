@@ -1,5 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
+import { AppState } from 'src/app/store/app.reducer';
+import { ArchiveList, RenameList, ToggleSubscribeList } from '../store/board.actions';
 
 @Component({
   selector: 'app-list',
@@ -10,7 +14,7 @@ import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 export class ListComponent implements OnInit {
   @ViewChild('listNameRef') listNameRef: ElementRef | undefined;
   @Input() index!: number;
-  @Input() listName = '';
+  @Input() list?: List;
   @Input() cardCreatePosition: 'top' | 'bottom' = 'bottom';
   @Input() cardCreateTitle = '';
   @Input() cardCreateIndex: number | null = null;
@@ -19,12 +23,9 @@ export class ListComponent implements OnInit {
   @Output() cardCreateTitleChange = new EventEmitter<string>();
   @Output() cardCreateIndexChange = new EventEmitter<number | null>();
 
-  @Output() archiveList = new EventEmitter<number>();
-
   cards: string[] = [];
-  subscribed = false;
 
-  constructor() { }
+  constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
@@ -32,9 +33,9 @@ export class ListComponent implements OnInit {
   onChangeListName(listName: string): void {
     const trim = listName.trim();
     if (trim) {
-      this.listName = listName.trim();
+      this.store.dispatch(RenameList({ index: this.index, name: trim }));
     } else {
-      this.listNameRef && (this.listNameRef.nativeElement.value = this.listName);
+      this.listNameRef && (this.listNameRef.nativeElement.value = this.list?.name);
     }
   }
 
@@ -55,11 +56,10 @@ export class ListComponent implements OnInit {
   }
 
   onArchiveList(): void {
-    this.archiveList.emit(this.index);
+    this.store.dispatch(ArchiveList({ index: this.index }));
   }
 
   onToggleSubscribed(): void {
-    this.subscribed = !this.subscribed;
-
+    this.store.dispatch(ToggleSubscribeList({ index: this.index }));
   }
 }
