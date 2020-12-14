@@ -14,9 +14,7 @@ export class CardComponent implements OnInit {
 
   constructor(private dialogService: DialogService, private cdr: ChangeDetectorRef) { }
 
-  ngOnInit(): void {
-    console.log(this.card)
-  }
+  ngOnInit(): void { }
 
   onOpenEditCard(): void {
     const dialogRef = this.dialogService.open(CardEditDialogComponent, { card: this.card });

@@ -1,148 +1,150 @@
-<button app-button-cancel class="close-dialog" (click)="close()">
-</button>
-<div class="card-detail">
-  <div class="card-detail-header">
-    <div class="card-title-container">
-      <span app-icon>
-        <mat-icon svgIcon="template" [inline]="true">
-        </mat-icon>
-      </span>
-      <div class="card-title" fxFlex>
-        <h2></h2>
-        <textarea #cardTitleRef spellcheck="false" [ngModel]="card?.name" (ngModelChange)="onChangeCardTitle($event)"
-          (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
-          cdkAutosizeMinRows="1"></textarea>
-      </div>
-    </div>
-    <div class="card-header-inline-content" fxLayoutAlign="start center">
-      <p>in list <a href="#">List</a></p>
-      <span *ngIf="subscribed" app-icon class="watch-icon">
-        <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
-      </span>
-    </div>
-  </div>
-  <div fxLayoutAlign class="card-detail-content">
-    <div class="card-detail-main-content" fxLayout="column">
-      <div class="window-module card-detail-desc">
-        <div class="module-title" fxLayoutAlign="start center">
-          <span app-icon>
-            <mat-icon svgIcon="description" [inline]="true">
-            </mat-icon>
-          </span>
-          <h3>
-            Description
-          </h3>
-        </div>
-        <div class="description-content">
-          <a href="#">
-            Add a more detailed description...
-          </a>
+<ng-container *ngrxLet="card$ as card">
+  <button app-button-cancel class="close-dialog" (click)="close()">
+  </button>
+  <div class="card-detail">
+    <div class="card-detail-header">
+      <div class="card-title-container">
+        <span app-icon>
+          <mat-icon svgIcon="template" [inline]="true">
+          </mat-icon>
+        </span>
+        <div class="card-title" fxFlex>
+          <h2></h2>
+          <textarea #cardTitleRef spellcheck="false" [ngModel]="card?.name"
+            (ngModelChange)="onChangeCardTitle($event, card)" (keydown.enter)="blur($event)"
+            [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
         </div>
       </div>
-      <div class="window-module card-detail-activity">
-        <div class="module-title" fxLayoutAlign="space-between center">
-          <span app-icon>
-            <mat-icon svgIcon="activity" [inline]="true">
-            </mat-icon>
-          </span>
-          <h3>
-            Activity
-          </h3>
-          <div>
-            <button app-button color="dialog" appTooltip="Not Yet Implemented">
-              Show Details
+      <div class="card-header-inline-content" fxLayoutAlign="start center">
+        <p>in list <a href="#">{{(list$ | async)?.name}}</a></p>
+        <span *ngIf="card?.subscribed" app-icon class="watch-icon">
+          <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
+        </span>
+      </div>
+    </div>
+    <div fxLayoutAlign class="card-detail-content">
+      <div class="card-detail-main-content" fxLayout="column">
+        <div class="window-module card-detail-desc">
+          <div class="module-title" fxLayoutAlign="start center">
+            <span app-icon>
+              <mat-icon svgIcon="description" [inline]="true">
+              </mat-icon>
+            </span>
+            <h3>
+              Description
+            </h3>
+          </div>
+          <div class="description-content">
+            <a href="#">
+              Add a more detailed description...
+            </a>
+          </div>
+        </div>
+        <div class="window-module card-detail-activity">
+          <div class="module-title" fxLayoutAlign="space-between center">
+            <span app-icon>
+              <mat-icon svgIcon="activity" [inline]="true">
+              </mat-icon>
+            </span>
+            <h3>
+              Activity
+            </h3>
+            <div>
+              <button app-button color="dialog" appTooltip="Not Yet Implemented">
+                Show Details
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-detail-sidebar">
+        <div class="window-module">
+          <h3>Add To Card</h3>
+          <div fxLayout="column">
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="members" [inline]="true"></mat-icon>
+              </span>
+              <span>Members</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="labels" [inline]="true"></mat-icon>
+              </span>
+              <span>Labels</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="checklist" [inline]="true"></mat-icon>
+              </span>
+              <span>Checklist</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="clock" [inline]="true"></mat-icon>
+              </span>
+              <span>Due Date</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="attachment" [inline]="true"></mat-icon>
+              </span>
+              <span>Attachment</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="cover" [inline]="true"></mat-icon>
+              </span>
+              <span>Cover</span>
+            </button>
+          </div>
+        </div>
+        <div class="window-module">
+          <h3>Actions</h3>
+          <div fxLayout="column">
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="arrow-right" [inline]="true"></mat-icon>
+              </span>
+              <span>Move</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="copy" [inline]="true"></mat-icon>
+              </span>
+              <span>Copy</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="template" [inline]="true"></mat-icon>
+              </span>
+              <span>Make Template</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" (click)="toggleWatch(card)">
+              <span app-icon>
+                <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
+              </span>
+              <span>Watch</span>
+              <span *ngIf="card?.subscribed" class="subscribed-on">on</span>
+            </button>
+            <hr>
+            <button app-button color="dialog" fxLayoutAlign="start center" class="archive-btn"
+              appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="archive" [inline]="true"></mat-icon>
+              </span>
+              <span>Archive</span>
+            </button>
+            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
+              <span app-icon>
+                <mat-icon svgIcon="share" [inline]="true"></mat-icon>
+              </span>
+              <span>Share</span>
             </button>
           </div>
         </div>
       </div>
-
-    </div>
-    <div class="card-detail-sidebar">
-      <div class="window-module">
-        <h3>Add To Card</h3>
-        <div fxLayout="column">
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="members" [inline]="true"></mat-icon>
-            </span>
-            <span>Members</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="labels" [inline]="true"></mat-icon>
-            </span>
-            <span>Labels</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="checklist" [inline]="true"></mat-icon>
-            </span>
-            <span>Checklist</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="clock" [inline]="true"></mat-icon>
-            </span>
-            <span>Due Date</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="attachment" [inline]="true"></mat-icon>
-            </span>
-            <span>Attachment</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="cover" [inline]="true"></mat-icon>
-            </span>
-            <span>Cover</span>
-          </button>
-        </div>
-      </div>
-      <div class="window-module">
-        <h3>Actions</h3>
-        <div fxLayout="column">
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="arrow-right" [inline]="true"></mat-icon>
-            </span>
-            <span>Move</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="copy" [inline]="true"></mat-icon>
-            </span>
-            <span>Copy</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="template" [inline]="true"></mat-icon>
-            </span>
-            <span>Make Template</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" (click)="toggleWatch()">
-            <span app-icon>
-              <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
-            </span>
-            <span>Watch</span>
-            <span *ngIf="subscribed" class="subscribed-on">on</span>
-          </button>
-          <hr>
-          <button app-button color="dialog" fxLayoutAlign="start center" class="archive-btn"
-            appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="archive" [inline]="true"></mat-icon>
-            </span>
-            <span>Archive</span>
-          </button>
-          <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="Not Yet Implemented">
-            <span app-icon>
-              <mat-icon svgIcon="share" [inline]="true"></mat-icon>
-            </span>
-            <span>Share</span>
-          </button>
-        </div>
-      </div>
     </div>
   </div>
-</div>
+</ng-container>

@@ -34,6 +34,16 @@ export const selectCardsByList = (idList: string) => createSelector(
   (cards) => cards.filter(card => idList && card.idList === idList)
 );
 
+export const findList = (idList: string) => createSelector(
+  selectLists,
+  (lists) => lists.find(list => list.id === idList)
+);
+
+export const findCard = (id: string) => createSelector(
+  selectCards,
+  (cards) => cards.find(card => card.id === id)
+);
+
 export const boardReducer = createReducer(
   initialState,
   on(BoardActions.SetLists,

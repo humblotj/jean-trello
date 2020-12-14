@@ -30,7 +30,7 @@ export class ListComponent implements OnInit {
   constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''))
+    this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''));
   }
 
   onChangeListName(listName: string): void {
