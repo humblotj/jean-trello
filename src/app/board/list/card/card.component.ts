@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Card } from 'src/app/model/card.model';
 import { DialogService } from 'src/app/shared/overlay/dialog.service';
 import { CardEditDialogComponent } from '../../card-edit-dialog/card-edit-dialog.component';
 @Component({
@@ -8,21 +9,17 @@ import { CardEditDialogComponent } from '../../card-edit-dialog/card-edit-dialog
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardComponent implements OnInit {
-  @Input() title = '';
+  @Input() listIndex?: number;
+  @Input() card?: Card;
 
   constructor(private dialogService: DialogService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    console.log(this.card)
   }
 
   onOpenEditCard(): void {
-    const dialogRef = this.dialogService.open(CardEditDialogComponent, { title: this.title });
-    dialogRef.afterClosed$.subscribe((title: string) => {
-      if (title) {
-        this.title = title;
-        this.cdr.markForCheck();
-      }
-    });
+    const dialogRef = this.dialogService.open(CardEditDialogComponent, { card: this.card });
   }
 
 }

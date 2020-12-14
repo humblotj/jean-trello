@@ -27,6 +27,7 @@
     "@ngrx/router-store": "^10.1.0",
     "@ngrx/store": "^10.0.1",
     "@ngrx/store-devtools": "^10.1.0",
+    "angular2-uuid": "^1.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

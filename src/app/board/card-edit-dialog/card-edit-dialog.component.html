@@ -9,7 +9,7 @@
       </span>
       <div class="card-title" fxFlex>
         <h2></h2>
-        <textarea #cardTitleRef spellcheck="false" [ngModel]="cardTitle" (ngModelChange)="onChangeCardTitle($event)"
+        <textarea #cardTitleRef spellcheck="false" [ngModel]="card?.name" (ngModelChange)="onChangeCardTitle($event)"
           (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
           cdkAutosizeMinRows="1"></textarea>
       </div>

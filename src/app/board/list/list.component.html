@@ -1,90 +1,92 @@
-<div class="list-content" fxLayout="column">
-  <div class="list-header" fxLayoutAlign="start center">
-    <h2>{{list?.name}}</h2>
-    <div class="list-header-title" fxFlex>
-      <textarea #listNameRef spellcheck="false" [ngModel]="list?.name" (ngModelChange)="onChangeListName($event)"
-        (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
-        cdkAutosizeMinRows="1"></textarea>
+<ng-container *ngrxLet="cards$ as cards">
+  <div class="list-content" fxLayout="column">
+    <div class="list-header" fxLayoutAlign="start center">
+      <h2>{{list?.name}}</h2>
+      <div class="list-header-title" fxFlex>
+        <textarea #listNameRef spellcheck="false" [ngModel]="list?.name" (ngModelChange)="onChangeListName($event)"
+          (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
+          cdkAutosizeMinRows="1"></textarea>
+      </div>
+      <div class="list-header-extras" fxLayout>
+        <span *ngIf="list?.subscribed" app-icon class="watch-icon">
+          <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
+        </span>
+        <button #extrasMenuRef app-button class="extras-menu" (click)="showListActions(listActionsRef)">
+          <span app-icon class="extras-menu-icon">
+          </span>
+        </button>
+      </div>
     </div>
-    <div class="list-header-extras" fxLayout>
-      <span *ngIf="list?.subscribed" app-icon class="watch-icon">
-        <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
-      </span>
-      <button #extrasMenuRef app-button class="extras-menu" (click)="showListActions(listActionsRef)">
-        <span app-icon class="extras-menu-icon">
+    <div class="list-cards fancy-scrollbar" fxLayout="column">
+      <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit: 'top'}"></ng-container>
+      <app-card *ngFor="let card of cards;" [card]="card" [listIndex]="index"></app-card>
+      <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit:'bottom'}"></ng-container>
+    </div>
+    <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
+      <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
+        (click)="cardTemplatesRef?.hide(); cardCreatePositionChange.emit('bottom'); cardCreateIndexChange.emit(index)">
+        <span app-icon class=" icon-add">
+        </span>
+        <span>
+          Add {{cards?.length ? 'another':'a'}} card
         </span>
       </button>
+      <button #cardTemplatesBtnRef app-button class="card-templates-btn" appTooltip="Create from template..."
+        (click)="cardTemplatesRef.show()">
+        <span>
+          <mat-icon svgIcon="template" [inline]="true">
+          </mat-icon>
+        </span>
+      </button>
+      <app-dropdown #cardTemplatesRef [reference]="cardTemplatesBtnRef.el" backgroundColor="secondary">
+        <div class="dropdown-header">
+          <span>Card Templates</span>
+          <button app-button-cancel (click)="cardTemplatesRef.hide()"></button>
+        </div>
+        <div class="dropdown-content card-templates-dd-content">
+          <p>You don’t have any templates. Create a template to make copying cards easy.</p>
+          <button app-button color="green" appTooltip="Not supported">Create a New Template</button>
+        </div>
+      </app-dropdown>
     </div>
   </div>
-  <div class="list-cards fancy-scrollbar" fxLayout="column">
-    <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit: 'top'}"></ng-container>
-    <app-card *ngFor="let card of cards; trackBy: trackByFn" [title]="card"></app-card>
-    <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit:'bottom'}"></ng-container>
-  </div>
-  <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
-    <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
-      (click)="cardTemplatesRef?.hide(); cardCreatePositionChange.emit('bottom'); cardCreateIndexChange.emit(index)">
-      <span app-icon class=" icon-add">
-      </span>
-      <span>
-        Add {{cards?.length ? 'another':'a'}} card
-      </span>
-    </button>
-    <button #cardTemplatesBtnRef app-button class="card-templates-btn" appTooltip="Create from template..."
-      (click)="cardTemplatesRef.show()">
-      <span>
-        <mat-icon svgIcon="template" [inline]="true">
-        </mat-icon>
-      </span>
-    </button>
-    <app-dropdown #cardTemplatesRef [reference]="cardTemplatesBtnRef.el" backgroundColor="secondary">
-      <div class="dropdown-header">
-        <span>Card Templates</span>
-        <button app-button-cancel (click)="cardTemplatesRef.hide()"></button>
-      </div>
-      <div class="dropdown-content card-templates-dd-content">
-        <p>You don’t have any templates. Create a template to make copying cards easy.</p>
-        <button app-button color="green" appTooltip="Not supported">Create a New Template</button>
-      </div>
-    </app-dropdown>
-  </div>
-</div>
 
-<ng-template #cardCreate let-i>
-  <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition===i" [cardCreateTitle]="cardCreateTitle"
-    (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event)"
-    (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
-</ng-template>
+  <ng-template #cardCreate let-i>
+    <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition===i" [cardCreateTitle]="cardCreateTitle"
+      (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event)"
+      (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
+  </ng-template>
 
-<app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
-  <div class="dropdown-header">
-    <span>List Actions</span>
-    <button app-button-cancel (click)="listActionsRef.hide()"></button>
-  </div>
-  <div class="dropdown-content">
-    <ul class="dropdown-list">
-      <li><a href="#"
-          (click)="cardCreatePositionChange.emit('top'); cardCreateIndexChange.emit(index); listActionsRef.hide()">Add
-          Card...</a>
-      </li>
-      <li><a href="#">Copy List...</a></li>
-      <li><a href="#">Move List...</a></li>
-      <li><a href="#" (click)="onToggleSubscribed()">Watch
-          <span app-icon class="subscribed" *ngIf="list?.subscribed"></span>
-        </a></li>
-    </ul>
-    <hr>
-    <ul class="dropdown-list">
-      <li><a href="#">Sort by...</a></li>
-    </ul>
-    <hr>
-    <ul class="dropdown-list">
-      <li><a href="#">Move All Cards in the list</a></li>
-      <li><a href="#" (click)="onArchiveAllCards(); listActionsRef.hide()">Archive All Cards in the list</a></li>
-    </ul>
-    <hr>
-    <ul class="dropdown-list">
-      <li><a href="#" (click)="onArchiveList(); listActionsRef.hide()">Archive the list</a></li>
-    </ul>
-  </div>
-</app-dropdown>
+  <app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
+    <div class="dropdown-header">
+      <span>List Actions</span>
+      <button app-button-cancel (click)="listActionsRef.hide()"></button>
+    </div>
+    <div class="dropdown-content">
+      <ul class="dropdown-list">
+        <li><a href="#"
+            (click)="cardCreatePositionChange.emit('top'); cardCreateIndexChange.emit(index); listActionsRef.hide()">Add
+            Card...</a>
+        </li>
+        <li><a href="#">Copy List...</a></li>
+        <li><a href="#">Move List...</a></li>
+        <li><a href="#" (click)="onToggleSubscribed()">Watch
+            <span app-icon class="subscribed" *ngIf="list?.subscribed"></span>
+          </a></li>
+      </ul>
+      <hr>
+      <ul class="dropdown-list">
+        <li><a href="#">Sort by...</a></li>
+      </ul>
+      <hr>
+      <ul class="dropdown-list">
+        <li><a href="#">Move All Cards in the list</a></li>
+        <li><a href="#" (click)="onArchiveAllCards(); listActionsRef.hide()">Archive All Cards in the list</a></li>
+      </ul>
+      <hr>
+      <ul class="dropdown-list">
+        <li><a href="#" (click)="onArchiveList(); listActionsRef.hide()">Archive the list</a></li>
+      </ul>
+    </div>
+  </app-dropdown>
+</ng-container>

@@ -1,9 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { AppState } from 'src/app/store/app.reducer';
-import { ArchiveList, RenameList, ToggleSubscribeList } from '../store/board.actions';
+import { AddCard, ArchiveAllCards, ArchiveList, RenameList, ToggleSubscribeList } from '../store/board.actions';
+import { selectCards, selectCardsByList } from '../store/board.reducer';
 
 @Component({
   selector: 'app-list',
@@ -23,11 +26,11 @@ export class ListComponent implements OnInit {
   @Output() cardCreateTitleChange = new EventEmitter<string>();
   @Output() cardCreateIndexChange = new EventEmitter<number | null>();
 
-  cards: string[] = [];
-
+  cards$!: Observable<Card[]>;
   constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''))
   }
 
   onChangeListName(listName: string): void {
@@ -43,8 +46,10 @@ export class ListComponent implements OnInit {
     (event.target as HTMLTextAreaElement)?.blur();
   }
 
-  onAddCard(title: string): void {
-    this.cards = [...this.cards, title];
+  onAddCard(name: string): void {
+    this.store.dispatch(AddCard({
+      idList: this.list?.id || '', index: 0, name
+    }));
   }
 
   showListActions(listActionsRef: DropdownComponent): void {
@@ -52,7 +57,7 @@ export class ListComponent implements OnInit {
   }
 
   onArchiveAllCards(): void {
-    this.cards = [];
+    this.store.dispatch(ArchiveAllCards({ idList: this.list?.id || '' }));
   }
 
   onArchiveList(): void {
