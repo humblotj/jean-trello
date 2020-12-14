@@ -67,4 +67,18 @@
       color: #0079bf;
     }
   }
+
+  &.danger {
+    padding: 6px 12px;
+    background-color: #cf513d;
+    color: #fff;
+
+    &:hover {
+      background-color: #eb5a46;
+    }
+
+    &:active {
+      background-color: #933b27;
+    }
+  }
 }

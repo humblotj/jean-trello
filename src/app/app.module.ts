@@ -98,5 +98,8 @@ export class AppModule {
     iconRegistry.addSvgIcon('share',
       domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/share-variant-outline.svg')
     );
+    iconRegistry.addSvgIcon('replay',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/replay.svg')
+    );
   }
 }

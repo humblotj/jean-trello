@@ -2,6 +2,13 @@
   <button app-button-cancel class="close-dialog" (click)="close()">
   </button>
   <div class="card-detail">
+    <div class="card-archive-banner" *ngIf="card?.closed">
+      <span app-icon>
+        <mat-icon svgIcon="archive" [inline]="true">
+        </mat-icon>
+      </span>
+      <p>This card is archived</p>
+    </div>
     <div class="card-detail-header">
       <div class="card-title-container">
         <span app-icon>
@@ -121,7 +128,7 @@
               </span>
               <span>Make Template</span>
             </button>
-            <button app-button color="dialog" fxLayoutAlign="start center" (click)="toggleWatch(card)">
+            <button app-button color="dialog" fxLayoutAlign="start center" (click)="onToggleWatch(card)">
               <span app-icon>
                 <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
               </span>
@@ -129,8 +136,8 @@
               <span *ngIf="card?.subscribed" class="subscribed-on">on</span>
             </button>
             <hr>
-            <button app-button color="dialog" fxLayoutAlign="start center" class="archive-btn"
-              appTooltip="Not Yet Implemented">
+            <button *ngIf="!card?.closed; else deleteForm" app-button color="dialog" fxLayoutAlign="start center"
+              class="archive-btn" (click)="onArchiveCard(card)">
               <span app-icon>
                 <mat-icon svgIcon="archive" [inline]="true"></mat-icon>
               </span>
@@ -147,4 +154,26 @@
       </div>
     </div>
   </div>
+
+  <ng-template #deleteForm>
+    <button app-button color="dialog" fxLayoutAlign="start center" (click)="onRestoreCard(card)">
+      <span app-icon>
+        <mat-icon svgIcon="replay" [inline]="true"></mat-icon>
+      </span>
+      <span>Send to board</span>
+    </button>
+    <button #deleteBtnRef app-button color="danger" fxLayoutAlign="start center" (click)="deleteRef.show()">
+      <span app-icon class="remove">
+      </span>
+      <span>Delete</span>
+    </button>
+    <app-dropdown #deleteRef [reference]="deleteBtnRef.el">
+      <span title>Delete Card?</span>
+      <div class="dropdown-content card-templates-dd-content">
+        <p>All actions will be removed from the activity feed and you won’t be able to re-open the card. There is no
+          undo.</p>
+        <button app-button color="danger" (click)="onDeleteCard(card)">Delete</button>
+      </div>
+    </app-dropdown>
+  </ng-template>
 </ng-container>

@@ -7,6 +7,7 @@ export class Card {
   public pos: number;
   public subscribed: boolean;
   public desc: string;
+  public closed = false;
 
   constructor(idList: string, name: string, pos: number, subscribed: boolean, desc: string, id?: string) {
     this.idList = idList;

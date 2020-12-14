@@ -5,7 +5,7 @@ import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DialogRef } from 'src/app/shared/overlay/dialog-ref';
 import { AppState } from 'src/app/store/app.reducer';
-import { EditCard } from '../store/board.actions';
+import { EditCard, DeleteCard } from '../store/board.actions';
 import { findCard, findList } from '../store/board.reducer';
 
 @Component({
@@ -45,9 +45,28 @@ export class CardEditDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  toggleWatch(card: Card | undefined): void {
+  onToggleWatch(card: Card | undefined): void {
     if (card) {
       this.store.dispatch(EditCard({ card: { ...card, subscribed: !card?.subscribed } }));
+    }
+  }
+
+  onArchiveCard(card: Card | undefined): void {
+    if (card) {
+      this.store.dispatch(EditCard({ card: { ...card, closed: true } }));
+    }
+  }
+
+  onRestoreCard(card: Card | undefined): void {
+    if (card) {
+      this.store.dispatch(EditCard({ card: { ...card, closed: false } }));
+    }
+  }
+
+  onDeleteCard(card: Card | undefined): void {
+    if (card) {
+      this.store.dispatch(DeleteCard({ card }));
+      this.close();
     }
   }
 }

@@ -1,5 +1,9 @@
 <ng-template #dropdown>
   <div #dropdownRef class="dropdown-container">
+    <div class="dropdown-header">
+      <ng-content select="[title]"></ng-content>
+      <button app-button-cancel (click)="hide()"></button>
+    </div>
     <ng-content></ng-content>
   </div>
 </ng-template>

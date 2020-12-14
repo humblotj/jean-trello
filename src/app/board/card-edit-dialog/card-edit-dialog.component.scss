@@ -6,7 +6,7 @@
 
 .close-dialog {
   position: absolute;
-  top: -12px;
+  top: 12px;
   right: 0;
   height: 40px;
   width: 40px;
@@ -35,6 +35,38 @@
 
 .card-detail {
   min-height: 600px;
+  margin-top: -12px;
+  padding-top: 12px;
+
+  .card-archive-banner {
+    position: relative;
+    min-height: 30px;
+    padding: 12px 12px 12px 50px;
+    background-color: #fdfae5;
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(0, 0, 0, 0.05) 25%,
+      transparent 0,
+      transparent 50%,
+      rgba(0, 0, 0, 0.05) 0,
+      rgba(0, 0, 0, 0.05) 75%,
+      transparent 0,
+      transparent
+    );
+    background-size: 14px 14px;
+
+    span {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 30px;
+      margin: 0;
+    }
+  }
 
   .card-detail-header {
     position: relative;
@@ -183,6 +215,21 @@
           height: 16px;
           width: 16px;
           margin: 0 8px 0 -4px;
+
+          &.remove {
+            position: relative;
+
+            &:after {
+              position: absolute;
+              width: 11px;
+              right: 0;
+              left: 0;
+              top: 7px;
+              margin: auto;
+              border-bottom: 1px solid #fff;
+              content: "";
+            }
+          }
         }
 
         .subscribed-on {

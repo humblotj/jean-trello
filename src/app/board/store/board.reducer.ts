@@ -1,5 +1,4 @@
 import { createReducer, createSelector, on } from '@ngrx/store';
-import { Props } from '@ngrx/store/src/models';
 import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { AppState } from 'src/app/store/app.reducer';
@@ -31,7 +30,7 @@ export const selectCards = createSelector(
 
 export const selectCardsByList = (idList: string) => createSelector(
   selectCards,
-  (cards) => cards.filter(card => idList && card.idList === idList)
+  (cards) => cards.filter(card => idList && card.idList === idList && !card.closed)
 );
 
 export const findList = (idList: string) => createSelector(
@@ -71,8 +70,14 @@ export const boardReducer = createReducer(
   on(BoardActions.ArchiveAllCards,
     (state, { idList }) => ({
       ...state,
-      cards: state.cards.filter(
-        card => card.idList !== idList)
+      cards: state.cards.map(
+        card => {
+          if (card.idList === idList) {
+            return { ...card, closed: true };
+          } else {
+            return card;
+          }
+        })
     })),
   on(BoardActions.EditCard,
     (state, { card }) => {
@@ -83,6 +88,17 @@ export const boardReducer = createReducer(
       return {
         ...state,
         cards: [...state.cards.slice(0, index), card, ...state.cards.slice(index + 1)]
+      };
+    }),
+  on(BoardActions.DeleteCard,
+    (state, { card }) => {
+      const index = state.cards.findIndex(c => c.id === card.id);
+      if (index < 0) {
+        return { ...state };
+      }
+      return {
+        ...state,
+        cards: [...state.cards.slice(0, index), ...state.cards.slice(index + 1)]
       };
     })
 );
