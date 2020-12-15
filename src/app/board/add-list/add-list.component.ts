@@ -3,7 +3,10 @@ import {
   ChangeDetectionStrategy, Input, ElementRef,
   HostListener, ViewChild, Output, EventEmitter
 } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { List } from 'src/app/model/list.model';
+import { AppState } from 'src/app/store/app.reducer';
+import { AddList } from '../store/board.actions';
 
 @Component({
   selector: 'app-add-list',
@@ -14,7 +17,6 @@ import { List } from 'src/app/model/list.model';
 export class AddListComponent implements OnInit {
   @ViewChild('listNameRef') listNameRef: ElementRef | undefined;
   @Input() lists?: List[];
-  @Output() addList = new EventEmitter<string>();
 
   isActive = false;
   listName = '';
@@ -26,7 +28,7 @@ export class AddListComponent implements OnInit {
     this.listNameRef?.nativeElement.focus();
   }
 
-  constructor(private el: ElementRef) {
+  constructor(private store: Store<AppState>, private el: ElementRef) {
     el.nativeElement.classList.add('is-idle');
   }
 
@@ -37,7 +39,7 @@ export class AddListComponent implements OnInit {
     e.stopPropagation();
 
     if (this.listName) {
-      this.addList.emit(this.listName);
+      this.store.dispatch(AddList({ name: this.listName }));
       this.listName = '';
     }
     this.listNameRef?.nativeElement.focus();

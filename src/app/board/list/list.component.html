@@ -64,13 +64,13 @@
 
   <app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
     <span title>List Actions</span>
-    <div class="dropdown-content">
+    <div class="dropdown-content list-actions">
       <ul class="dropdown-list">
         <li><a href="#"
             (click)="cardCreatePositionChange.emit(0); cardCreateIndexChange.emit(index); listActionsRef.hide()">Add
             Card...</a>
         </li>
-        <li><a href="#">Copy List...</a></li>
+        <li><a href="#" (click)="copyListRef.show(); listActionsRef.hide(); onCopyListShow()">Copy List...</a></li>
         <li><a href="#">Move List...</a></li>
         <li><a href="#" (click)="onToggleSubscribed()">Watch
             <span app-icon class="subscribed" *ngIf="list?.subscribed"></span>
@@ -89,6 +89,16 @@
       <ul class="dropdown-list">
         <li><a href="#" (click)="onArchiveList(); listActionsRef.hide()">Archive the list</a></li>
       </ul>
+    </div>
+  </app-dropdown>
+
+  <app-dropdown #copyListRef [reference]="extrasMenuRef.el">
+    <span title>Copy List</span>
+    <div class="dropdown-content copy-list">
+      <label>Name</label>
+      <textarea #copyListNameRef></textarea>
+      <button app-button color="green" (click)="onCopyList(copyListNameRef.value); copyListRef.hide()">Create
+        List</button>
     </div>
   </app-dropdown>
 </ng-container>

@@ -9,8 +9,8 @@ import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { AppState } from 'src/app/store/app.reducer';
-import { AddCard, ArchiveAllCards, ArchiveList, RenameList, ToggleSubscribeList } from '../store/board.actions';
-import { posIncr, selectCardsByList } from '../store/board.reducer';
+import { AddCard, ArchiveAllCards, ArchiveList, CopyList, RenameList, ToggleSubscribeList } from '../store/board.actions';
+import { calcPos, posIncr, selectCardsByList } from '../store/board.reducer';
 
 @Component({
   selector: 'app-list',
@@ -20,6 +20,7 @@ import { posIncr, selectCardsByList } from '../store/board.reducer';
 })
 export class ListComponent implements OnInit, OnChanges {
   @ViewChild('listNameRef') listNameRef: ElementRef | undefined;
+  @ViewChild('copyListNameRef') copyListNameRef: ElementRef | undefined;
   @Input() index!: number;
   @Input() list?: List;
   @Input() cardCreatePosition = 0;
@@ -63,23 +64,7 @@ export class ListComponent implements OnInit, OnChanges {
   }
 
   onAddCard(name: string, cards: Card[] | undefined): void {
-    let pos = 0;
-    if (!cards?.length) {
-      pos = posIncr;
-    }
-    else if (this.cardCreatePosition === cards?.length) {
-      const prevPos = cards[cards.length - 1].pos;
-      pos = prevPos + posIncr + cards[cards.length - 1].pos;
-    }
-    else if (this.cardCreatePosition === 0) {
-      const nextPos = cards[this.cardCreatePosition].pos;
-      pos = nextPos / 2;
-    }
-    else {
-      const prevPos = cards[this.cardCreatePosition - 1].pos;
-      const nextPos = cards[this.cardCreatePosition].pos;
-      pos = (prevPos + nextPos) / 2;
-    }
+    const pos = calcPos(cards || [], this.cardCreatePosition);
     this.store.dispatch(AddCard({ card: new Card(this.list?.id || '', name, pos, false, '') }));
     this.cardCreatePositionChange.emit(this.cardCreatePosition + 1);
   }
@@ -98,6 +83,18 @@ export class ListComponent implements OnInit, OnChanges {
 
   onToggleSubscribed(): void {
     this.store.dispatch(ToggleSubscribeList({ index: this.index }));
+  }
+
+  onCopyListShow(): void {
+    this.copyListNameRef?.nativeElement.focus();
+  }
+
+  onCopyList(name: string): void {
+    if (name) {
+      this.store.dispatch(CopyList({ name, idList: this.list?.id || '' }));
+    } else {
+      this.copyListNameRef?.nativeElement.focus();
+    }
   }
 
   trackByFn(index: number, item: Card): string {
