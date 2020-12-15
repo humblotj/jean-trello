@@ -34,7 +34,6 @@ export class DropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log(this.reference);
     this.overlayRef?.dispose();
   }
 

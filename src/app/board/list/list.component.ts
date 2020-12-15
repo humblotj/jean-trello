@@ -1,6 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, OnInit, ChangeDetectionStrategy, ViewChild,
+  ElementRef, Input, Output, EventEmitter, ChangeDetectorRef, SimpleChanges, OnChanges
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
@@ -14,7 +18,7 @@ import { posIncr, selectCardsByList } from '../store/board.reducer';
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnChanges {
   @ViewChild('listNameRef') listNameRef: ElementRef | undefined;
   @Input() index!: number;
   @Input() list?: List;
@@ -31,6 +35,18 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.cardCreatePosition) {
+      if (this.index === this.cardCreateIndex) {
+        this.cards$.pipe(take(1)).subscribe(cards => {
+          if (this.cardCreatePosition > cards.length) {
+            setTimeout(() => this.cardCreatePositionChange.next(cards.length), 0);
+          }
+        });
+      }
+    }
   }
 
   onChangeListName(listName: string): void {

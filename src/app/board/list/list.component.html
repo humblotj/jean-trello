@@ -17,18 +17,25 @@
         </button>
       </div>
     </div>
+
     <div class="list-cards fancy-scrollbar" fxLayout="column">
       <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === 0" [cardCreateTitle]="cardCreateTitle"
+        [cardCreatePosition]="cardCreatePosition" [cardCreateIndex]="cardCreateIndex"
         (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event, cards)"
-        (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
+        (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"
+        (cardCreatePositionChange)="cardCreatePositionChange.emit($event)">
+      </app-card-create>
       <ng-container *ngFor="let card of cards; let i = index; trackBy: trackByFn">
         <app-card [card]="card" [listIndex]="index"></app-card>
         <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === i+1"
-          [cardCreateTitle]="cardCreateTitle" (cardCreateTitleChange)="cardCreateTitleChange.emit($event)"
-          (addCard)="onAddCard($event, cards)" (cardCreateIndexChange)="cardCreateIndexChange.emit($event)">
+          [cardCreateTitle]="cardCreateTitle" [cardCreatePosition]="cardCreatePosition"
+          [cardCreateIndex]="cardCreateIndex" (cardCreateTitleChange)="cardCreateTitleChange.emit($event)"
+          (addCard)="onAddCard($event, cards)" (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"
+          (cardCreatePositionChange)="cardCreatePositionChange.emit($event)">
         </app-card-create>
       </ng-container>
     </div>
+
     <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
       <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
         (click)="cardTemplatesRef?.hide(); cardCreatePositionChange.emit(cards?.length); cardCreateIndexChange.emit(index)">
@@ -54,13 +61,6 @@
       </app-dropdown>
     </div>
   </div>
-
-  <!-- <ng-template #cardCreate let-i>
-
-    <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition===i" [cardCreateTitle]="cardCreateTitle"
-      (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event, cards)"
-      (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
-  </ng-template> -->
 
   <app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
     <span title>List Actions</span>

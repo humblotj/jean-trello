@@ -13,17 +13,17 @@ import { selectLists } from './store/board.reducer';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardComponent implements OnInit {
-  lists$: Observable<List[]>;
+  lists$!: Observable<List[]>;
 
   cardCreatePosition = 0;
   cardCreateTitle = '';
   cardCreateIndex: number | null = null;
 
-  constructor(store: Store<AppState>, private d: DialogService) {
-    this.lists$ = store.select(selectLists);
+  constructor(private store: Store<AppState>, private d: DialogService) {
   }
 
   ngOnInit(): void {
+    this.lists$ = this.store.select(selectLists);
   }
 
   trackByFn(index: number, item: List): string {

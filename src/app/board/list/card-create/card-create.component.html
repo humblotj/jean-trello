@@ -1,19 +1,55 @@
-<div class="list-card">
-  <div class="card-details" fxLayout>
-    <textarea #titleRef #autosize="cdkTextareaAutosize" placeholder="Enter a title for this card…" autofocus
-      cdkTextareaAutosize cdkAutosizeMinRows="1" [ngModel]="cardCreateTitle"
-      (ngModelChange)="cardCreateTitleChange.emit($event)"></textarea>
+<ng-container *ngIf="{lists: lists$|async, cards: cards$|async} as ctx">
+  <div class="list-card">
+    <div class="card-details" fxLayout>
+      <textarea #titleRef #autosize="cdkTextareaAutosize" placeholder="Enter a title for this card…" autofocus
+        cdkTextareaAutosize cdkAutosizeMinRows="1" [ngModel]="cardCreateTitle"
+        (ngModelChange)="cardCreateTitleChange.emit($event)"></textarea>
+    </div>
   </div>
-</div>
-<div fxLayoutAlign="space-between">
-  <div>
-    <button app-button color="green" class="save-edit" (click)="onAddCard()">Add Card</button>
-    <button app-button-cancel (click)="onCancel()"></button>
+  <div fxLayoutAlign="space-between">
+    <div>
+      <button app-button color="green" class="save-edit" (click)="onAddCard()">Add Card</button>
+      <button app-button-cancel (click)="onCancel()"></button>
+    </div>
+    <div>
+      <button #optionBtnRef app-button class="overflow-menu" (click)="optionRef.show()">
+        <span app-icon class="overflow-menu-icon">
+        </span>
+      </button>
+    </div>
   </div>
-  <div>
-    <button app-button class="overflow-menu">
-      <span app-icon class="overflow-menu-icon">
-      </span>
-    </button>
-  </div>
-</div>
+
+  <app-dropdown #optionRef [reference]="optionBtnRef.el">
+    <span title>Options</span>
+    <div class="dropdown-content">
+      <ul class="dropdown-list">
+        <li><a href="#" appTooltip="Not supported">Members...</a></li>
+        <li><a href="#" appTooltip="To Do">Labels...</a></li>
+        <li><a (click)="onOpenPosition(ctx.lists); optionRef.hide(); postionRef.show()">Position...</a></li>
+      </ul>
+    </div>
+  </app-dropdown>
+  <app-dropdown #postionRef [reference]="optionBtnRef.el">
+    <span title>Position</span>
+    <div class="dropdown-content">
+      <div class="form-grid">
+        <div app-button color="dialog" fxFlex="75">
+          <label>List</label>
+          <span class="list-value">{{ctx.lists ? ctx.lists[cardCreateIndex]?.name : ''}}</span>
+          <select [ngModel]="cardCreateIndex" (ngModelChange)="onSelectList($event, ctx.cards)">
+            <option *ngFor="let list of ctx.lists; let i = index" [value]="i">{{ list.name }}</option>
+          </select>
+        </div>
+        <div app-button color="dialog" fxFlex="25">
+          <label>Position</label>
+          <span class="list-value">{{cardCreatePosition}}</span>
+          <select [ngModel]="cardCreatePosition" (ngModelChange)="onSelectPosition($event)">
+            <option *ngFor="let position of [].constructor((ctx.cards?.length||0) + 1); let i = index" [value]="i">
+              {{ i + 1 }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </app-dropdown>
+</ng-container>
