@@ -18,7 +18,7 @@ export class DialogRef<R = any, T = any> {
     public content: Type<any>,
     public data?: T
   ) {
-    // overlay.backdropClick().subscribe(() => this._close());
+    overlay.backdropClick().subscribe(() => this._close());
   }
 
   close(data?: R): void {

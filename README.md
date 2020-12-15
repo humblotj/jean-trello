@@ -2,4 +2,4 @@
 
 My trello-like application with Angular 11
 
-https://jean-trello.firebaseapp.com/
+https://jean-trello.web.app/

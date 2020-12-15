@@ -18,13 +18,20 @@
       </div>
     </div>
     <div class="list-cards fancy-scrollbar" fxLayout="column">
-      <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit: 'top'}"></ng-container>
-      <app-card *ngFor="let card of cards;" [card]="card" [listIndex]="index"></app-card>
-      <ng-container *ngTemplateOutlet="cardCreate; context: {$implicit:'bottom'}"></ng-container>
+      <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === 0" [cardCreateTitle]="cardCreateTitle"
+        (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event, cards)"
+        (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
+      <ng-container *ngFor="let card of cards; let i = index; trackBy: trackByFn">
+        <app-card [card]="card" [listIndex]="index"></app-card>
+        <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === i+1"
+          [cardCreateTitle]="cardCreateTitle" (cardCreateTitleChange)="cardCreateTitleChange.emit($event)"
+          (addCard)="onAddCard($event, cards)" (cardCreateIndexChange)="cardCreateIndexChange.emit($event)">
+        </app-card-create>
+      </ng-container>
     </div>
     <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
       <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
-        (click)="cardTemplatesRef?.hide(); cardCreatePositionChange.emit('bottom'); cardCreateIndexChange.emit(index)">
+        (click)="cardTemplatesRef?.hide(); cardCreatePositionChange.emit(cards?.length); cardCreateIndexChange.emit(index)">
         <span app-icon class=" icon-add">
         </span>
         <span>
@@ -48,18 +55,19 @@
     </div>
   </div>
 
-  <ng-template #cardCreate let-i>
+  <!-- <ng-template #cardCreate let-i>
+
     <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition===i" [cardCreateTitle]="cardCreateTitle"
-      (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event)"
+      (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event, cards)"
       (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"></app-card-create>
-  </ng-template>
+  </ng-template> -->
 
   <app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
     <span title>List Actions</span>
     <div class="dropdown-content">
       <ul class="dropdown-list">
         <li><a href="#"
-            (click)="cardCreatePositionChange.emit('top'); cardCreateIndexChange.emit(index); listActionsRef.hide()">Add
+            (click)="cardCreatePositionChange.emit(0); cardCreateIndexChange.emit(index); listActionsRef.hide()">Add
             Card...</a>
         </li>
         <li><a href="#">Copy List...</a></li>

@@ -16,9 +16,12 @@ import { findCard, findList } from '../store/board.reducer';
 })
 export class CardEditDialogComponent implements OnInit {
   @ViewChild('cardTitleRef') cardTitleRef: ElementRef | undefined;
+  @ViewChild('descRef') descRef: ElementRef | undefined;
 
   card$: Observable<Card | undefined>;
   list$!: Observable<List | undefined>;
+
+  isEditingDesc = false;
 
   constructor(private dialogRef: DialogRef, private store: Store<AppState>) {
     this.card$ = this.store.select(findCard(dialogRef?.data?.card?.id));
@@ -67,6 +70,18 @@ export class CardEditDialogComponent implements OnInit {
     if (card) {
       this.store.dispatch(DeleteCard({ card }));
       this.close();
+    }
+  }
+
+  onOpenEdit(): void {
+    this.isEditingDesc = true;
+    setTimeout(() => this.descRef?.nativeElement.focus(), 0);
+  }
+
+  onEditDescription(desc: string, card: Card | undefined): void {
+    if (card) {
+      this.store.dispatch(EditCard({ card: { ...card, desc } }));
+      this.isEditingDesc = false;
     }
   }
 }

@@ -6,7 +6,7 @@ import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { AppState } from 'src/app/store/app.reducer';
 import { AddCard, ArchiveAllCards, ArchiveList, RenameList, ToggleSubscribeList } from '../store/board.actions';
-import { selectCards, selectCardsByList } from '../store/board.reducer';
+import { posIncr, selectCardsByList } from '../store/board.reducer';
 
 @Component({
   selector: 'app-list',
@@ -18,11 +18,11 @@ export class ListComponent implements OnInit {
   @ViewChild('listNameRef') listNameRef: ElementRef | undefined;
   @Input() index!: number;
   @Input() list?: List;
-  @Input() cardCreatePosition: 'top' | 'bottom' = 'bottom';
+  @Input() cardCreatePosition = 0;
   @Input() cardCreateTitle = '';
   @Input() cardCreateIndex: number | null = null;
 
-  @Output() cardCreatePositionChange = new EventEmitter<'top' | 'bottom'>();
+  @Output() cardCreatePositionChange = new EventEmitter<number>();
   @Output() cardCreateTitleChange = new EventEmitter<string>();
   @Output() cardCreateIndexChange = new EventEmitter<number | null>();
 
@@ -46,10 +46,26 @@ export class ListComponent implements OnInit {
     (event.target as HTMLTextAreaElement)?.blur();
   }
 
-  onAddCard(name: string): void {
-    this.store.dispatch(AddCard({
-      idList: this.list?.id || '', index: 0, name
-    }));
+  onAddCard(name: string, cards: Card[] | undefined): void {
+    let pos = 0;
+    if (!cards?.length) {
+      pos = posIncr;
+    }
+    else if (this.cardCreatePosition === cards?.length) {
+      const prevPos = cards[cards.length - 1].pos;
+      pos = prevPos + posIncr + cards[cards.length - 1].pos;
+    }
+    else if (this.cardCreatePosition === 0) {
+      const nextPos = cards[this.cardCreatePosition].pos;
+      pos = nextPos / 2;
+    }
+    else {
+      const prevPos = cards[this.cardCreatePosition - 1].pos;
+      const nextPos = cards[this.cardCreatePosition].pos;
+      pos = (prevPos + nextPos) / 2;
+    }
+    this.store.dispatch(AddCard({ card: new Card(this.list?.id || '', name, pos, false, '') }));
+    this.cardCreatePositionChange.emit(this.cardCreatePosition + 1);
   }
 
   showListActions(listActionsRef: DropdownComponent): void {
@@ -68,7 +84,7 @@ export class ListComponent implements OnInit {
     this.store.dispatch(ToggleSubscribeList({ index: this.index }));
   }
 
-  trackByFn(index: number, item: string): number {
-    return index;
+  trackByFn(index: number, item: Card): string {
+    return item.id;
   }
 }

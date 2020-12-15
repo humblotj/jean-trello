@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { List } from '../model/list.model';
 import { DialogService } from '../shared/overlay/dialog.service';
 import { AppState } from '../store/app.reducer';
-import { CardEditDialogComponent } from './card-edit-dialog/card-edit-dialog.component';
 import { selectLists } from './store/board.reducer';
 
 @Component({
@@ -16,7 +15,7 @@ import { selectLists } from './store/board.reducer';
 export class BoardComponent implements OnInit {
   lists$: Observable<List[]>;
 
-  cardCreatePosition: 'top' | 'bottom' = 'bottom';
+  cardCreatePosition = 0;
   cardCreateTitle = '';
   cardCreateIndex: number | null = null;
 
@@ -25,10 +24,9 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.d.open(CardEditDialogComponent);
   }
 
-  trackByFn(index: number, item: List): number {
-    return index;
+  trackByFn(index: number, item: List): string {
+    return item.id;
   }
 }

@@ -9,11 +9,11 @@ export interface State {
   cards: Card[];
 }
 
-const posIncr = 65535;
+export const posIncr = 65535;
 
 const initialState: State = {
   lists: [new List('To Do', posIncr, false, '1'), new List('Doing', posIncr * 2, false, '2'), new List('Done', posIncr * 3, false, '3')],
-  cards: [new Card('1', 'test', 0, false, '')]
+  cards: [new Card('1', 'test', posIncr, false, '')]
 };
 
 export const selectBoard = (state: AppState) => state.board;
@@ -63,10 +63,29 @@ export const boardReducer = createReducer(
       { ...state.lists[index], subscribed: !state.lists[index].subscribed }, ...state.lists.slice(index + 1)]
     })),
   on(BoardActions.AddCard,
-    (state, { idList, index, name }) => ({
-      ...state,
-      cards: [...state.cards, new Card(idList, name, state.cards[state.cards.length - 1].pos + posIncr, false, '')]
-    })),
+    (state, { card }) => {
+      let index = 0;
+      let listFound = false;
+      for (const c of state.cards) {
+        if (c.idList === card.idList) {
+          listFound = true;
+          if (c.pos > card.pos) {
+            break;
+          }
+        } else {
+          if (listFound) {
+            break;
+          }
+        }
+        index++;
+      }
+      const cards = index > 0 ?
+        [...state.cards.slice(0, index), card, ...state.cards.slice(index)]
+        : [card, ...state.cards.slice(index)];
+      return {
+        ...state, cards
+      };
+    }),
   on(BoardActions.ArchiveAllCards,
     (state, { idList }) => ({
       ...state,

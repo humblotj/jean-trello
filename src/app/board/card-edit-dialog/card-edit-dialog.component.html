@@ -16,7 +16,7 @@
           </mat-icon>
         </span>
         <div class="card-title" fxFlex>
-          <h2></h2>
+          <h2>{{card?.name}}</h2>
           <textarea #cardTitleRef spellcheck="false" [ngModel]="card?.name"
             (ngModelChange)="onChangeCardTitle($event, card)" (keydown.enter)="blur($event)"
             [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
@@ -40,12 +40,32 @@
             <h3>
               Description
             </h3>
+            <button *ngIf="!isEditingDesc && card?.desc" app-button color="dialog" class="edit-btn"
+              (click)="onOpenEdit()">
+              Edit
+            </button>
           </div>
-          <div class="description-content">
-            <a href="#">
+          <div class="description-content" *ngIf="!isEditingDesc; else edit">
+            <a *ngIf="!card?.desc; else desc" href="#" (click)="onOpenEdit()">
               Add a more detailed description...
             </a>
+            <ng-template #desc>
+              <p (click)="onOpenEdit()">
+                {{card?.desc}}
+              </p>
+            </ng-template>
           </div>
+          <ng-template #edit>
+            <div class="description-edit" *ngIf="isEditingDesc">
+              <textarea #descRef [ngModel]="card?.desc" placeholder="Add a more detailed description..."
+                cdkTextareaAutosize cdkAutosizeMinRows="5"></textarea>
+              <div>
+                <button app-button color="green" class="save-edit"
+                  (click)="onEditDescription(descRef.value, card)">Save</button>
+                <button app-button-cancel (click)="isEditingDesc = false"></button>
+              </div>
+            </div>
+          </ng-template>
         </div>
         <div class="window-module card-detail-activity">
           <div class="module-title" fxLayoutAlign="space-between center">
