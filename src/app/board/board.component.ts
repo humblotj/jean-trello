@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { List } from '../model/list.model';
-import { DialogService } from '../shared/overlay/dialog.service';
 import { AppState } from '../store/app.reducer';
 import { selectLists } from './store/board.reducer';
 
@@ -19,7 +18,7 @@ export class BoardComponent implements OnInit {
   cardCreateTitle = '';
   cardCreateIndex: number | null = null;
 
-  constructor(private store: Store<AppState>, private d: DialogService) {
+  constructor(private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
