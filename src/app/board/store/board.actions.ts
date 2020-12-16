@@ -14,3 +14,4 @@ export const DeleteCard = createAction('[Board] Delete Card', props<{ card: Card
 export const CopyList = createAction('[Board] Copy List', props<{ name: string, idList: string }>());
 export const MoveList = createAction('[Board] Move List', props<{ prevPos: number, pos: number }>());
 export const SortCards = createAction('[Board] Sort Cards', props<{ idList: string, sortBy: 'newest' | 'oldest' | 'alphabetically' }>());
+export const MoveAllCards = createAction('[Board] Move All Cards', props<{ prevList: List, list: List }>());

@@ -105,6 +105,12 @@
         &:active {
           background-color: #e4f0f6;
         }
+
+        &.disabled {
+          background: none;
+          color: #a5adba;
+          cursor: default;
+        }
       }
     }
   }

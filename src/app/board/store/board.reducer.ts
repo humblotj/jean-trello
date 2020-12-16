@@ -31,7 +31,7 @@ export const selectCards = createSelector(
 
 export const selectCardsByList = (idList: string) => createSelector(
   selectCards,
-  (cards) => cards.filter(card => idList && card.idList === idList && !card.closed)
+  (cards) => cards?.filter(card => idList && card.idList === idList && !card.closed)
 );
 
 export const findList = (idList: string) => createSelector(
@@ -178,7 +178,35 @@ export const boardReducer = createReducer(
         ...state,
         cards: [...newArray, ...cards]
       };
-    })
+    }),
+  on(BoardActions.MoveAllCards,
+    (state, { prevList, list }) => {
+      let prevCardsList: Card[] = [];
+      const currentCardsList: Card[] = [];
+      const cards = state.cards.filter(c => {
+        if (c.idList === prevList.id) {
+          prevCardsList.push(c);
+          return false;
+        } else if (c.idList === list.id) {
+          currentCardsList.push(c);
+          return false;
+        } else {
+          return true;
+        }
+      });
+
+      if (!prevCardsList.length) {
+        return { ...state };
+      }
+
+      const lastPos = currentCardsList.length ? currentCardsList[currentCardsList.length - 1].pos : 0;
+      let i = 0;
+      prevCardsList = prevCardsList.map(c => { i++; return { ...c, idList: list.id, pos: lastPos + i * posIncr + i }; });
+      return {
+        ...state,
+        cards: [...cards, ...currentCardsList, ...prevCardsList]
+      };
+    }),
 );
 
 export const calcPos = (array: Card[] | List[], index: number) => {

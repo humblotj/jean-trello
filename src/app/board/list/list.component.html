@@ -82,7 +82,7 @@
       </ul>
       <hr>
       <ul class="dropdown-list">
-        <li><a href="#">Move All Cards in the list</a></li>
+        <li><a href="#" (click)="moveAllCardsRef.show(); listActionsRef.hide()">Move All Cards in the list</a></li>
         <li><a href="#" (click)="archiveAllCardsRef.show(); listActionsRef.hide()">Archive All Cards in the list</a>
         </li>
       </ul>
@@ -140,6 +140,20 @@
         <li><a href="#" (click)="onSortCards('newest')">Date Created (Newest First)</a></li>
         <li><a href="#" (click)="onSortCards('oldest')">Date Created (Oldest First)</a></li>
         <li><a href="#" (click)="onSortCards('alphabetically')">Card Name (Alphabetically)</a></li>
+      </ul>
+    </div>
+  </app-dropdown>
+
+  <app-dropdown #moveAllCardsRef [reference]="extrasMenuRef.el" [backReference]="listActionsRef">
+    <span title>Move All Cards in List</span>
+    <div class="dropdown-content">
+      <ul class="dropdown-list">
+        <li *ngFor="let list of lists; let i = index">
+          <a href="#" [ngClass]="{'disabled': (i + '') === (index + '')}"
+            (click)="onMoveAllCards(list, moveAllCardsRef)">
+            {{(list?.name || '')}} {{ ((i + '') === (index + '')) ? ' (current)' : ''}}
+          </a>
+        </li>
       </ul>
     </div>
   </app-dropdown>
