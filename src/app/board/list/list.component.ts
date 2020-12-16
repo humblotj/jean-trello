@@ -9,7 +9,7 @@ import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { AppState } from 'src/app/store/app.reducer';
-import { AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveList, RenameList, ToggleSubscribeList } from '../store/board.actions';
+import { AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveList, RenameList, SortCards, ToggleSubscribeList } from '../store/board.actions';
 import { calcPos, posIncr, selectCardsByList } from '../store/board.reducer';
 
 @Component({
@@ -102,6 +102,10 @@ export class ListComponent implements OnInit, OnChanges {
     if (pos !== this.index) {
       this.store.dispatch(MoveList({ prevPos: this.index, pos }));
     }
+  }
+
+  onSortCards(sortBy: 'newest' | 'oldest' | 'alphabetically'): void {
+    this.store.dispatch(SortCards({ idList: this.list?.id || '', sortBy }));
   }
 
   trackByFn(index: number, item: Card): string {

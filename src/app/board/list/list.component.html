@@ -78,7 +78,7 @@
       </ul>
       <hr>
       <ul class="dropdown-list">
-        <li><a href="#">Sort by...</a></li>
+        <li><a href="#" (click)="sortListRef.show(); listActionsRef.hide()">Sort by...</a></li>
       </ul>
       <hr>
       <ul class="dropdown-list">
@@ -130,6 +130,17 @@
       <p>This will remove all the cards in this list from the board. To view archived cards and bring them back to the
         board, click “Menu” > “Archived Items.” (Not supported)</p>
       <button app-button color="danger" (click)="onArchiveAllCards(); archiveAllCardsRef.hide()">Archive All</button>
+    </div>
+  </app-dropdown>
+
+  <app-dropdown #sortListRef [reference]="extrasMenuRef.el" [backReference]="listActionsRef">
+    <span title>Sort List</span>
+    <div class="dropdown-content">
+      <ul class="dropdown-list">
+        <li><a href="#" (click)="onSortCards('newest')">Date Created (Newest First)</a></li>
+        <li><a href="#" (click)="onSortCards('oldest')">Date Created (Oldest First)</a></li>
+        <li><a href="#" (click)="onSortCards('alphabetically')">Card Name (Alphabetically)</a></li>
+      </ul>
     </div>
   </app-dropdown>
 </ng-container>

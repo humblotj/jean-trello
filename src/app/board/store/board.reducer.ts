@@ -148,6 +148,36 @@ export const boardReducer = createReducer(
         ...state,
         lists: move(state.lists, prevPos, pos)
       };
+    }),
+  on(BoardActions.SortCards,
+    (state, { idList, sortBy }) => {
+      let cards: Card[] = [];
+      const newArray = state.cards.filter(c => {
+        if (c.idList === idList) {
+          cards.push(c);
+          return false;
+        } else {
+          return true;
+        }
+      });
+      cards.sort((a, b) => {
+        switch (sortBy) {
+          case 'newest':
+            return a.createAt < b.createAt ? 1 : -1;
+          case 'oldest':
+            return a.createAt > b.createAt ? 1 : -1;
+          case 'alphabetically':
+            return a.name > b.name ? 1 : -1;
+          default:
+            return 1;
+        }
+      });
+      let i = 0;
+      cards = cards.map(c => { i++; return { ...c, pos: posIncr * i + (i - 1) }; });
+      return {
+        ...state,
+        cards: [...newArray, ...cards]
+      };
     })
 );
 
