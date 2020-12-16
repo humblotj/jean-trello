@@ -16,9 +16,8 @@ export class DialogService {
   ): DialogRef<R> {
     const configs = new OverlayConfig({
       positionStrategy: this.overlay.position().global().centerHorizontally().top(),
-      hasBackdrop: true,
+      hasBackdrop: false,
       panelClass: 'modal',
-      backdropClass: 'modal-background'
     });
 
     const overlayRef = this.overlay.create(configs);

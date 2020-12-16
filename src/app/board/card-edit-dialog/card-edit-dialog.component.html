@@ -17,7 +17,7 @@
         </span>
         <div class="card-title" fxFlex>
           <h2>{{card?.name}}</h2>
-          <textarea #cardTitleRef spellcheck="false" [ngModel]="card?.name"
+          <textarea #cardTitleRef #autosize="cdkTextareaAutosize" spellcheck="false" [ngModel]="card?.name"
             (ngModelChange)="onChangeCardTitle($event, card)" (keydown.enter)="blur($event)"
             [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
         </div>
@@ -130,7 +130,7 @@
         <div class="window-module">
           <h3>Actions</h3>
           <div fxLayout="column">
-            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="To Do">
+            <button #moveCardRefBtn app-button color="dialog" fxLayoutAlign="start center" (click)="moveCardRef.show()">
               <span app-icon>
                 <mat-icon svgIcon="arrow-right" [inline]="true"></mat-icon>
               </span>
@@ -196,4 +196,25 @@
       </div>
     </app-dropdown>
   </ng-template>
+
+  <app-dropdown #moveCardRef [reference]="moveCardRefBtn.el">
+    <span title>Move Card</span>
+    <div class="dropdown-content move-list">
+      <div app-select-form>
+        <label>Board</label>
+        <span class="list-value">Jean Trello</span>
+        <select [ngModel]="0">
+          <option [value]="0">Jean Trello</option>
+        </select>
+      </div>
+      <div app-select-form>
+        <label>List</label>
+        <span class="list-value">{{+listSelect.value}}</span>
+        <select #listSelect [ngModel]="(list$ | async)?.id">
+          <option *ngFor="let list of lists$| ngrxPush; let i = index" [value]="list.id">{{ list.name }}</option>
+        </select>
+      </div>
+      <button app-button color="green" (click)="onMoveCard(); moveCardRef.hide()">Move</button>
+    </div>
+  </app-dropdown>
 </ng-container>

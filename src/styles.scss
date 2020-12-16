@@ -139,6 +139,10 @@ h6 {
   margin: 0 0 8px;
 }
 
-.modal-background {
+.modal {
   background-color: rgba(0, 0, 0, 0.64);
+  max-height: auto;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
 }

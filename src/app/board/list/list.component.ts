@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ChangeDetectionStrategy, ViewChild,
-  ElementRef, Input, Output, EventEmitter, ChangeDetectorRef, SimpleChanges, OnChanges
+  ElementRef, Input, Output, EventEmitter, SimpleChanges, OnChanges
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { AppState } from 'src/app/store/app.reducer';
 import { AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveAllCards, MoveList, RenameList, SortCards, ToggleSubscribeList } from '../store/board.actions';
-import { calcPos, posIncr, selectCardsByList } from '../store/board.reducer';
+import { calcPos, selectCardsByList } from '../store/board.reducer';
 
 @Component({
   selector: 'app-list',
@@ -33,7 +33,7 @@ export class ListComponent implements OnInit, OnChanges {
   @Output() cardCreateIndexChange = new EventEmitter<number | null>();
 
   cards$!: Observable<Card[]>;
-  constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''));
