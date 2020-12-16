@@ -12,7 +12,7 @@ export class Card {
 
   constructor(idList: string, name: string, pos: number, subscribed: boolean, desc: string, id?: string) {
     this.idList = idList;
-    this.name = name;
+    this.name = name.trim();
     this.pos = pos;
     this.subscribed = subscribed;
     this.desc = desc;
