@@ -83,7 +83,8 @@
       <hr>
       <ul class="dropdown-list">
         <li><a href="#">Move All Cards in the list</a></li>
-        <li><a href="#" (click)="onArchiveAllCards(); listActionsRef.hide()">Archive All Cards in the list</a></li>
+        <li><a href="#" (click)="archiveAllCardsRef.show(); listActionsRef.hide()">Archive All Cards in the list</a>
+        </li>
       </ul>
       <hr>
       <ul class="dropdown-list">
@@ -120,6 +121,15 @@
         </select>
       </div>
       <button app-button color="green" (click)="onMoveList(+moveListSelect.value); moveListRef.hide()">Move</button>
+    </div>
+  </app-dropdown>
+
+  <app-dropdown #archiveAllCardsRef [reference]="extrasMenuRef.el" [backReference]="listActionsRef">
+    <span title>Archive All Cards in this List?</span>
+    <div class="dropdown-content">
+      <p>This will remove all the cards in this list from the board. To view archived cards and bring them back to the
+        board, click “Menu” > “Archived Items.” (Not supported)</p>
+      <button app-button color="danger" (click)="onArchiveAllCards(); archiveAllCardsRef.hide()">Archive All</button>
     </div>
   </app-dropdown>
 </ng-container>
