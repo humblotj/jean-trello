@@ -17,6 +17,7 @@ export class DropdownComponent implements OnInit, OnDestroy {
 
   @Input() reference!: ElementRef;
   @Input() backgroundColor: 'primary' | 'secondary' = 'primary';
+  @Input() backReference?: DropdownComponent;
 
   @ViewChild('dropdown') contentTemplate!: TemplateRef<any>;
 
@@ -53,6 +54,11 @@ export class DropdownComponent implements OnInit, OnDestroy {
     this.clickoutHandler = null;
     this.showing = false;
 
+  }
+
+  back(): void {
+    this.hide();
+    this.backReference?.show();
   }
 
   private createOverLay(): OverlayRef {

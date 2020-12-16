@@ -92,7 +92,7 @@
     </div>
   </app-dropdown>
 
-  <app-dropdown #copyListRef [reference]="extrasMenuRef.el">
+  <app-dropdown #copyListRef [reference]="extrasMenuRef.el" [backReference]="listActionsRef">
     <span title>Copy List</span>
     <div class="dropdown-content copy-list">
       <label>Name</label>
@@ -102,7 +102,7 @@
     </div>
   </app-dropdown>
 
-  <app-dropdown #moveListRef [reference]="extrasMenuRef.el">
+  <app-dropdown #moveListRef [reference]="extrasMenuRef.el" [backReference]="listActionsRef">
     <span title>Move List</span>
     <div class="dropdown-content move-list">
       <div app-select-form>

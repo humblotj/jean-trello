@@ -1,6 +1,7 @@
 <ng-template #dropdown>
   <div #dropdownRef class="dropdown-container">
     <div class="dropdown-header">
+      <button *ngIf="backReference" app-icon class="back-btn" (click)="back()"></button>
       <ng-content select="[title]"></ng-content>
       <button app-button-cancel (click)="hide()"></button>
     </div>
