@@ -33,14 +33,14 @@
     <span title>Position</span>
     <div class="dropdown-content">
       <div class="form-grid">
-        <div app-button color="dialog" fxFlex="75">
+        <div app-select-form color="dialog" fxFlex="75">
           <label>List</label>
           <span class="list-value">{{ctx.lists ? ctx.lists[cardCreateIndex]?.name : ''}}</span>
           <select [ngModel]="cardCreateIndex" (ngModelChange)="onSelectList($event, ctx.cards)">
             <option *ngFor="let list of ctx.lists; let i = index" [value]="i">{{ list.name }}</option>
           </select>
         </div>
-        <div app-button color="dialog" fxFlex="25">
+        <div app-select-form color="dialog" fxFlex="25">
           <label>Position</label>
           <span class="list-value">{{cardCreatePosition}}</span>
           <select [ngModel]="cardCreatePosition" (ngModelChange)="onSelectPosition($event)">

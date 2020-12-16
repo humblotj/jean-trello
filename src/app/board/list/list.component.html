@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
+  <app-dropdown [reference]="extrasMenuRef.el">
     <span title>List Actions</span>
     <div class="dropdown-content list-actions">
       <ul class="dropdown-list">
@@ -99,6 +99,15 @@
       <textarea #copyListNameRef></textarea>
       <button app-button color="green" (click)="onCopyList(copyListNameRef.value); copyListRef.hide()">Create
         List</button>
+    </div>
+  </app-dropdown>
+
+  <app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
+    <span title>Move List</span>
+    <div class="dropdown-content copy-list">
+      <label>Name</label>
+      <textarea #copyListNameRef></textarea>
+      <button app-button color="green" (click)="onCopyList(copyListNameRef.value); copyListRef.hide()">Move</button>
     </div>
   </app-dropdown>
 </ng-container>
