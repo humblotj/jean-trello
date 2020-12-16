@@ -44,27 +44,6 @@ export const findCard = (id: string) => createSelector(
   (cards) => cards.find(card => card.id === id)
 );
 
-export const calcPos = (array: Card[] | List[], index: number) => {
-  let pos = posIncr;
-  if (!array.length) {
-    return pos;
-  }
-  else if (index === array.length) {
-    const prevPos = array[array.length - 1].pos;
-    pos = prevPos + posIncr + 1;
-  }
-  else if (index === 0) {
-    const nextPos = array[index].pos;
-    pos = nextPos / 2;
-  }
-  else {
-    const prevPos = array[index - 1].pos;
-    const nextPos = array[index].pos;
-    pos = (prevPos + nextPos) / 2;
-  }
-  return pos;
-};
-
 export const boardReducer = createReducer(
   initialState,
   on(BoardActions.SetLists,
@@ -162,5 +141,43 @@ export const boardReducer = createReducer(
         lists: [...state.lists.slice(0, index), new List(name, pos, false, uuid), ...state.lists.slice(index)],
         cards: [...state.cards, ...copyCards]
       };
+    }),
+  on(BoardActions.MoveList,
+    (state, { prevPos, pos }) => {
+      return {
+        ...state,
+        lists: move(state.lists, prevPos, pos)
+      };
     })
 );
+
+export const calcPos = (array: Card[] | List[], index: number) => {
+  let pos = posIncr;
+  if (!array.length) {
+    return pos;
+  }
+  else if (index === array.length) {
+    const prevPos = array[array.length - 1].pos;
+    pos = prevPos + posIncr + 1;
+  }
+  else if (index === 0) {
+    const nextPos = array[index].pos;
+    pos = nextPos / 2;
+  }
+  else {
+    const prevPos = array[index - 1].pos;
+    const nextPos = array[index].pos;
+    pos = (prevPos + nextPos) / 2;
+  }
+  return pos;
+};
+
+const move = (arr: any[], from: number, to: number) => {
+  const pos = calcPos([...arr.slice(0, from), ...arr.slice(from + 1)], to);
+  const item = { ...arr[from], pos };
+  const clone = [...arr.slice(0, from), item, ...arr.slice(from + 1)];
+  Array.prototype.splice.call(clone, to, 0,
+    Array.prototype.splice.call(clone, from, 1)[0]
+  );
+  return clone;
+};

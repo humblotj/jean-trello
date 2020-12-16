@@ -12,3 +12,4 @@ export const ArchiveAllCards = createAction('[Board] Archive All Cards', props<{
 export const EditCard = createAction('[Board] Edit Card', props<{ card: Card }>());
 export const DeleteCard = createAction('[Board] Delete Card', props<{ card: Card }>());
 export const CopyList = createAction('[Board] Copy List', props<{ name: string, idList: string }>());
+export const MoveList = createAction('[Board] Move List', props<{ prevPos: number, pos: number }>());

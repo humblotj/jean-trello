@@ -1,6 +1,7 @@
 .select-form {
   position: relative;
   height: 48px;
+  box-sizing: border-box;
 
   label {
     display: inline-block;

@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <app-dropdown [reference]="extrasMenuRef.el">
+  <app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
     <span title>List Actions</span>
     <div class="dropdown-content list-actions">
       <ul class="dropdown-list">
@@ -71,7 +71,7 @@
             Card...</a>
         </li>
         <li><a href="#" (click)="copyListRef.show(); listActionsRef.hide(); onCopyListShow()">Copy List...</a></li>
-        <li><a href="#">Move List...</a></li>
+        <li><a href="#" (click)="moveListRef.show(); listActionsRef.hide();">Move List...</a></li>
         <li><a href="#" (click)="onToggleSubscribed()">Watch
             <span app-icon class="subscribed" *ngIf="list?.subscribed"></span>
           </a></li>
@@ -102,12 +102,24 @@
     </div>
   </app-dropdown>
 
-  <app-dropdown #listActionsRef [reference]="extrasMenuRef.el">
+  <app-dropdown #moveListRef [reference]="extrasMenuRef.el">
     <span title>Move List</span>
-    <div class="dropdown-content copy-list">
-      <label>Name</label>
-      <textarea #copyListNameRef></textarea>
-      <button app-button color="green" (click)="onCopyList(copyListNameRef.value); copyListRef.hide()">Move</button>
+    <div class="dropdown-content move-list">
+      <div app-select-form>
+        <label>Board</label>
+        <span class="list-value">Jean Trello</span>
+        <select [ngModel]="0">
+          <option [value]="0">Jean Trello</option>
+        </select>
+      </div>
+      <div app-select-form>
+        <label>Position</label>
+        <span class="list-value">{{+moveListSelect.value + 1}}</span>
+        <select #moveListSelect [ngModel]="index">
+          <option *ngFor="let list of lists; let i = index" [value]="i">{{ i+1 }}</option>
+        </select>
+      </div>
+      <button app-button color="green" (click)="onMoveList(+moveListSelect.value); moveListRef.hide()">Move</button>
     </div>
   </app-dropdown>
 </ng-container>

@@ -9,7 +9,7 @@ import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { AppState } from 'src/app/store/app.reducer';
-import { AddCard, ArchiveAllCards, ArchiveList, CopyList, RenameList, ToggleSubscribeList } from '../store/board.actions';
+import { AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveList, RenameList, ToggleSubscribeList } from '../store/board.actions';
 import { calcPos, posIncr, selectCardsByList } from '../store/board.reducer';
 
 @Component({
@@ -23,6 +23,7 @@ export class ListComponent implements OnInit, OnChanges {
   @ViewChild('copyListNameRef') copyListNameRef: ElementRef | undefined;
   @Input() index!: number;
   @Input() list?: List;
+  @Input() lists?: List[] = [];
   @Input() cardCreatePosition = 0;
   @Input() cardCreateTitle = '';
   @Input() cardCreateIndex: number | null = null;
@@ -94,6 +95,12 @@ export class ListComponent implements OnInit, OnChanges {
       this.store.dispatch(CopyList({ name, idList: this.list?.id || '' }));
     } else {
       this.copyListNameRef?.nativeElement.focus();
+    }
+  }
+
+  onMoveList(pos: number): void {
+    if (pos !== this.index) {
+      this.store.dispatch(MoveList({ prevPos: this.index, pos }));
     }
   }
 
