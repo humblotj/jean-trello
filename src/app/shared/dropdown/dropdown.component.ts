@@ -78,7 +78,8 @@ export class DropdownComponent implements OnInit, OnDestroy {
         originY: 'top',
         overlayX: 'start',
         overlayY: 'bottom'
-      }]);
+      }])
+      .withDefaultOffsetY(8);
 
     const scrollStrategy = this.overlay.scrollStrategies.reposition();
 

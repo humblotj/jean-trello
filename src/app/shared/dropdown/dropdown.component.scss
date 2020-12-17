@@ -87,6 +87,16 @@
 .dropdown-content {
   padding: 0 12px 12px;
 
+  h4 {
+    margin-top: 16px;
+    color: #5e6c84;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 16px;
+    text-transform: uppercase;
+  }
+
   .dropdown-list {
     li {
       a {
