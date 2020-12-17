@@ -9,6 +9,7 @@ import { CardEditDialogComponent } from '../../card-edit-dialog/card-edit-dialog
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardComponent implements OnInit {
+  @Input() index?: number;
   @Input() listIndex?: number;
   @Input() card?: Card;
 
@@ -17,7 +18,7 @@ export class CardComponent implements OnInit {
   ngOnInit(): void { }
 
   onOpenEditCard(): void {
-    const dialogRef = this.dialogService.open(CardEditDialogComponent, { card: this.card });
+    const dialogRef = this.dialogService.open(CardEditDialogComponent, { card: this.card, index: this.index });
   }
 
 }

@@ -24,7 +24,6 @@ export class OverlayComponent implements OnInit {
     const dialogContainerEl = this.el?.nativeElement;
     if (dialogContainerEl) {
       const rect = dialogContainerEl.getBoundingClientRect();
-      console.log('ok');
       if (event.clientX <= rect.left || event.clientX >= rect.right ||
         event.clientY <= rect.top || event.clientY >= rect.bottom) {
         this.ref.close();

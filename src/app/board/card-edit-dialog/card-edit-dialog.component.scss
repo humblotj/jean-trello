@@ -100,6 +100,7 @@
         }
 
         textarea {
+          width: 656px;
           margin-bottom: -1px;
 
           background: transparent;
@@ -292,5 +293,25 @@
         margin: 8px 0;
       }
     }
+  }
+}
+
+.move-card {
+  .form-grid {
+    margin-bottom: 8px;
+
+    &:last-of-type {
+      > div {
+        &:first-child {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+
+  button {
+    width: auto;
+    margin-top: 8px;
+    padding: 0 24px;
   }
 }

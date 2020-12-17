@@ -26,7 +26,7 @@
         (cardCreatePositionChange)="cardCreatePositionChange.emit($event)">
       </app-card-create>
       <ng-container *ngFor="let card of cards; let i = index; trackBy: trackByFn">
-        <app-card [card]="card" [listIndex]="index"></app-card>
+        <app-card [card]="card" [listIndex]="index" [index]="i"></app-card>
         <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === i+1"
           [cardCreateTitle]="cardCreateTitle" [cardCreatePosition]="cardCreatePosition"
           [cardCreateIndex]="cardCreateIndex" (cardCreateTitleChange)="cardCreateTitleChange.emit($event)"
@@ -106,19 +106,23 @@
   <app-dropdown #moveListRef [reference]="extrasMenuRef.el" [backReference]="listActionsRef">
     <span title>Move List</span>
     <div class="dropdown-content move-list">
-      <div app-select-form>
-        <label>Board</label>
-        <span class="list-value">Jean Trello</span>
-        <select [ngModel]="0">
-          <option [value]="0">Jean Trello</option>
-        </select>
+      <div class="form-grid">
+        <div app-select-form>
+          <label>Board</label>
+          <span class="list-value">Jean Trello</span>
+          <select [ngModel]="0">
+            <option [value]="0">Jean Trello</option>
+          </select>
+        </div>
       </div>
-      <div app-select-form>
-        <label>Position</label>
-        <span class="list-value">{{+moveListSelect.value + 1}}</span>
-        <select #moveListSelect [ngModel]="index">
-          <option *ngFor="let list of lists; let i = index" [value]="i">{{ i+1 }}</option>
-        </select>
+      <div class="form-grid">
+        <div app-select-form>
+          <label>Position</label>
+          <span class="list-value">{{+moveListSelect.value + 1}}</span>
+          <select #moveListSelect [ngModel]="index">
+            <option *ngFor="let list of lists; let i = index" [value]="i">{{ i+1 }}</option>
+          </select>
+        </div>
       </div>
       <button app-button color="green" (click)="onMoveList(+moveListSelect.value); moveListRef.hide()">Move</button>
     </div>

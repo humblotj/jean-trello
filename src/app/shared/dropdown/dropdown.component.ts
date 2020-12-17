@@ -104,6 +104,10 @@ export class DropdownComponent implements OnInit, OnDestroy {
     }
   }
 
+  stopPropagation(event: Event): void {
+    event.stopPropagation();
+  }
+
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent): void {
     if (this.clickoutHandler) {

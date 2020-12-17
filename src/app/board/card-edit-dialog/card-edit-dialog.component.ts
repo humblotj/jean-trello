@@ -1,13 +1,13 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DialogRef } from 'src/app/shared/overlay/dialog-ref';
 import { AppState } from 'src/app/store/app.reducer';
-import { EditCard, DeleteCard } from '../store/board.actions';
+import { EditCard, DeleteCard, MoveCard } from '../store/board.actions';
 import { findCard, findList, selectCardsByList, selectLists } from '../store/board.reducer';
 
 @Component({
@@ -21,34 +21,34 @@ export class CardEditDialogComponent implements OnInit {
   @ViewChild('descRef') descRef: ElementRef | undefined;
   @ViewChild('autosize') autosize: CdkTextareaAutosize | undefined;
 
-  card$!: Observable<Card | undefined>;
-  list$!: Observable<List | undefined>;
-  lists$!: Observable<List[] | undefined>;
+  card$!: Observable<Card | undefined>; // card active
+  list$!: Observable<List | undefined>; // list active
+  cards$!: Observable<Card[] | undefined>; // for list of position
+  lists$!: Observable<List[] | undefined>; // for list of list
 
   // for description
   isEditingDesc = false;
 
   // for moving card
-  position = 0;
+  currentPosition = 0;
+  movePosition: string | number = 0;
 
-  constructor(private dialogRef: DialogRef, private store: Store<AppState>, private ngZone: NgZone) {
+  constructor(private dialogRef: DialogRef, private store: Store<AppState>, private cdr: ChangeDetectorRef) {
+    this.currentPosition = dialogRef?.data.index;
+    this.movePosition = this.currentPosition;
   }
 
   ngOnInit(): void {
     this.card$ = this.store.select(findCard(this.dialogRef?.data?.card?.id));
+    this.cards$ = this.store.select(selectCardsByList(this.dialogRef?.data?.card?.idList));
     this.list$ = this.store.select(findList(this.dialogRef?.data?.card?.idList));
     this.lists$ = this.store.select(selectLists);
-  }
-
-  triggerResize(): void {
-    this.ngZone.onStable.pipe(take(1))
-      .subscribe(() => this.autosize?.resizeToFitContent(true));
   }
 
   onChangeCardTitle(listName: string, card: Card | undefined): void {
     const trim = listName.trim();
     if (trim && card) {
-      this.store.dispatch(EditCard({ card: { ...card, name: listName.trim() } }));
+      this.store.dispatch(EditCard({ card: { ...card, name: trim } }));
     } else {
       this.cardTitleRef && (this.cardTitleRef.nativeElement.value = card?.name || '');
     }
@@ -99,13 +99,26 @@ export class CardEditDialogComponent implements OnInit {
     }
   }
 
-  onOpenMoveCard(list: List): void {
-    // combineLatest([this.store.select(selectLists), this.store.select(selectCardsByList(list.id))]).pipe(map(([lists, cards]) => {
-    //   this.idList = lists.findIndex(l => l.id === list.id);
-    // }));
-
+  fetchPosition(idList: string): void {
+    this.cards$ = this.store.select(selectCardsByList(idList)).pipe(
+      tap(cards => {
+        if (idList !== this.dialogRef?.data.card.idList) {
+          this.movePosition = cards.length;
+        } else {
+          this.movePosition = cards.findIndex(c => c.id === this.dialogRef?.data?.card?.id);
+        }
+        this.cdr.detectChanges();
+      }));
   }
 
-  onMoveCard(): void {
+  onMoveCard(card: Card | undefined, idList: string): void {
+    if (card) {
+      this.store.dispatch(MoveCard({ card, idList, position: +this.movePosition }));
+      this.list$ = this.store.select(findList(idList));
+    }
+  }
+
+  getPositionList(cards: Card[] | null | undefined, card: Card | undefined, idList: string): [] {
+    return [].constructor(((cards?.length || 0) + (card?.idList === idList ? 0 : 1)));
   }
 }

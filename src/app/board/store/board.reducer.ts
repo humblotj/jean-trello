@@ -26,8 +26,8 @@ const initialState: State = {
     new Card('1', '[Css] Responsive Design', posIncr * 9 + 8, false, 'Probably not... not important in this test project... A fixed width is fine here, I guess...'),
     new Card('1', '[Css] Cross browsing', posIncr * 10 + 9, false, 'I am using a mac... Probably not...'),
     new Card('1', '[Backend] NodeJS Express + MongoodB Mongoose', posIncr * 11 + 10, false, 'Maybe one day... When I will have time... ( ͡~ ͜ʖ ͡°)\nNot complicated though.'),
-    new Card('2', '[Card Actions] Move', posIncr, false, ''),
-    new Card('2', '[Card Actions] Copy', posIncr * 2 + 1, false, ''),
+    new Card('2', '[Card Actions] Copy', posIncr, false, ''),
+    new Card('3', '[Card Actions] Move', posIncr / 2, false, ''),
     new Card('3', '[List Actions] Add Card / Position', posIncr, false, ''),
     new Card('3', '[List Actions] Add Card', posIncr * 2 + 1, false, ''),
     new Card('3', '[List Actions] Copy List', posIncr * 3 + 2, false, ''),
@@ -246,6 +246,29 @@ export const boardReducer = createReducer(
       return {
         ...state,
         cards: [...cards, ...currentCardsList, ...prevCardsList]
+      };
+    }),
+  on(BoardActions.MoveCard,
+    (state, { card, idList, position }) => {
+      const prevCardsList: Card[] = [];
+      const cards = state.cards.filter(c => {
+        if (c.id === card.id) {
+          return false;
+        } else if (c.idList === idList) {
+          prevCardsList.push(c);
+          return false;
+        } else {
+          return true;
+        }
+      });
+      if (!prevCardsList.length) {
+        return { ...state };
+      }
+
+      const pos = calcPos(prevCardsList, position);
+      return {
+        ...state,
+        cards: [...cards, ...prevCardsList.slice(0, position), { ...card, pos, idList }, ...prevCardsList.slice(position)]
       };
     }),
 );

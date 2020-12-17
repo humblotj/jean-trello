@@ -16,6 +16,7 @@ import { OverlayComponent } from './overlay/overlay.component';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { ReactiveComponentModule } from '@ngrx/component';
 import { SelectFormComponent } from './select-form/select-form.component';
+import { LinkComponent } from './link/link.component';
 
 @NgModule({
   declarations: [ButtonComponent,
@@ -26,6 +27,7 @@ import { SelectFormComponent } from './select-form/select-form.component';
     TooltipDirective,
     OverlayComponent,
     SelectFormComponent,
+    LinkComponent,
   ],
   imports: [
     CommonModule,
@@ -48,7 +50,8 @@ import { SelectFormComponent } from './select-form/select-form.component';
     IconComponent,
     DropdownComponent,
     TooltipDirective,
-    SelectFormComponent
+    SelectFormComponent,
+    LinkComponent
   ]
 })
 export class SharedModule { }

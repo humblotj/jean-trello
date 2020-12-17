@@ -1,9 +1,9 @@
 <ng-template #dropdown>
-  <div #dropdownRef class="dropdown-container">
+  <div #dropdownRef class="dropdown-container" (click)="stopPropagation($event)">
     <div class="dropdown-header">
       <button *ngIf="backReference" app-icon class="back-btn" (click)="back()"></button>
       <ng-content select="[title]"></ng-content>
-      <button app-button-cancel (click)="hide()"></button>
+      <button app-button-cancel (click)="stopPropagation($event); hide()"></button>
     </div>
     <ng-content></ng-content>
   </div>
