@@ -5,9 +5,10 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
+import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { DialogRef } from 'src/app/shared/overlay/dialog-ref';
 import { AppState } from 'src/app/store/app.reducer';
-import { EditCard, DeleteCard, MoveCard } from '../store/board.actions';
+import { EditCard, DeleteCard, MoveCard, CopyCard } from '../store/board.actions';
 import { findCard, findList, selectCardsByList, selectLists } from '../store/board.reducer';
 
 @Component({
@@ -20,6 +21,7 @@ export class CardEditDialogComponent implements OnInit {
   @ViewChild('cardTitleRef') cardTitleRef: ElementRef | undefined;
   @ViewChild('descRef') descRef: ElementRef | undefined;
   @ViewChild('autosize') autosize: CdkTextareaAutosize | undefined;
+  @ViewChild('copyCardNameRef') copyCardNameRef: ElementRef | undefined;
 
   card$!: Observable<Card | undefined>; // card active
   list$!: Observable<List | undefined>; // list active
@@ -30,12 +32,14 @@ export class CardEditDialogComponent implements OnInit {
   isEditingDesc = false;
 
   // for moving card
+  idListSelected?: string;
   currentPosition = 0;
   movePosition: string | number = 0;
 
   constructor(private dialogRef: DialogRef, private store: Store<AppState>, private cdr: ChangeDetectorRef) {
     this.currentPosition = dialogRef?.data.index;
     this.movePosition = this.currentPosition;
+    this.idListSelected = dialogRef?.data.card.idList;
   }
 
   ngOnInit(): void {
@@ -111,14 +115,38 @@ export class CardEditDialogComponent implements OnInit {
       }));
   }
 
-  onMoveCard(card: Card | undefined, idList: string): void {
+  onMoveCard(card: Card | undefined): void {
+    const idList = this.idListSelected || '';
     if (card) {
       this.store.dispatch(MoveCard({ card, idList, position: +this.movePosition }));
       this.list$ = this.store.select(findList(idList));
     }
   }
 
-  getPositionList(cards: Card[] | null | undefined, card: Card | undefined, idList: string): [] {
-    return [].constructor(((cards?.length || 0) + (card?.idList === idList ? 0 : 1)));
+  onOpenCopyCard(dropdown: DropdownComponent): void {
+    this.fetchPosition(this.dialogRef.data?.card.idList);
+    dropdown.show();
+    this.copyCardNameRef?.nativeElement.focus();
+  }
+
+  onCopyCard(card: Card | undefined, dropdown: DropdownComponent, event: Event): void {
+    event.stopPropagation();
+
+    const name = this.copyCardNameRef?.nativeElement.value;
+    if (!name) {
+      this.copyCardNameRef?.nativeElement.focus();
+    } else {
+      const idList = this.idListSelected || '';
+      console.log(idList);
+      if (card) {
+        this.store.dispatch(CopyCard({ card, name, idList, position: +this.movePosition }));
+        this.list$ = this.store.select(findList(idList));
+        dropdown.hide();
+      }
+    }
+  }
+
+  getPositionList(cards: Card[] | null | undefined, card: Card | undefined, isCopy?: boolean): [] {
+    return [].constructor(((cards?.length || 0) + (isCopy || (card?.idList !== this.idListSelected) ? 1 : 0)));
   }
 }

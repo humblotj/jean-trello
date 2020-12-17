@@ -73,11 +73,6 @@ export class DropdownComponent implements OnInit, OnDestroy {
         originY: 'bottom',
         overlayX: 'start',
         overlayY: 'top'
-      }, {
-        originX: 'start',
-        originY: 'top',
-        overlayX: 'start',
-        overlayY: 'bottom'
       }])
       .withDefaultOffsetY(8);
 

@@ -137,7 +137,8 @@
               </span>
               <span>Move</span>
             </button>
-            <button app-button color="dialog" fxLayoutAlign="start center" appTooltip="To Do">
+            <button #copyCardRefBtn app-button color="dialog" fxLayoutAlign="start center"
+              (click)="onOpenCopyCard(copyCardRef)">
               <span app-icon>
                 <mat-icon svgIcon="copy" [inline]="true"></mat-icon>
               </span>
@@ -200,47 +201,61 @@
 
   <app-dropdown #moveCardRef [reference]="moveCardRefBtn.el">
     <span title>Move Card</span>
-    <ng-container *ngTemplateOutlet="moveCardTmp"></ng-container>
+    <div class="dropdown-content move-card">
+      <h4>Select destination</h4>
+      <ng-container *ngTemplateOutlet="moveCardTmp"></ng-container>
+      <button app-button color="green" (click)="onMoveCard(card); moveCardRef.hide();">Move</button>
+    </div>
   </app-dropdown>
 
   <app-dropdown #moveCardListNameRef [reference]="listNameRef.el">
     <span title>Move Card</span>
-    <ng-container *ngTemplateOutlet="moveCardTmp"></ng-container>
-  </app-dropdown>
-
-  <ng-template #moveCardTmp>
     <div class="dropdown-content move-card">
       <h4>Select destination</h4>
-      <div class="form-grid">
-        <div app-select-form>
-          <label>Board</label>
-          <span class="list-value">Jean Trello</span>
-          <select [ngModel]="0">
-            <option [value]="0">Jean Trello</option>
-          </select>
-        </div>
+      <ng-container *ngTemplateOutlet="moveCardTmp"></ng-container>
+      <button app-button color="green" (click)="onMoveCard(card); moveCardListNameRef.hide()">Move</button>
+    </div>
+  </app-dropdown>
+
+  <app-dropdown #copyCardRef [reference]="copyCardRefBtn.el">
+    <span title>Copy Card</span>
+    <div class="dropdown-content copy-card">
+      <label>Title</label>
+      <textarea #copyCardNameRef [ngModel]="card?.name"></textarea>
+      <label>Copy to...</label>
+      <ng-container *ngTemplateOutlet="moveCardTmp; context:{$implicit: true}"></ng-container>
+      <button app-button color="green" (click)="onCopyCard(card, copyCardRef, $event)">Create
+        Card</button>
+    </div>
+  </app-dropdown>
+
+  <ng-template #moveCardTmp let-i>
+    <div class="form-grid">
+      <div app-select-form>
+        <label>Board</label>
+        <span class="list-value">Jean Trello</span>
+        <select [ngModel]="0">
+          <option [value]="0">Jean Trello</option>
+        </select>
       </div>
-      <div class="form-grid">
-        <div app-select-form fxFlex="75">
-          <label>List</label>
-          <span class="list-value">{{listSelect.options[listSelect.selectedIndex]?.text}}</span>
-          <select #listSelect [ngModel]="(list$ | async)?.id" (ngModelChange)="fetchPosition($event)">
-            <option *ngFor="let list of lists$| ngrxPush; let i = index" [value]="list.id">{{ list.name }}</option>
-          </select>
-        </div>
-        <div app-select-form fxFlex="25">
-          <label>Position</label>
-          <span class="list-value">{{+movePosition + 1}}</span>
-          <select [(ngModel)]="movePosition">
-            <option *ngFor="let position of getPositionList(cards$ | async, card, listSelect.value); let i = index"
-              [value]="i">
-              {{ i + 1 }} {{i === currentPosition && listSelect.value === card?.idList ? '(current)': '' }}
-            </option>
-          </select>
-        </div>
+    </div>
+    <div class="form-grid">
+      <div app-select-form fxFlex="75">
+        <label>List</label>
+        <span class="list-value">{{listSelect.options[listSelect.selectedIndex]?.text}}</span>
+        <select #listSelect [(ngModel)]="idListSelected" (ngModelChange)="fetchPosition($event)">
+          <option *ngFor="let list of lists$| async; let i = index" [value]="list.id">{{ list.name }}</option>
+        </select>
       </div>
-      <button app-button color="green"
-        (click)="onMoveCard(card, listSelect.value); moveCardRef.hide(); moveCardListNameRef.hide()">Move</button>
+      <div app-select-form fxFlex="25">
+        <label>Position</label>
+        <span class="list-value">{{+movePosition + 1}}</span>
+        <select [(ngModel)]="movePosition">
+          <option *ngFor="let position of getPositionList(cards$ | async, card, i); let i = index" [value]="i">
+            {{ i + 1 }} {{i === currentPosition && listSelect.value === card?.idList ? '(current)': '' }}
+          </option>
+        </select>
+      </div>
     </div>
   </ng-template>
 </ng-container>

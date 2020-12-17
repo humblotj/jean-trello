@@ -15,7 +15,6 @@ export const posIncr = 65535;
 const initialState: State = {
   lists: [new List('To Do', posIncr, false, '1'), new List('Doing', posIncr * 2, false, '2'), new List('Done', posIncr * 3, false, '3')],
   cards: [
-    new Card('1', '[Component Css] Card Edit', posIncr, false, ''),
     new Card('1', 'Activity history', posIncr * 2 + 1, false, 'Maybe if I am really motivated...'),
     new Card('1', '[Card] Labels', posIncr * 3 + 2, false, ''),
     new Card('1', '[Card] CheckList', posIncr * 4 + 3, false, ''),
@@ -26,7 +25,8 @@ const initialState: State = {
     new Card('1', '[Css] Responsive Design', posIncr * 9 + 8, false, 'Probably not... not important in this test project... A fixed width is fine here, I guess...'),
     new Card('1', '[Css] Cross browsing', posIncr * 10 + 9, false, 'I am using a mac... Probably not...'),
     new Card('1', '[Backend] NodeJS Express + MongoodB Mongoose', posIncr * 11 + 10, false, 'Maybe one day... When I will have time... ( ͡~ ͜ʖ ͡°)\nNot complicated though.'),
-    new Card('2', '[Card Actions] Copy', posIncr, false, ''),
+    new Card('2', '[Component Css] Card Edit', posIncr, false, ''),
+    new Card('3', '[Card Actions] Copy', posIncr / 4, false, ''),
     new Card('3', '[Card Actions] Move', posIncr / 2, false, ''),
     new Card('3', '[List Actions] Add Card / Position', posIncr, false, ''),
     new Card('3', '[List Actions] Add Card', posIncr * 2 + 1, false, ''),
@@ -261,14 +261,30 @@ export const boardReducer = createReducer(
           return true;
         }
       });
-      if (!prevCardsList.length) {
-        return { ...state };
-      }
 
       const pos = calcPos(prevCardsList, position);
       return {
         ...state,
         cards: [...cards, ...prevCardsList.slice(0, position), { ...card, pos, idList }, ...prevCardsList.slice(position)]
+      };
+    }),
+  on(BoardActions.CopyCard,
+    (state, { card, name, idList, position }) => {
+      const prevCardsList: Card[] = [];
+      const cards = state.cards.filter(c => {
+        if (c.idList === idList) {
+          prevCardsList.push(c);
+          return false;
+        } else {
+          return true;
+        }
+      });
+
+      const pos = calcPos(prevCardsList, position);
+      return {
+        ...state,
+        cards: [...cards, ...prevCardsList.slice(0, position),
+        new Card(idList, name, pos, card.subscribed, card.desc), ...prevCardsList.slice(position)]
       };
     }),
 );
