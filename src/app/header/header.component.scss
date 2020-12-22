@@ -75,22 +75,27 @@
 }
 
 .header-center {
-  color: hsla(0, 0%, 100%, 0.5);
   cursor: pointer;
 
-  &:hover {
-    color: #d2e0ed;
-  }
+  a {
+    height: 100%;
+    text-decoration: none;
+    color: hsla(0, 0%, 100%, 0.5);
 
-  span {
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    margin-right: 5px;
-  }
+    &:hover {
+      color: #d2e0ed;
+    }
 
-  h1 {
-    font-size: 22px;
-    font-family: cursive;
+    span {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      margin-right: 5px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-family: cursive;
+    }
   }
 }
