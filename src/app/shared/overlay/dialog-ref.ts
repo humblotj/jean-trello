@@ -4,11 +4,6 @@ import { OverlayRef } from '@angular/cdk/overlay';
 
 import { Type } from '@angular/core';
 
-export interface OverlayCloseEvent<R> {
-  type: 'backdropClick' | 'close';
-  data: R;
-}
-
 // R = Response Data Type, T = Data passed to Modal Type
 export class DialogRef<R = any, T = any> {
   afterClosed$ = new Subject<R | undefined>();
