@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Type, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Type, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { DialogRef } from './dialog-ref';
 
 @Component({
@@ -7,8 +7,10 @@ import { DialogRef } from './dialog-ref';
   styleUrls: ['./overlay.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OverlayComponent implements OnInit {
+export class OverlayComponent implements OnInit, OnDestroy {
   content!: Type<any>;
+
+  private clickoutHandler: ((event: MouseEvent) => void) | null = null;
 
   constructor(private ref: DialogRef, private el: ElementRef) { }
 
@@ -18,6 +20,14 @@ export class OverlayComponent implements OnInit {
 
   ngOnInit(): void {
     this.content = this.ref.content;
+    setTimeout(() => {
+      this.clickoutHandler = this.closeDialogFromClickout;
+    }, 0);
+  }
+
+
+  ngOnDestroy(): void {
+    this.clickoutHandler = null;
   }
 
   closeDialogFromClickout(event: MouseEvent): void {
@@ -33,6 +43,6 @@ export class OverlayComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent): void {
-    this.closeDialogFromClickout(event);
+    this.clickoutHandler && this.clickoutHandler(event);
   }
 }

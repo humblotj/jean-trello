@@ -18,6 +18,7 @@ export class CardComponent implements OnInit {
   ngOnInit(): void { }
 
   onOpenEditCard(): void {
+    console.log("clic")
     const dialogRef = this.dialogService.open(CardEditDialogComponent, { card: this.card, index: this.index });
   }
 
