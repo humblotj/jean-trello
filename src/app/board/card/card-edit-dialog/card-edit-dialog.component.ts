@@ -1,8 +1,8 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
@@ -29,7 +29,7 @@ export class CardEditDialogComponent implements OnInit {
   lists$!: Observable<List[] | undefined>; // for list of list
 
   // for description
-  isEditingDesc = false;
+  clickoutHandler: ((event: MouseEvent) => void) | null = null;
 
   // for moving card
   idListSelected?: string;
@@ -91,15 +91,16 @@ export class CardEditDialogComponent implements OnInit {
     }
   }
 
-  onOpenEdit(): void {
-    this.isEditingDesc = true;
+  onOpenEdit(event?: MouseEvent): void {
+    event?.stopPropagation();
+    this.clickoutHandler = this.closeDialogFromClickout;
     setTimeout(() => this.descRef?.nativeElement.focus(), 0);
   }
 
   onEditDescription(desc: string, card: Card | undefined): void {
     if (card) {
       this.store.dispatch(EditCard({ card: { ...card, desc } }));
-      this.isEditingDesc = false;
+      this.clickoutHandler = null;
     }
   }
 
@@ -149,4 +150,27 @@ export class CardEditDialogComponent implements OnInit {
   getPositionList(cards: Card[] | null | undefined, card: Card | undefined, isCopy?: boolean): [] {
     return [].constructor(((cards?.length || 0) + (isCopy || (card?.idList !== this.idListSelected) ? 1 : 0)));
   }
+
+
+  closeDialogFromClickout(event: MouseEvent): void {
+    const dialogContainerEl = this.descRef?.nativeElement;
+    if (dialogContainerEl) {
+      console.log("close")
+      const rect = dialogContainerEl.getBoundingClientRect();
+      if (event.clientX <= rect.left || event.clientX >= rect.right ||
+        event.clientY <= rect.top || event.clientY >= rect.bottom) {
+        this.card$.pipe(take(1)).subscribe(card => {
+          this.onEditDescription(dialogContainerEl.value, card);
+        });
+      }
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: MouseEvent): void {
+    if (this.clickoutHandler) {
+      this.clickoutHandler(event);
+    }
+  }
+
 }

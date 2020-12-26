@@ -41,12 +41,12 @@
             <h3>
               Description
             </h3>
-            <button *ngIf="!isEditingDesc && card?.desc" app-button color="dialog" class="edit-btn"
-              (click)="onOpenEdit()">
+            <button *ngIf="!clickoutHandler && card?.desc" app-button color="dialog" class="edit-btn"
+              (click)="onOpenEdit($event)">
               Edit
             </button>
           </div>
-          <div class="description-content" *ngIf="!isEditingDesc; else edit">
+          <div class="description-content" *ngIf="!clickoutHandler; else edit">
             <a *ngIf="!card?.desc; else desc" href="#" (click)="onOpenEdit()">
               Add a more detailed description...
             </a>
@@ -57,13 +57,13 @@
             </ng-template>
           </div>
           <ng-template #edit>
-            <div class="description-edit" *ngIf="isEditingDesc">
+            <div class="description-edit" *ngIf="clickoutHandler">
               <textarea #descRef [ngModel]="card?.desc" placeholder="Add a more detailed description..."
                 cdkTextareaAutosize cdkAutosizeMinRows="5"></textarea>
               <div>
                 <button app-button color="green" class="save-edit"
                   (click)="onEditDescription(descRef.value, card)">Save</button>
-                <button app-button-cancel (click)="isEditingDesc = false"></button>
+                <button app-button-cancel (click)="clickoutHandler = null"></button>
               </div>
             </div>
           </ng-template>
