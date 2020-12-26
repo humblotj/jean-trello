@@ -23,9 +23,13 @@ export class OverlayComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.content = this.ref.content;
     this.el.nativeElement.classList.add('overlay-' + this.type);
-    setTimeout(() => {
-      this.clickoutHandler = this.closeDialogFromClickout;
-    }, 0);
+
+    // for scroll inside overlay
+    if (this.type === 'dialog') {
+      setTimeout(() => {
+        this.clickoutHandler = this.closeDialogFromClickout;
+      }, 0);
+    }
   }
 
 

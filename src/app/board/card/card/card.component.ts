@@ -24,5 +24,4 @@ export class CardComponent implements OnInit {
   onOpenCardEdit(): void {
     const dialogRef = this.dialogService.openCardEdit(this.el, { card: this.card, index: this.index });
   }
-
 }

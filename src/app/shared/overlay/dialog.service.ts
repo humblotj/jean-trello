@@ -43,8 +43,9 @@ export class DialogService {
         overlayX: 'start',
         overlayY: 'top'
       }]),
-      hasBackdrop: false,
+      hasBackdrop: true,
       panelClass: 'card-edit',
+      backdropClass: 'dark-backdrop'
     });
 
     const overlayRef = this.overlay.create(configs);

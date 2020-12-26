@@ -1,22 +1,69 @@
 :host {
   display: block;
+  position: relative;
 }
 
 .card-details {
-  position: relative;
   width: 256px;
-  // max-width: 300px;
   margin-bottom: 8px;
   border-radius: 3px;
   padding: 6px 8px 2px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   box-sizing: border-box;
 
-  background-color: red;
+  background-color: #fff;
 
-  // z-index: 1;
+  z-index: 1;
 
   textarea {
     background: transparent;
+  }
+}
+
+.save-btn {
+  margin-top: 8px;
+}
+
+.quick-card-edit-buttons {
+  position: absolute;
+  width: 240px;
+  top: 0;
+  left: 100%;
+  opacity: 0;
+  z-index: 0;
+  transform: translateX(-20px);
+  transition: opacity 85ms ease-in, transform 85ms ease-in;
+
+  &.fade-in {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .quick-card-edit-buttons-item {
+    float: left;
+    clear: both;
+    border-radius: 3px;
+    border: 0;
+    margin: 0 0 4px 8px;
+    padding: 6px 12px 6px 8px;
+    outline: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: #e6e6e6;
+    text-decoration: none;
+    transition: transform 85ms ease-in;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      transform: translateX(5px);
+    }
+
+    span:first-child {
+      height: 16px;
+      width: 16px;
+      margin: 0 8px 0 -4px;
+      color: #fff;
+    }
   }
 }
