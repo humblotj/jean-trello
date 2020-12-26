@@ -86,7 +86,7 @@
       <label>Position</label>
       <span class="list-value">{{+movePosition + 1}}</span>
       <select [(ngModel)]="movePosition">
-        <option *ngFor="let position of getPositionList(cards$ | async, card, i); let i = index" [value]="i">
+        <option *ngFor="let position of getPositionList(cards$ | async, i); let i = index" [value]="i">
           {{ i + 1 }} {{i === currentPosition && listSelect.value === card?.idList ? '(current)': '' }}
         </option>
       </select>
