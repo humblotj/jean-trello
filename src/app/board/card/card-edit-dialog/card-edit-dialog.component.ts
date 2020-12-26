@@ -155,7 +155,6 @@ export class CardEditDialogComponent implements OnInit {
   closeDialogFromClickout(event: MouseEvent): void {
     const dialogContainerEl = this.descRef?.nativeElement;
     if (dialogContainerEl) {
-      console.log("close")
       const rect = dialogContainerEl.getBoundingClientRect();
       if (event.clientX <= rect.left || event.clientX >= rect.right ||
         event.clientY <= rect.top || event.clientY >= rect.bottom) {
