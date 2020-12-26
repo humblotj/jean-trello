@@ -1,26 +1,62 @@
 :host {
   display: block;
   position: relative;
-
-  max-width: 300px;
-  // min-height: 32px;
-
   margin-bottom: 8px;
-  border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
 
-  background-color: #fff;
+  > div {
+    position: relative;
 
-  cursor: pointer;
+    max-width: 300px;
+    // min-height: 32px;
 
-  &:hover {
-    background-color: #f4f5f7;
-    border-bottom-color: rgba(9, 30, 66, 0.25);
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
 
-    .icon-edit {
-      visibility: visible;
+    background-color: #fff;
 
-      &:hover {
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f4f5f7;
+      border-bottom-color: rgba(9, 30, 66, 0.25);
+
+      .icon-edit {
+        visibility: visible;
+
+        &:hover {
+          background-color: #ebecf0;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &.cdk-drag-placeholder {
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 3px;
+      background: rgba(9, 30, 66, 0.04);
+      z-index: 100;
+      content: "";
+    }
+
+    > div {
+      opacity: 0;
+    }
+  }
+
+  &.cdk-drag-preview {
+    > div {
+      box-shadow: 0 12px 24px -6px rgba(9, 30, 66, 0.25),
+        0 0 0 1px rgba(9, 30, 66, 0.08);
+      transform: rotate(4deg);
+
+      .icon-edit {
+        visibility: visible;
         background-color: #ebecf0;
         opacity: 1;
       }

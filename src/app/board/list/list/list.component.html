@@ -18,7 +18,8 @@
       </div>
     </div>
 
-    <div class="list-cards fancy-scrollbar" fxLayout="column">
+    <div cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="onDragCard($event)"
+      class="list-cards fancy-scrollbar" fxLayout="column">
       <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === 0" [cardCreateTitle]="cardCreateTitle"
         [cardCreatePosition]="cardCreatePosition" [cardCreateIndex]="cardCreateIndex"
         (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event, cards)"
@@ -26,7 +27,8 @@
         (cardCreatePositionChange)="cardCreatePositionChange.emit($event)">
       </app-card-create>
       <ng-container *ngFor="let card of cards; let i = index; trackBy: trackByFn">
-        <app-card [card]="card" [listIndex]="index" [index]="i"></app-card>
+        <app-card cdkDrag [cdkDragData]="card" [card]="card" [listIndex]="index" [index]="i">
+        </app-card>
         <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === i+1"
           [cardCreateTitle]="cardCreateTitle" [cardCreatePosition]="cardCreatePosition"
           [cardCreateIndex]="cardCreateIndex" (cardCreateTitleChange)="cardCreateTitleChange.emit($event)"

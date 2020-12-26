@@ -1,3 +1,4 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   Component, OnInit, ChangeDetectionStrategy, ViewChild,
   ElementRef, Input, Output, EventEmitter, SimpleChanges, OnChanges
@@ -9,8 +10,11 @@ import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { AppState } from 'src/app/store/app.reducer';
-import { AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveAllCards, MoveList, RenameList, SortCards, ToggleSubscribeList } from '../../store/board.actions';
-import { calcPos, selectCardsByList } from '../../store/board.reducer';
+import {
+  AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveAllCards,
+  MoveList, RenameList, MoveCard, SortCards, ToggleSubscribeList
+} from '../../store/board.actions';
+import { calcPos, selectCardsByList, selectHeightPlaceholder } from '../../store/board.reducer';
 
 @Component({
   selector: 'app-list',
@@ -33,10 +37,13 @@ export class ListComponent implements OnInit, OnChanges {
   @Output() cardCreateIndexChange = new EventEmitter<number | null>();
 
   cards$!: Observable<Card[]>;
+  heightPlaceholder$!: Observable<number>;
+
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''));
+    this.heightPlaceholder$ = this.store.select(selectHeightPlaceholder);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -113,6 +120,13 @@ export class ListComponent implements OnInit, OnChanges {
       this.store.dispatch(MoveAllCards({ prevList: this.list, list }));
       ref.hide();
     }
+  }
+
+  onDragCard(event: CdkDragDrop<List | undefined>): void {
+    const idList = event.container.data?.id || '';
+    const card = event.item.data;
+    const position = event.currentIndex;
+    this.store.dispatch(MoveCard({ card, idList, position }));
   }
 
   trackByFn(index: number, item: Card): string {

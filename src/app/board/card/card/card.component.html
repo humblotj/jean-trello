@@ -1,18 +1,20 @@
-<button app-button class="icon-edit" (click)="onOpenCardEdit()">
-  <span>
-    <mat-icon svgIcon="edit" [inline]="true"></mat-icon>
-  </span>
-</button>
-<div class="card-details" (click)="onOpenCardEditDialog()">
-  <span>
-    {{card?.name}}
-  </span>
-  <div class="badges">
-    <span app-icon *ngIf="card?.subscribed">
-      <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
+<div>
+  <button app-button class="icon-edit" (click)="onOpenCardEdit()">
+    <span>
+      <mat-icon svgIcon="edit" [inline]="true"></mat-icon>
     </span>
-    <span app-icon *ngIf="card?.desc">
-      <mat-icon svgIcon="description" [inline]="true"></mat-icon>
+  </button>
+  <div class="card-details" (click)="onOpenCardEditDialog()">
+    <span>
+      {{card?.name}}
     </span>
+    <div class="badges">
+      <span app-icon *ngIf="card?.subscribed">
+        <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
+      </span>
+      <span app-icon *ngIf="card?.desc">
+        <mat-icon svgIcon="description" [inline]="true"></mat-icon>
+      </span>
+    </div>
   </div>
 </div>

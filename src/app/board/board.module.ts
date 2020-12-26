@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SharedModule } from '../shared/shared.module';
 
@@ -20,6 +21,7 @@ const routes: Routes = [
   imports: [
     SharedModule,
     CardEditDialogModule,
+    DragDropModule,
     RouterModule.forChild(routes)
   ]
 })
