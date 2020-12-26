@@ -1,5 +1,6 @@
 <div class="card-details">
-  <textarea #cardNameRef [ngModel]="card.name" cdkTextareaAutosize cdkAutosizeMinRows="3"></textarea>
+  <textarea #cardNameRef [ngModel]="card.name" cdkTextareaAutosize cdkAutosizeMinRows="3"
+    (keydown.enter)="$event.preventDefault(); onSave()"></textarea>
 </div>
 <button app-button color="green" class="save-btn" (click)="onSave()">Save</button>
 <div #buttons class="quick-card-edit-buttons">
@@ -56,7 +57,8 @@
   <span title>Copy Card</span>
   <div class="dropdown-content copy-card">
     <label>Title</label>
-    <textarea #copyCardNameRef [ngModel]="card?.name"></textarea>
+    <textarea #copyCardNameRef [ngModel]="card?.name"
+      (keydown.enter)="$event.preventDefault(); onCopyCard(copyCardRef, $event)"></textarea>
     <label>Copy to...</label>
     <ng-container *ngTemplateOutlet="moveCardTmp; context:{$implicit: true}"></ng-container>
     <button app-button color="green" (click)="onCopyCard(copyCardRef, $event)">Create

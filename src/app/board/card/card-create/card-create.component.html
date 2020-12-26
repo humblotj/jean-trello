@@ -3,7 +3,8 @@
     <div class="card-details" fxLayout>
       <textarea #titleRef #autosize="cdkTextareaAutosize" placeholder="Enter a title for this card…" autofocus
         cdkTextareaAutosize cdkAutosizeMinRows="1" [ngModel]="cardCreateTitle"
-        (ngModelChange)="cardCreateTitleChange.emit($event)"></textarea>
+        (ngModelChange)="cardCreateTitleChange.emit($event)"
+        (keydown.enter)="$event.preventDefault(); onAddCard()"></textarea>
     </div>
   </div>
   <div fxLayoutAlign="space-between">
