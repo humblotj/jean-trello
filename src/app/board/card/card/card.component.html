@@ -1,9 +1,9 @@
-<button app-button class="icon-edit" appTooltip="To Do">
+<button app-button class="icon-edit" (click)="onOpenCardEdit()">
   <span>
     <mat-icon svgIcon="edit" [inline]="true"></mat-icon>
   </span>
 </button>
-<div class="card-details" (click)="onOpenEditCard()">
+<div class="card-details" (click)="onOpenCardEditDialog()">
   <span>
     {{card?.name}}
   </span>

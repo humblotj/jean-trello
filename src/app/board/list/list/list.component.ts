@@ -9,8 +9,8 @@ import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { AppState } from 'src/app/store/app.reducer';
-import { AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveAllCards, MoveList, RenameList, SortCards, ToggleSubscribeList } from '../store/board.actions';
-import { calcPos, selectCardsByList } from '../store/board.reducer';
+import { AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveAllCards, MoveList, RenameList, SortCards, ToggleSubscribeList } from '../../store/board.actions';
+import { calcPos, selectCardsByList } from '../../store/board.reducer';
 
 @Component({
   selector: 'app-list',

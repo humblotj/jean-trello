@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Type, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Type, ElementRef, HostListener, OnDestroy, Input } from '@angular/core';
 import { DialogRef } from './dialog-ref';
 
 @Component({
@@ -8,6 +8,8 @@ import { DialogRef } from './dialog-ref';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OverlayComponent implements OnInit, OnDestroy {
+  @Input() type!: 'dialog' | 'card-edit';
+
   content!: Type<any>;
 
   private clickoutHandler: ((event: MouseEvent) => void) | null = null;
@@ -20,6 +22,7 @@ export class OverlayComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.content = this.ref.content;
+    this.el.nativeElement.classList.add('overlay-' + this.type);
     setTimeout(() => {
       this.clickoutHandler = this.closeDialogFromClickout;
     }, 0);

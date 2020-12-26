@@ -6,7 +6,7 @@ import {
 import { Store } from '@ngrx/store';
 import { List } from 'src/app/model/list.model';
 import { AppState } from 'src/app/store/app.reducer';
-import { AddList } from '../store/board.actions';
+import { AddList } from '../../store/board.actions';
 
 @Component({
   selector: 'app-add-list',

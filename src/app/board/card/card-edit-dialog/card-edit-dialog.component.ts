@@ -8,8 +8,8 @@ import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { DialogRef } from 'src/app/shared/overlay/dialog-ref';
 import { AppState } from 'src/app/store/app.reducer';
-import { EditCard, DeleteCard, MoveCard, CopyCard } from '../store/board.actions';
-import { findCard, findList, selectCardsByList, selectLists } from '../store/board.reducer';
+import { EditCard, DeleteCard, MoveCard, CopyCard } from '../../store/board.actions';
+import { findCard, findList, selectCardsByList, selectLists } from '../../store/board.reducer';
 
 @Component({
   selector: 'app-card-edit-dialog',

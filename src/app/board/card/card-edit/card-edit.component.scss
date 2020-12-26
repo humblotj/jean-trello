@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.card-details {
+  position: relative;
+  width: 256px;
+  // max-width: 300px;
+  margin-bottom: 8px;
+  border-radius: 3px;
+  padding: 6px 8px 2px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  box-sizing: border-box;
+
+  background-color: red;
+
+  // z-index: 1;
+
+  textarea {
+    background: transparent;
+  }
+}
