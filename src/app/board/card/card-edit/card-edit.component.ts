@@ -38,5 +38,9 @@ export class CardEditComponent implements OnInit, AfterViewInit {
     }
   }
 
+  archive(): void {
+    this.store.dispatch(EditCard({ card: { ...this.card, closed: true } }));
+  }
+
 
 }

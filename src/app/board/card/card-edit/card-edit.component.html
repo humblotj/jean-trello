@@ -3,15 +3,13 @@
 </div>
 <button app-button color="green" class="save-btn" (click)="save()">Save</button>
 <div #buttons class="quick-card-edit-buttons">
-  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" appTooltip="To Do"
-    (click)="$event.stopPropagation()">
+  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" appTooltip="To Do">
     <span app-icon>
       <mat-icon svgIcon="labels" [inline]="true"></mat-icon>
     </span>
     <span>Edit Labels</span>
   </button>
-  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" appTooltip="Not Supported"
-    (click)="$event.stopPropagation()">
+  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" appTooltip="Not Supported">
     <span app-icon>
       <mat-icon svgIcon="members" [inline]="true"></mat-icon>
     </span>
@@ -29,14 +27,13 @@
     </span>
     <span>Copy</span>
   </button>
-  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" appTooltip="To Do"
-    (click)="$event.stopPropagation()">
+  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" appTooltip="To Do">
     <span app-icon>
       <mat-icon svgIcon="clock" [inline]="true"></mat-icon>
     </span>
     <span>Change Due Date</span>
   </button>
-  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center">
+  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" (click)="archive()">
     <span app-icon>
       <mat-icon svgIcon="archive" [inline]="true"></mat-icon>
     </span>
