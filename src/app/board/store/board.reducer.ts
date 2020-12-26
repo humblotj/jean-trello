@@ -54,7 +54,7 @@ const initialState: State = {
     new Card('3', '[Component Css] Card', posIncr * 24 + 23, false, ''),
     new Card('3', '[Component Css] Add List', posIncr * 25 + 24, false, ''),
     new Card('3', '[Component Css] Add Card', posIncr * 26 + 25, false, ''),
-    new Card('3', '[Component Css] Long NameÒ Card: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a tincidunt magna, eleifend condimentum ante. Ut non vulputate velit. Curabitur condimentum felis at posuere pulvinar.', posIncr * 27 + 26, false, ''),
+    new Card('3', '[Component Css] Long Name Card: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a tincidunt magna, eleifend condimentum ante. Ut non vulputate velit. Curabitur condimentum felis at posuere pulvinar.', posIncr * 27 + 26, false, ''),
   ]
 };
 
