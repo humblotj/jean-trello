@@ -222,7 +222,7 @@
     <div class="dropdown-content copy-card">
       <label>Title</label>
       <textarea #copyCardNameRef [ngModel]="card?.name"
-        (keydown.enter)="$event.preventDefault(); onCopyCard(copyCardRef, $event)"></textarea>
+        (keydown.enter)="$event.preventDefault(); onCopyCard(card, copyCardRef, $event)"></textarea>
       <label>Copy to...</label>
       <ng-container *ngTemplateOutlet="moveCardTmp; context:{$implicit: true}"></ng-container>
       <button app-button color="green" (click)="onCopyCard(card, copyCardRef, $event)">Create

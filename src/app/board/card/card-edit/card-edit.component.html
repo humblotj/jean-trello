@@ -16,14 +16,14 @@
     </span>
     <span>Change Members</span>
   </button>
-  <button #moveCardRefBtn class="quick-card-edit-buttons-item" fxLayoutAlign="start center"
+  <button #moveCardRefBtn app-link class="quick-card-edit-buttons-item" fxLayoutAlign="start center"
     (click)="moveCardRef.show()">
     <span app-icon>
       <mat-icon svgIcon="arrow-right" [inline]="true"></mat-icon>
     </span>
     <span>Move</span>
   </button>
-  <button #copyCardRefBtn class="quick-card-edit-buttons-item" fxLayoutAlign="start center"
+  <button #copyCardRefBtn app-link class="quick-card-edit-buttons-item" fxLayoutAlign="start center"
     (click)="onOpenCopyCard(copyCardRef)">
     <span app-icon>
       <mat-icon svgIcon="copy" [inline]="true"></mat-icon>
@@ -44,7 +44,7 @@
   </button>
 </div>
 
-<app-dropdown #moveCardRef [reference]="moveCardRefBtn">
+<app-dropdown #moveCardRef [reference]="moveCardRefBtn.el">
   <span title>Move Card</span>
   <div class="dropdown-content move-card">
     <h4>Select destination</h4>
@@ -53,7 +53,7 @@
   </div>
 </app-dropdown>
 
-<app-dropdown #copyCardRef [reference]="copyCardRefBtn">
+<app-dropdown #copyCardRef [reference]="copyCardRefBtn.el">
   <span title>Copy Card</span>
   <div class="dropdown-content copy-card">
     <label>Title</label>
