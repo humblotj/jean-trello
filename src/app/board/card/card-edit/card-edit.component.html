@@ -1,7 +1,7 @@
 <div class="card-details">
   <textarea #cardNameRef [ngModel]="card.name" cdkTextareaAutosize cdkAutosizeMinRows="3"></textarea>
 </div>
-<button app-button color="green" class="save-btn" (click)="save()">Save</button>
+<button app-button color="green" class="save-btn" (click)="onSave()">Save</button>
 <div #buttons class="quick-card-edit-buttons">
   <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" appTooltip="To Do">
     <span app-icon>
@@ -15,13 +15,15 @@
     </span>
     <span>Change Members</span>
   </button>
-  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center">
+  <button #moveCardRefBtn class="quick-card-edit-buttons-item" fxLayoutAlign="start center"
+    (click)="moveCardRef.show()">
     <span app-icon>
       <mat-icon svgIcon="arrow-right" [inline]="true"></mat-icon>
     </span>
     <span>Move</span>
   </button>
-  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center">
+  <button #copyCardRefBtn class="quick-card-edit-buttons-item" fxLayoutAlign="start center"
+    (click)="onOpenCopyCard(copyCardRef)">
     <span app-icon>
       <mat-icon svgIcon="copy" [inline]="true"></mat-icon>
     </span>
@@ -33,10 +35,61 @@
     </span>
     <span>Change Due Date</span>
   </button>
-  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" (click)="archive()">
+  <button class="quick-card-edit-buttons-item" fxLayoutAlign="start center" (click)="onArchive()">
     <span app-icon>
       <mat-icon svgIcon="archive" [inline]="true"></mat-icon>
     </span>
     <span>Archive</span>
   </button>
 </div>
+
+<app-dropdown #moveCardRef [reference]="moveCardRefBtn">
+  <span title>Move Card</span>
+  <div class="dropdown-content move-card">
+    <h4>Select destination</h4>
+    <ng-container *ngTemplateOutlet="moveCardTmp"></ng-container>
+    <button app-button color="green" (click)="onMoveCard(); moveCardRef.hide();">Move</button>
+  </div>
+</app-dropdown>
+
+<app-dropdown #copyCardRef [reference]="copyCardRefBtn">
+  <span title>Copy Card</span>
+  <div class="dropdown-content copy-card">
+    <label>Title</label>
+    <textarea #copyCardNameRef [ngModel]="card?.name"></textarea>
+    <label>Copy to...</label>
+    <ng-container *ngTemplateOutlet="moveCardTmp; context:{$implicit: true}"></ng-container>
+    <button app-button color="green" (click)="onCopyCard(copyCardRef, $event)">Create
+      Card</button>
+  </div>
+</app-dropdown>
+
+<ng-template #moveCardTmp let-i>
+  <div class="form-grid">
+    <div app-select-form>
+      <label>Board</label>
+      <span class="list-value">Jean Trello</span>
+      <select [ngModel]="0">
+        <option [value]="0">Jean Trello</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-grid">
+    <div app-select-form fxFlex="75">
+      <label>List</label>
+      <span class="list-value">{{listSelect.options[listSelect.selectedIndex]?.text}}</span>
+      <select #listSelect [(ngModel)]="idListSelected" (ngModelChange)="fetchPosition($event)">
+        <option *ngFor="let list of lists$| async; let i = index" [value]="list.id">{{ list.name }}</option>
+      </select>
+    </div>
+    <div app-select-form fxFlex="25">
+      <label>Position</label>
+      <span class="list-value">{{+movePosition + 1}}</span>
+      <select [(ngModel)]="movePosition">
+        <option *ngFor="let position of getPositionList(cards$ | async, card, i); let i = index" [value]="i">
+          {{ i + 1 }} {{i === currentPosition && listSelect.value === card?.idList ? '(current)': '' }}
+        </option>
+      </select>
+    </div>
+  </div>
+</ng-template>
