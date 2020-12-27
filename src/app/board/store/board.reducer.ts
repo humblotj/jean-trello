@@ -8,7 +8,6 @@ import * as BoardActions from './board.actions';
 export interface State {
   lists: List[];
   cards: Card[];
-  heightPlaceholder: number;
 }
 
 export const posIncr = 65535;
@@ -57,7 +56,6 @@ const initialState: State = {
     new Card('3', '[Component Css] Add Card', posIncr * 26 + 25, false, ''),
     new Card('3', '[Component Css] Long Name Card: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a tincidunt magna, eleifend condimentum ante. Ut non vulputate velit. Curabitur condimentum felis at posuere pulvinar.', posIncr * 27 + 26, false, ''),
   ],
-  heightPlaceholder: 0
 };
 
 export const selectBoard = (state: AppState) => state.board;
@@ -85,11 +83,6 @@ export const findList = (idList: string) => createSelector(
 export const findCard = (id: string) => createSelector(
   selectCards,
   (cards) => cards.find(card => card.id === id)
-);
-
-export const selectHeightPlaceholder = createSelector(
-  selectBoard,
-  (state: State) => state.heightPlaceholder
 );
 
 export const boardReducer = createReducer(
@@ -294,8 +287,6 @@ export const boardReducer = createReducer(
         new Card(idList, name, pos, card.subscribed, card.desc), ...prevCardsList.slice(position)]
       };
     }),
-  on(BoardActions.SetHeightPlaceholder,
-    (state, { heightPlaceholder }) => ({ ...state, heightPlaceholder })),
 );
 
 export const calcPos = (array: Card[] | List[], index: number) => {
