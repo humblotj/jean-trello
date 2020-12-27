@@ -9,6 +9,7 @@ import { take } from 'rxjs/operators';
 import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
+import { DropdownService } from 'src/app/shared/dropdown/dropdown.service';
 import { AppState } from 'src/app/store/app.reducer';
 import {
   AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveAllCards,
@@ -38,7 +39,7 @@ export class ListComponent implements OnInit, OnChanges {
 
   cards$!: Observable<Card[]>;
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>, private dropdownService: DropdownService) { }
 
   ngOnInit(): void {
     this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''));
@@ -118,6 +119,10 @@ export class ListComponent implements OnInit, OnChanges {
       this.store.dispatch(MoveAllCards({ prevList: this.list, list }));
       ref.hide();
     }
+  }
+
+  onStartDrag(): void {
+    this.dropdownService.closeAllDropdown.next();
   }
 
   onDragCard(event: CdkDragDrop<List | undefined>): void {

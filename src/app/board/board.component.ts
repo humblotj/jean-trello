@@ -3,6 +3,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { List } from '../model/list.model';
+import { DropdownService } from '../shared/dropdown/dropdown.service';
 import { AppState } from '../store/app.reducer';
 import { MoveList } from './store/board.actions';
 import { selectLists } from './store/board.reducer';
@@ -20,11 +21,15 @@ export class BoardComponent implements OnInit {
   cardCreateTitle = '';
   cardCreateIndex: number | null = null;
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>, private dropdownService: DropdownService) {
   }
 
   ngOnInit(): void {
     this.lists$ = this.store.select(selectLists);
+  }
+
+  onStartDrag(): void {
+    this.dropdownService.closeAllDropdown.next();
   }
 
   onDragList(event: CdkDragDrop<List[]>): void {

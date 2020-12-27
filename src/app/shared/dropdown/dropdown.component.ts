@@ -4,6 +4,9 @@ import {
 } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { DropdownService } from './dropdown.service';
+import { take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dropdown',
@@ -27,7 +30,11 @@ export class DropdownComponent implements OnInit, OnDestroy {
 
   showing = false;
 
-  constructor(private overlay: Overlay, private viewcontainerRef: ViewContainerRef, private el: ElementRef) {
+  private subscription?: Subscription;
+
+  constructor(private overlay: Overlay, private viewcontainerRef: ViewContainerRef,
+    // tslint:disable-next-line: align
+    private el: ElementRef, private dropdownService: DropdownService) {
   }
 
   ngOnInit(): void {
@@ -36,6 +43,7 @@ export class DropdownComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.overlayRef?.dispose();
+    this.subscription?.unsubscribe();
   }
 
   show(): void {
@@ -43,8 +51,9 @@ export class DropdownComponent implements OnInit, OnDestroy {
       const overlayRef = this.createOverLay();
       overlayRef.attach(new TemplatePortal(this.contentTemplate, this.viewcontainerRef));
 
-      this.clickoutHandler = this.closeDialogFromClickout;
+      setTimeout(() => this.clickoutHandler = this.closeDialogFromClickout, 0);
       this.showing = true;
+      this.subscription = this.dropdownService.closeAllDropdown.pipe(take(1)).subscribe(() => this.showing && this.hide());
     }
   }
 

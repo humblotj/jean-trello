@@ -1,9 +1,9 @@
 <ng-container *ngrxLet="lists$ as lists">
   <div #scrollDiv cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDragList($event)"
     cdkDropListGroup fxLayout fxLayoutAlign="start start" fxFlex>
-    <app-list cdkDrag *ngFor="let list of lists; let i = index; trackBy: trackByFn" [index]="i" [list]="list"
-      [lists]="lists" [(cardCreatePosition)]="cardCreatePosition" [(cardCreateTitle)]="cardCreateTitle"
-      [(cardCreateIndex)]="cardCreateIndex">
+    <app-list cdkDrag (cdkDragStarted)="onStartDrag()" *ngFor="let list of lists; let i = index; trackBy: trackByFn"
+      [index]="i" [list]="list" [lists]="lists" [(cardCreatePosition)]="cardCreatePosition"
+      [(cardCreateTitle)]="cardCreateTitle" [(cardCreateIndex)]="cardCreateIndex">
     </app-list>
     <app-add-list [lists]="lists"></app-add-list>
   </div>
