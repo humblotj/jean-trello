@@ -14,7 +14,7 @@ import {
   AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveAllCards,
   MoveList, RenameList, MoveCard, SortCards, ToggleSubscribeList
 } from '../../store/board.actions';
-import { calcPos, selectCardsByList, selectHeightPlaceholder } from '../../store/board.reducer';
+import { calcPos, selectCardsByList } from '../../store/board.reducer';
 
 @Component({
   selector: 'app-list',
@@ -37,13 +37,11 @@ export class ListComponent implements OnInit, OnChanges {
   @Output() cardCreateIndexChange = new EventEmitter<number | null>();
 
   cards$!: Observable<Card[]>;
-  heightPlaceholder$!: Observable<number>;
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''));
-    this.heightPlaceholder$ = this.store.select(selectHeightPlaceholder);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
