@@ -1,66 +1,68 @@
 <ng-container *ngrxLet="cards$ as cards">
-  <div class="list-content" fxLayout="column">
-    <div class="list-header" fxLayoutAlign="start center">
-      <h2>{{list?.name}}</h2>
-      <div class="list-header-title" fxFlex>
-        <textarea #listNameRef spellcheck="false" [ngModel]="list?.name" (ngModelChange)="onChangeListName($event)"
-          (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
-          cdkAutosizeMinRows="1"></textarea>
-      </div>
-      <div class="list-header-extras" fxLayout>
-        <span *ngIf="list?.subscribed" app-icon class="watch-icon">
-          <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
-        </span>
-        <button #extrasMenuRef app-button class="extras-menu" (click)="showListActions(listActionsRef)">
-          <span app-icon class="extras-menu-icon">
+  <div>
+    <div class="list-content" fxLayout="column">
+      <div class="list-header" fxLayoutAlign="start center">
+        <h2>{{list?.name}}</h2>
+        <div class="list-header-title" fxFlex>
+          <textarea #listNameRef spellcheck="false" [ngModel]="list?.name" (ngModelChange)="onChangeListName($event)"
+            (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
+            cdkAutosizeMinRows="1"></textarea>
+        </div>
+        <div class="list-header-extras" fxLayout>
+          <span *ngIf="list?.subscribed" app-icon class="watch-icon">
+            <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
           </span>
-        </button>
+          <button #extrasMenuRef app-button class="extras-menu" (click)="showListActions(listActionsRef)">
+            <span app-icon class="extras-menu-icon">
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <div cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="onDragCard($event)"
-      class="list-cards fancy-scrollbar" fxLayout="column">
-      <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === 0" [cardCreateTitle]="cardCreateTitle"
-        [cardCreatePosition]="cardCreatePosition" [cardCreateIndex]="cardCreateIndex"
-        (cardCreateTitleChange)="cardCreateTitleChange.emit($event)" (addCard)="onAddCard($event, cards)"
-        (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"
-        (cardCreatePositionChange)="cardCreatePositionChange.emit($event)">
-      </app-card-create>
-      <ng-container *ngFor="let card of cards; let i = index; trackBy: trackByFn">
-        <app-card cdkDrag [cdkDragData]="card" [card]="card" [listIndex]="index" [index]="i">
-        </app-card>
-        <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === i+1"
+      <div cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="onDragCard($event)"
+        class="list-cards fancy-scrollbar" fxLayout="column">
+        <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === 0"
           [cardCreateTitle]="cardCreateTitle" [cardCreatePosition]="cardCreatePosition"
           [cardCreateIndex]="cardCreateIndex" (cardCreateTitleChange)="cardCreateTitleChange.emit($event)"
           (addCard)="onAddCard($event, cards)" (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"
           (cardCreatePositionChange)="cardCreatePositionChange.emit($event)">
         </app-card-create>
-      </ng-container>
-    </div>
+        <ng-container *ngFor="let card of cards; let i = index; trackBy: trackByFn">
+          <app-card cdkDrag [cdkDragData]="card" [card]="card" [listIndex]="index" [index]="i">
+          </app-card>
+          <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === i+1"
+            [cardCreateTitle]="cardCreateTitle" [cardCreatePosition]="cardCreatePosition"
+            [cardCreateIndex]="cardCreateIndex" (cardCreateTitleChange)="cardCreateTitleChange.emit($event)"
+            (addCard)="onAddCard($event, cards)" (cardCreateIndexChange)="cardCreateIndexChange.emit($event)"
+            (cardCreatePositionChange)="cardCreatePositionChange.emit($event)">
+          </app-card-create>
+        </ng-container>
+      </div>
 
-    <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
-      <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
-        (click)="cardTemplatesRef?.hide(); cardCreatePositionChange.emit(cards?.length); cardCreateIndexChange.emit(index)">
-        <span app-icon class=" icon-add">
-        </span>
-        <span>
-          Add {{cards?.length ? 'another':'a'}} card
-        </span>
-      </button>
-      <button #cardTemplatesBtnRef app-button class="card-templates-btn" appTooltip="Create from template..."
-        (click)="cardTemplatesRef.show()">
-        <span>
-          <mat-icon svgIcon="template" [inline]="true">
-          </mat-icon>
-        </span>
-      </button>
-      <app-dropdown #cardTemplatesRef [reference]="cardTemplatesBtnRef.el" backgroundColor="secondary">
-        <span title>Card Templates</span>
-        <div class="dropdown-content card-templates-dd-content">
-          <p>You don’t have any templates. Create a template to make copying cards easy.</p>
-          <button app-button color="green" appTooltip="Not supported">Create a New Template</button>
-        </div>
-      </app-dropdown>
+      <div *ngIf="cardCreateIndex !== index" class="card-composer" fxLayout>
+        <button app-button class="add-card" fxFlex fxLayout fxLayoutAlign="start center"
+          (click)="cardTemplatesRef?.hide(); cardCreatePositionChange.emit(cards?.length); cardCreateIndexChange.emit(index)">
+          <span app-icon class=" icon-add">
+          </span>
+          <span>
+            Add {{cards?.length ? 'another':'a'}} card
+          </span>
+        </button>
+        <button #cardTemplatesBtnRef app-button class="card-templates-btn" appTooltip="Create from template..."
+          (click)="cardTemplatesRef.show()">
+          <span>
+            <mat-icon svgIcon="template" [inline]="true">
+            </mat-icon>
+          </span>
+        </button>
+        <app-dropdown #cardTemplatesRef [reference]="cardTemplatesBtnRef.el" backgroundColor="secondary">
+          <span title>Card Templates</span>
+          <div class="dropdown-content card-templates-dd-content">
+            <p>You don’t have any templates. Create a template to make copying cards easy.</p>
+            <button app-button color="green" appTooltip="Not supported">Create a New Template</button>
+          </div>
+        </app-dropdown>
+      </div>
     </div>
   </div>
 

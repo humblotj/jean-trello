@@ -16,6 +16,36 @@
   &:last-child {
     margin-right: 8px;
   }
+
+  &.cdk-drag-placeholder {
+    > div {
+      position: relative;
+
+      &:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.12);
+        z-index: 100;
+        content: "";
+      }
+
+      .list-content {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &.cdk-drag-preview {
+    > div {
+      box-shadow: 0 12px 24px -6px rgba(9, 30, 66, 0.25),
+        0 0 0 1px rgba(9, 30, 66, 0.08);
+      transform: rotate(4deg);
+    }
+  }
 }
 
 .list-content {
@@ -26,6 +56,7 @@
   background-color: #ebecf0;
 
   .list-header {
+    position: relative;
     margin-bottom: 4px;
 
     h2 {

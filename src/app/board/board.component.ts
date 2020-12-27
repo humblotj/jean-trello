@@ -1,8 +1,10 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { List } from '../model/list.model';
 import { AppState } from '../store/app.reducer';
+import { MoveList } from './store/board.actions';
 import { selectLists } from './store/board.reducer';
 
 @Component({
@@ -23,6 +25,10 @@ export class BoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.lists$ = this.store.select(selectLists);
+  }
+
+  onDragList(event: CdkDragDrop<List[]>): void {
+    this.store.dispatch(MoveList({ prevPos: event.previousIndex, pos: event.currentIndex }));
   }
 
   trackByFn(index: number, item: List): string {
