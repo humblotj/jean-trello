@@ -1,24 +1,7 @@
 <ng-container *ngrxLet="cards$ as cards">
   <div fxLayout>
     <div class="list-content" fxLayout="column">
-      <div class="list-header" fxLayoutAlign="start center">
-        <h2>{{list?.name}}</h2>
-        <div class="list-header-title" fxFlex>
-          <textarea #listNameRef spellcheck="false" [ngModel]="list?.name" (ngModelChange)="onChangeListName($event)"
-            (keydown.enter)="blur($event)" [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize
-            cdkAutosizeMinRows="1"></textarea>
-        </div>
-        <div class="list-header-extras" fxLayout>
-          <span *ngIf="list?.subscribed" app-icon class="watch-icon">
-            <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
-          </span>
-          <button #extrasMenuRef app-button class="extras-menu" (click)="showListActions(listActionsRef)">
-            <span app-icon class="extras-menu-icon">
-            </span>
-          </button>
-        </div>
-      </div>
-
+      <ng-content></ng-content>
       <div cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="onDragCard($event)"
         class="list-cards fancy-scrollbar" fxLayout="column">
         <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === 0"

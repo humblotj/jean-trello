@@ -1,9 +1,27 @@
 <ng-container *ngrxLet="lists$ as lists">
   <div #scrollDiv cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDragList($event)"
     cdkDropListGroup fxLayout fxLayoutAlign="start start" fxFlex>
-    <app-list cdkDrag (cdkDragStarted)="onStartDrag()" *ngFor="let list of lists; let i = index; trackBy: trackByFn"
-      [index]="i" [list]="list" [lists]="lists" [(cardCreatePosition)]="cardCreatePosition"
-      [(cardCreateTitle)]="cardCreateTitle" [(cardCreateIndex)]="cardCreateIndex">
+    <app-list #appList cdkDrag (cdkDragStarted)="onStartDrag()"
+      *ngFor="let list of lists; let i = index; trackBy: trackByFn" [index]="i" [list]="list" [lists]="lists"
+      [(cardCreatePosition)]="cardCreatePosition" [(cardCreateTitle)]="cardCreateTitle"
+      [(cardCreateIndex)]="cardCreateIndex" [extrasMenuRef]="extrasMenuRef">
+      <div cdkDragHandle class="list-header" fxLayoutAlign="start center">
+        <h2>{{list?.name}}</h2>
+        <div class="list-header-title" fxFlex>
+          <textarea #listNameRef spellcheck="false" [ngModel]="list?.name"
+            (ngModelChange)="onChangeListName(listNameRef, list, i)" (keydown.enter)="blur($event)"
+            [ngModelOptions]="{updateOn: 'blur'}" cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
+        </div>
+        <div class="list-header-extras" fxLayout>
+          <span *ngIf="list?.subscribed" app-icon class="watch-icon">
+            <mat-icon svgIcon="watch" [inline]="true"></mat-icon>
+          </span>
+          <button #extrasMenuRef app-button class="extras-menu" (click)="appList.showListActions()">
+            <span app-icon class="extras-menu-icon">
+            </span>
+          </button>
+        </div>
+      </div>
     </app-list>
     <app-add-list [lists]="lists"></app-add-list>
   </div>

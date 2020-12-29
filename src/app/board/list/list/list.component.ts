@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Card } from 'src/app/model/card.model';
 import { List } from 'src/app/model/list.model';
+import { ButtonComponent } from 'src/app/shared/button/button.component';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { DropdownService } from 'src/app/shared/dropdown/dropdown.service';
 import { AppState } from 'src/app/store/app.reducer';
@@ -26,6 +27,8 @@ import { calcPos, selectCardsByList } from '../../store/board.reducer';
 export class ListComponent implements OnInit, OnChanges {
   @ViewChild('listNameRef') listNameRef: ElementRef | undefined;
   @ViewChild('copyListNameRef') copyListNameRef: ElementRef | undefined;
+  @ViewChild('listActionsRef') listActionsRef: DropdownComponent | undefined;
+  @Input() extrasMenuRef!: ButtonComponent;
   @Input() index!: number;
   @Input() list?: List;
   @Input() lists?: List[] = [];
@@ -76,8 +79,8 @@ export class ListComponent implements OnInit, OnChanges {
     this.cardCreatePositionChange.emit(this.cardCreatePosition + 1);
   }
 
-  showListActions(listActionsRef: DropdownComponent): void {
-    listActionsRef.show();
+  showListActions(): void {
+    this.listActionsRef?.show();
   }
 
   onArchiveAllCards(): void {

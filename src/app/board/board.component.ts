@@ -3,9 +3,10 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { List } from '../model/list.model';
+import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { DropdownService } from '../shared/dropdown/dropdown.service';
 import { AppState } from '../store/app.reducer';
-import { MoveList } from './store/board.actions';
+import { MoveList, RenameList } from './store/board.actions';
 import { selectLists } from './store/board.reducer';
 
 @Component({
@@ -34,6 +35,23 @@ export class BoardComponent implements OnInit {
 
   onDragList(event: CdkDragDrop<List[]>): void {
     this.store.dispatch(MoveList({ prevPos: event.previousIndex, pos: event.currentIndex }));
+  }
+
+  showListActions(listActionsRef: DropdownComponent): void {
+    listActionsRef.show();
+  }
+
+  onChangeListName(listNameRef: HTMLTextAreaElement, list: List, index: number): void {
+    const trim = listNameRef.value.trim();
+    if (trim) {
+      this.store.dispatch(RenameList({ index, name: trim }));
+    } else {
+      listNameRef.value = list.name;
+    }
+  }
+
+  blur(event: Event): void {
+    (event.target as HTMLTextAreaElement)?.blur();
   }
 
   trackByFn(index: number, item: List): string {
