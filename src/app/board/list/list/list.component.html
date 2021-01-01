@@ -85,8 +85,8 @@
     <span title>Copy List</span>
     <div class="dropdown-content copy-list">
       <label>Name</label>
-      <textarea #copyListNameRef></textarea>
-      <button app-button color="green" (click)="onCopyList(copyListNameRef.value); copyListRef.hide()">Create
+      <textarea #copyListNameRef [ngModel]="list?.name"></textarea>
+      <button app-button color="green" (click)="onCopyList(copyListNameRef.value, copyListRef);">Create
         List</button>
     </div>
   </app-dropdown>

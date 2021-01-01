@@ -99,9 +99,10 @@ export class ListComponent implements OnInit, OnChanges {
     this.copyListNameRef?.nativeElement.focus();
   }
 
-  onCopyList(name: string): void {
+  onCopyList(name: string, dropDown: DropdownComponent): void {
     if (name) {
       this.store.dispatch(CopyList({ name, idList: this.list?.id || '' }));
+      dropDown.hide();
     } else {
       this.copyListNameRef?.nativeElement.focus();
     }
