@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "jean-trello"
+  },
+  "targets": {
+    "jean-trello": {
+      "hosting": {
+        "jean-trello": [
+          "jean-trello"
+        ]
+      }
+    }
   }
 }
