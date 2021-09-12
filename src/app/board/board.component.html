@@ -1,5 +1,5 @@
 <ng-container *ngrxLet="lists$ as lists">
-  <div #scrollDiv cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDragList($event)"
+  <div #scrollDiv cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDragList($event, lists)"
     cdkDropListGroup fxLayout fxLayoutAlign="start start" fxFlex>
     <app-list #appList cdkDrag (cdkDragStarted)="onStartDrag()"
       *ngFor="let list of lists; let i = index; trackBy: trackByFn" [index]="i" [list]="list" [lists]="lists"

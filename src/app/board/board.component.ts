@@ -1,12 +1,13 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 import { List } from '../model/list.model';
 import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { DropdownService } from '../shared/dropdown/dropdown.service';
 import { AppState } from '../store/app.reducer';
-import { MoveList, RenameList } from './store/board.actions';
+import { LoadBoard, MoveList, RenameList } from './store/board.actions';
 import { selectLists } from './store/board.reducer';
 
 @Component({
@@ -23,6 +24,12 @@ export class BoardComponent implements OnInit {
   cardCreateIndex: number | null = null;
 
   constructor(private store: Store<AppState>, private dropdownService: DropdownService) {
+    let boardName = localStorage.getItem('boardName');
+    if (!boardName) {
+      boardName = prompt('Enter the name of your board') || UUID.UUID();
+      localStorage.setItem('boardName', boardName);
+    }
+    this.store.dispatch(LoadBoard({ name: boardName }));
   }
 
   ngOnInit(): void {
@@ -33,8 +40,8 @@ export class BoardComponent implements OnInit {
     this.dropdownService.closeAllDropdown.next();
   }
 
-  onDragList(event: CdkDragDrop<List[]>): void {
-    this.store.dispatch(MoveList({ prevPos: event.previousIndex, pos: event.currentIndex }));
+  onDragList(event: CdkDragDrop<List[]>, lists: List[]): void {
+    this.store.dispatch(MoveList({ list: lists[event.previousIndex], newIndex: event.currentIndex }));
   }
 
   showListActions(listActionsRef: DropdownComponent): void {
@@ -44,7 +51,7 @@ export class BoardComponent implements OnInit {
   onChangeListName(listNameRef: HTMLTextAreaElement, list: List, index: number): void {
     const trim = listNameRef.value.trim();
     if (trim) {
-      this.store.dispatch(RenameList({ index, name: trim }));
+      this.store.dispatch(RenameList({ name: trim, list }));
     } else {
       listNameRef.value = list.name;
     }
@@ -55,6 +62,6 @@ export class BoardComponent implements OnInit {
   }
 
   trackByFn(index: number, item: List): string {
-    return item.id;
+    return item._id;
   }
 }

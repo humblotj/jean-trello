@@ -1,21 +1,21 @@
-import { UUID } from 'angular2-uuid';
-
 export class Card {
-  public id: string;
+  public _id: string;
+  public tempId: string;
   public idList: string;
   public name: string;
   public pos: number;
   public subscribed: boolean;
   public desc: string;
   public closed = false;
-  public createAt = new Date();
+  public create_at = new Date();
 
-  constructor(idList: string, name: string, pos: number, subscribed: boolean, desc: string, id?: string) {
+  constructor(idList: string, name: string, pos: number, subscribed: boolean, desc: string, tempId: string) {
     this.idList = idList;
     this.name = name.trim();
     this.pos = pos;
     this.subscribed = subscribed;
     this.desc = desc;
-    this.id = id || UUID.UUID();
+    this._id = tempId;
+    this.tempId = tempId;
   }
 }

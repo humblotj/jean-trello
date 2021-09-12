@@ -81,7 +81,7 @@
       <label>List</label>
       <span class="list-value">{{listSelect.options[listSelect.selectedIndex]?.text}}</span>
       <select #listSelect [(ngModel)]="idListSelected" (ngModelChange)="fetchPosition($event)">
-        <option *ngFor="let list of lists$| async; let i = index" [value]="list.id">{{ list.name }}</option>
+        <option *ngFor="let list of lists$| async; let i = index" [value]="list._id">{{ list.name }}</option>
       </select>
     </div>
     <div app-select-form fxFlex="25">

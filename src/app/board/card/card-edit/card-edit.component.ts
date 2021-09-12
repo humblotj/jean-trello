@@ -7,7 +7,7 @@ import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { DialogRef } from 'src/app/shared/overlay/dialog-ref';
 import { AppState } from 'src/app/store/app.reducer';
-import { CopyCard, EditCard, MoveCard } from '../../store/board.actions';
+import { CopyCard, UpdateCard, MoveCard } from '../../store/board.actions';
 import { findList, selectCardsByList, selectLists } from '../../store/board.reducer';
 
 @Component({
@@ -51,7 +51,7 @@ export class CardEditComponent implements OnInit, AfterViewInit {
   onSave(): void {
     const trim = this.cardNameRef.nativeElement.value.trim();
     if (trim) {
-      this.store.dispatch(EditCard({ card: { ...this.card, name: trim } }));
+      this.store.dispatch(UpdateCard({ card: { ...this.card, name: trim } }));
       this.dialogRef.close();
     } else {
       this.cardNameRef.nativeElement.focus();
@@ -59,7 +59,7 @@ export class CardEditComponent implements OnInit, AfterViewInit {
   }
 
   onArchive(): void {
-    this.store.dispatch(EditCard({ card: { ...this.card, closed: true } }));
+    this.store.dispatch(UpdateCard({ card: { ...this.card, closed: true } }));
     this.dialogRef.close();
   }
 
@@ -69,7 +69,7 @@ export class CardEditComponent implements OnInit, AfterViewInit {
         if (idList !== this.dialogRef?.data.card.idList) {
           this.movePosition = cards.length;
         } else {
-          this.movePosition = cards.findIndex(c => c.id === this.dialogRef?.data?.card?.id);
+          this.movePosition = cards.findIndex(c => c._id === this.dialogRef?.data?.card?._id);
         }
         this.cdr.detectChanges();
       }));
@@ -77,7 +77,7 @@ export class CardEditComponent implements OnInit, AfterViewInit {
 
   onMoveCard(): void {
     const idList = this.idListSelected || '';
-    this.store.dispatch(MoveCard({ card: this.card, idList, position: +this.movePosition }));
+    this.store.dispatch(MoveCard({ card: this.card, idList, index: +this.movePosition }));
     this.dialogRef.close();
   }
 
@@ -95,7 +95,7 @@ export class CardEditComponent implements OnInit, AfterViewInit {
       this.copyCardNameRef?.nativeElement.focus();
     } else {
       const idList = this.idListSelected || '';
-      this.store.dispatch(CopyCard({ card: this.card, name, idList, position: +this.movePosition }));
+      this.store.dispatch(CopyCard({ card: this.card, name, idList, index: +this.movePosition }));
       dropdown.hide();
       this.dialogRef.close();
     }

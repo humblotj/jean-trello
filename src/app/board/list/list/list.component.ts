@@ -13,8 +13,8 @@ import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { DropdownService } from 'src/app/shared/dropdown/dropdown.service';
 import { AppState } from 'src/app/store/app.reducer';
 import {
-  AddCard, ArchiveAllCards, ArchiveList, CopyList, MoveAllCards,
-  MoveList, RenameList, MoveCard, SortCards, ToggleSubscribeList
+  ArchiveAllCards, ArchiveList, CopyList, MoveAllCards,
+  MoveList, RenameList, MoveCard, SortCards, ToggleSubscribedList, CreateCard
 } from '../../store/board.actions';
 import { calcPos, selectCardsByList } from '../../store/board.reducer';
 
@@ -30,7 +30,7 @@ export class ListComponent implements OnInit, OnChanges {
   @ViewChild('listActionsRef') listActionsRef: DropdownComponent | undefined;
   @Input() extrasMenuRef!: ButtonComponent;
   @Input() index!: number;
-  @Input() list?: List;
+  @Input() list!: List;
   @Input() lists?: List[] = [];
   @Input() cardCreatePosition = 0;
   @Input() cardCreateTitle = '';
@@ -45,7 +45,7 @@ export class ListComponent implements OnInit, OnChanges {
   constructor(private store: Store<AppState>, private dropdownService: DropdownService) { }
 
   ngOnInit(): void {
-    this.cards$ = this.store.select(selectCardsByList(this.list?.id || ''));
+    this.cards$ = this.store.select(selectCardsByList(this.list._id || ''));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -63,7 +63,7 @@ export class ListComponent implements OnInit, OnChanges {
   onChangeListName(listName: string): void {
     const trim = listName.trim();
     if (trim) {
-      this.store.dispatch(RenameList({ index: this.index, name: trim }));
+      this.store.dispatch(RenameList({ list: this.list, name: trim }));
     } else {
       this.listNameRef && (this.listNameRef.nativeElement.value = this.list?.name);
     }
@@ -75,7 +75,7 @@ export class ListComponent implements OnInit, OnChanges {
 
   onAddCard(name: string, cards: Card[] | undefined): void {
     const pos = calcPos(cards || [], this.cardCreatePosition);
-    this.store.dispatch(AddCard({ card: new Card(this.list?.id || '', name, pos, false, '') }));
+    this.store.dispatch(CreateCard({ name, idList: this.list._id, pos }));
     this.cardCreatePositionChange.emit(this.cardCreatePosition + 1);
   }
 
@@ -84,15 +84,15 @@ export class ListComponent implements OnInit, OnChanges {
   }
 
   onArchiveAllCards(): void {
-    this.store.dispatch(ArchiveAllCards({ idList: this.list?.id || '' }));
+    this.store.dispatch(ArchiveAllCards({ idList: this.list._id }));
   }
 
   onArchiveList(): void {
-    this.store.dispatch(ArchiveList({ index: this.index }));
+    this.store.dispatch(ArchiveList({ id: this.list._id }));
   }
 
   onToggleSubscribed(): void {
-    this.store.dispatch(ToggleSubscribeList({ index: this.index }));
+    this.store.dispatch(ToggleSubscribedList({ list: this.list }));
   }
 
   onCopyListShow(): void {
@@ -101,26 +101,26 @@ export class ListComponent implements OnInit, OnChanges {
 
   onCopyList(name: string, dropDown: DropdownComponent): void {
     if (name) {
-      this.store.dispatch(CopyList({ name, idList: this.list?.id || '' }));
+      this.store.dispatch(CopyList({ name, list: this.list }));
       dropDown.hide();
     } else {
       this.copyListNameRef?.nativeElement.focus();
     }
   }
 
-  onMoveList(pos: number): void {
-    if (pos !== this.index) {
-      this.store.dispatch(MoveList({ prevPos: this.index, pos }));
+  onMoveList(newIndex: number): void {
+    if (newIndex !== this.index) {
+      this.store.dispatch(MoveList({ list: this.list, newIndex }));
     }
   }
 
   onSortCards(sortBy: 'newest' | 'oldest' | 'alphabetically'): void {
-    this.store.dispatch(SortCards({ idList: this.list?.id || '', sortBy }));
+    this.store.dispatch(SortCards({ idList: this.list?._id || '', sortBy }));
   }
 
   onMoveAllCards(list: List, ref: DropdownComponent): void {
-    if ((list.id !== this.list?.id) && this.list) {
-      this.store.dispatch(MoveAllCards({ prevList: this.list, list }));
+    if ((list._id !== this.list?._id) && this.list) {
+      this.store.dispatch(MoveAllCards({ prev: this.list._id, next: list._id }));
       ref.hide();
     }
   }
@@ -130,13 +130,15 @@ export class ListComponent implements OnInit, OnChanges {
   }
 
   onDragCard(event: CdkDragDrop<List | undefined>): void {
-    const idList = event.container.data?.id || '';
-    const card = event.item.data;
-    const position = event.currentIndex;
-    this.store.dispatch(MoveCard({ card, idList, position }));
+    if (event.currentIndex !== event.previousIndex) {
+      const idList = event.container.data?._id || '';
+      const card = event.item.data;
+      const index = event.currentIndex;
+      this.store.dispatch(MoveCard({ card, idList, index }));
+    }
   }
 
   trackByFn(index: number, item: Card): string {
-    return item.id;
+    return item._id;
   }
 }

@@ -8,7 +8,7 @@ import { List } from 'src/app/model/list.model';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { DialogRef } from 'src/app/shared/overlay/dialog-ref';
 import { AppState } from 'src/app/store/app.reducer';
-import { EditCard, DeleteCard, MoveCard, CopyCard } from '../../store/board.actions';
+import { UpdateCard, DeleteCard, MoveCard, CopyCard } from '../../store/board.actions';
 import { findCard, findList, selectCardsByList, selectLists } from '../../store/board.reducer';
 
 @Component({
@@ -43,7 +43,7 @@ export class CardEditDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.card$ = this.store.select(findCard(this.dialogRef?.data?.card?.id));
+    this.card$ = this.store.select(findCard(this.dialogRef?.data?.card?._id));
     this.cards$ = this.store.select(selectCardsByList(this.dialogRef?.data?.card?.idList));
     this.list$ = this.store.select(findList(this.dialogRef?.data?.card?.idList));
     this.lists$ = this.store.select(selectLists);
@@ -52,7 +52,7 @@ export class CardEditDialogComponent implements OnInit {
   onChangeCardTitle(listName: string, card: Card | undefined): void {
     const trim = listName.trim();
     if (trim && card) {
-      this.store.dispatch(EditCard({ card: { ...card, name: trim } }));
+      this.store.dispatch(UpdateCard({ card: { ...card, name: trim } }));
     } else {
       this.cardTitleRef && (this.cardTitleRef.nativeElement.value = card?.name || '');
     }
@@ -68,25 +68,25 @@ export class CardEditDialogComponent implements OnInit {
 
   onToggleWatch(card: Card | undefined): void {
     if (card) {
-      this.store.dispatch(EditCard({ card: { ...card, subscribed: !card?.subscribed } }));
+      this.store.dispatch(UpdateCard({ card: { ...card, subscribed: !card?.subscribed } }));
     }
   }
 
   onArchiveCard(card: Card | undefined): void {
     if (card) {
-      this.store.dispatch(EditCard({ card: { ...card, closed: true } }));
+      this.store.dispatch(UpdateCard({ card: { ...card, closed: true } }));
     }
   }
 
   onRestoreCard(card: Card | undefined): void {
     if (card) {
-      this.store.dispatch(EditCard({ card: { ...card, closed: false } }));
+      this.store.dispatch(UpdateCard({ card: { ...card, closed: false } }));
     }
   }
 
   onDeleteCard(card: Card | undefined): void {
     if (card) {
-      this.store.dispatch(DeleteCard({ card }));
+      this.store.dispatch(DeleteCard({ id: card._id }));
       this.close();
     }
   }
@@ -99,7 +99,7 @@ export class CardEditDialogComponent implements OnInit {
 
   onEditDescription(desc: string, card: Card | undefined): void {
     if (card) {
-      this.store.dispatch(EditCard({ card: { ...card, desc } }));
+      this.store.dispatch(UpdateCard({ card: { ...card, desc } }));
       this.clickoutHandler = null;
     }
   }
@@ -110,7 +110,7 @@ export class CardEditDialogComponent implements OnInit {
         if (idList !== this.dialogRef?.data.card.idList) {
           this.movePosition = cards.length;
         } else {
-          this.movePosition = cards.findIndex(c => c.id === this.dialogRef?.data?.card?.id);
+          this.movePosition = cards.findIndex(c => c._id === this.dialogRef?.data?.card?._id);
         }
         this.cdr.detectChanges();
       }));
@@ -119,7 +119,7 @@ export class CardEditDialogComponent implements OnInit {
   onMoveCard(card: Card | undefined): void {
     const idList = this.idListSelected || '';
     if (card) {
-      this.store.dispatch(MoveCard({ card, idList, position: +this.movePosition }));
+      this.store.dispatch(MoveCard({ card, idList, index: +this.movePosition }));
       this.list$ = this.store.select(findList(idList));
     }
   }
@@ -138,9 +138,8 @@ export class CardEditDialogComponent implements OnInit {
       this.copyCardNameRef?.nativeElement.focus();
     } else {
       const idList = this.idListSelected || '';
-      console.log(idList);
       if (card) {
-        this.store.dispatch(CopyCard({ card, name, idList, position: +this.movePosition }));
+        this.store.dispatch(CopyCard({ card, name, idList, index: +this.movePosition }));
         this.list$ = this.store.select(findList(idList));
         dropdown.hide();
       }

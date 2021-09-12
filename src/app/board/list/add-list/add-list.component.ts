@@ -1,12 +1,12 @@
 import {
   Component, OnInit,
   ChangeDetectionStrategy, Input, ElementRef,
-  HostListener, ViewChild, Output, EventEmitter
+  HostListener, ViewChild
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { List } from 'src/app/model/list.model';
 import { AppState } from 'src/app/store/app.reducer';
-import { AddList } from '../../store/board.actions';
+import { CreateList } from '../../store/board.actions';
 
 @Component({
   selector: 'app-add-list',
@@ -39,7 +39,7 @@ export class AddListComponent implements OnInit {
     e.stopPropagation();
 
     if (this.listName) {
-      this.store.dispatch(AddList({ name: this.listName }));
+      this.store.dispatch(CreateList({ name: this.listName }));
       this.listName = '';
     }
     this.listNameRef?.nativeElement.focus();

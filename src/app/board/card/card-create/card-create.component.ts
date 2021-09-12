@@ -63,7 +63,7 @@ export class CardCreateComponent implements OnInit, AfterViewInit {
 
   onOpenPosition(lists: List[] | undefined | null): void {
     if (lists) {
-      this.cards$ = this.store.select(selectCardsByList(lists[this.cardCreateIndex]?.id || ''));
+      this.cards$ = this.store.select(selectCardsByList(lists[this.cardCreateIndex]?._id || ''));
     }
   }
 

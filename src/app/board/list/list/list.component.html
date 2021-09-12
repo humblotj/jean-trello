@@ -11,7 +11,7 @@
           (cardCreatePositionChange)="cardCreatePositionChange.emit($event)">
         </app-card-create>
         <ng-container *ngFor="let card of cards; let i = index; trackBy: trackByFn">
-          <app-card cdkDrag [cdkDragData]="card" (cdkDragStarted)="onStartDrag()" [card]="card" [listIndex]="index"
+          <app-card *ngIf="!card?.closed" cdkDrag [cdkDragData]="card" (cdkDragStarted)="onStartDrag()" [card]="card" [listIndex]="index"
             [index]="i">
           </app-card>
           <app-card-create *ngIf="cardCreateIndex === index && cardCreatePosition === i+1"
