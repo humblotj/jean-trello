@@ -8,7 +8,7 @@ import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { DropdownService } from '../shared/dropdown/dropdown.service';
 import { AppState } from '../store/app.reducer';
 import { LoadBoard, MoveList, RenameList } from './store/board.actions';
-import { selectLists } from './store/board.reducer';
+import { selectIdBoard, selectLists } from './store/board.reducer';
 
 @Component({
   selector: 'app-board',
@@ -17,6 +17,7 @@ import { selectLists } from './store/board.reducer';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardComponent implements OnInit {
+  boardId$!: Observable<string>;
   lists$!: Observable<List[]>;
 
   cardCreatePosition = 0;
@@ -33,6 +34,7 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.boardId$ = this.store.select(selectIdBoard);
     this.lists$ = this.store.select(selectLists);
   }
 

@@ -26,3 +26,8 @@
     <app-add-list [lists]="lists"></app-add-list>
   </div>
 </ng-container>
+<ng-container *ngrxLet="boardId$ as boardId">
+  <div *ngIf="!boardId" class="loading-overlay">
+    <mat-spinner [diameter]="24"></mat-spinner>
+  </div>
+</ng-container>

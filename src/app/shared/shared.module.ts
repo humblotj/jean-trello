@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ButtonComponent } from './button/button.component';
 import { ButtonCancelComponent } from './button-cancel/button-cancel.component';
@@ -35,7 +36,8 @@ import { LinkComponent } from './link/link.component';
     FlexLayoutModule,
     OverlayModule,
     TextFieldModule,
-    ReactiveComponentModule
+    ReactiveComponentModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     CommonModule,
@@ -51,7 +53,8 @@ import { LinkComponent } from './link/link.component';
     DropdownComponent,
     TooltipDirective,
     SelectFormComponent,
-    LinkComponent
+    LinkComponent,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule { }
